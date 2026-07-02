@@ -213,30 +213,26 @@ function Funnel({ open, onClose }) {
   const isThanks = step === nQ + 1;
   const back = () => setStep(s => Math.max(0, s - 1));
 
-  // Lead-Daten an Zapier senden (mit allen Funnel-Antworten + UTM-Parametern)
+  // Lead-Daten an Zapier senden (form-urlencoded = kein CORS-Preflight, Zapier mappt Felder nativ)
   const sendLead = (d) => {
     const url = L.zapierWebhook;
     if (!url) return;
     const q = {};
     try { new URLSearchParams(location.search).forEach((v, k) => { q[k] = v; }); } catch (e) {}
-    const frageMap = {};
-    fragen.forEach((f) => { frageMap[f.titel] = answers[f.key]; });
-    const payload = Object.assign({
+    const fields = {
       name: d.name,
       telefon: d.tel,
       email: d.email,
       plz_ort: d.ort,
-      einwilligung: !!d.consent,
+      einwilligung: d.consent ? "ja" : "nein",
       aktion: "Alt gegen Neu",
-      // Funnel-Antworten (per key)
-      objekt: answers.objekt,
-      kuechen_alter: answers.alter,
-      kuechen_zustand: answers.zustand,
-      kuechen_groesse: answers.groesse,
-      wichtig: Array.isArray(answers.wichtig) ? answers.wichtig.join(", ") : answers.wichtig,
-      zeitrahmen: answers.zeit,
-      budget: answers.budget,
-      // Kontext
+      objekt: answers.objekt || "",
+      kuechen_alter: answers.alter || "",
+      kuechen_zustand: answers.zustand || "",
+      kuechen_groesse: answers.groesse || "",
+      wichtig: Array.isArray(answers.wichtig) ? answers.wichtig.join(", ") : (answers.wichtig || ""),
+      zeitrahmen: answers.zeit || "",
+      budget: answers.budget || "",
       zeitstempel: new Date().toISOString(),
       seite: location.origin + location.pathname,
       utm_source: q.utm_source || "",
@@ -246,17 +242,15 @@ function Funnel({ open, onClose }) {
       utm_term: q.utm_term || "",
       gclid: q.gclid || "",
       fbclid: q.fbclid || "",
-    }, { fragen_klartext: frageMap });
+    };
+    const body = new URLSearchParams(fields).toString();
     try {
       fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+        body: body,
         keepalive: true,
-      }).catch(() => {
-        // Fallback ohne Preflight, falls CORS blockt — Zapier empfängt trotzdem
-        try { fetch(url, { method: "POST", mode: "no-cors", body: JSON.stringify(payload), keepalive: true }); } catch (e) {}
-      });
+      }).catch(() => {});
     } catch (e) {}
   };
 
