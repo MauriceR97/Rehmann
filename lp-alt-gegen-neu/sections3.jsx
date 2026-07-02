@@ -550,41 +550,81 @@ function Verwandlung() {
     if (!scene || !film) return;
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      // Endzustand statisch: letztes Frame zeigen, kein Pin/Scrub
-      const showEnd = () => { try { film.currentTime = Math.max(0, (film.duration || 0) - 0.04); } catch (e) {} };
-      if (film.readyState >= 1) showEnd(); else film.addEventListener("loadedmetadata", showEnd, { once: true });
-      return;
-    }
-
-    try { film.pause(); } catch (e) {}
 
     let st = null;
-    const setup = () => {
-      if (!window.gsap || !window.ScrollTrigger) return false;
-      window.gsap.registerPlugin(window.ScrollTrigger);
-      st = window.ScrollTrigger.create({
-        trigger: scene,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1,
-        pin: stage,
-        onUpdate: (self) => {
-          const d = film.duration;
-          if (d && isFinite(d)) film.currentTime = self.progress * (d - 0.04);
-        },
-      });
-      // nach Metadaten neu berechnen
-      film.addEventListener("loadedmetadata", () => window.ScrollTrigger.refresh(), { once: true });
-      return true;
+    let blobUrl = null;
+    let cancelled = false;
+
+    // Video komplett als Blob laden → garantiert vollständig seekbar (currentTime-Scrubbing zuverlässig)
+    const loadFilm = async () => {
+      const sources = [
+        { src: "lp-alt-gegen-neu/assets/kueche-transform.webm", type: "video/webm" },
+        { src: "lp-alt-gegen-neu/assets/kueche-transform.mp4", type: "video/mp4" },
+      ];
+      for (const s of sources) {
+        if (!film.canPlayType || film.canPlayType(s.type)) {
+          try {
+            const res = await fetch(s.src);
+            if (!res.ok) continue;
+            const blob = await res.blob();
+            if (cancelled) return;
+            blobUrl = URL.createObjectURL(blob);
+            // vorhandene <source>-Kinder entfernen, damit die Blob-URL greift
+            while (film.firstChild) film.removeChild(film.firstChild);
+            film.src = blobUrl;
+            film.load();
+            return;
+          } catch (e) { /* nächste Quelle versuchen */ }
+        }
+      }
     };
 
-    let tries = 0;
-    const iv = setInterval(() => {
-      if (setup() || ++tries > 60) clearInterval(iv);
-    }, 100);
+    const onReady = () => {
+      if (cancelled) return;
+      try { film.pause(); } catch (e) {}
+      // Decoder anstoßen, damit sofort ein Frame (statt Poster) gezeigt wird
+      try { film.currentTime = reduce ? Math.max(0, (film.duration || 0) - 0.04) : 0.001; } catch (e) {}
+      if (reduce) return;
+      setupScrollTrigger();
+    };
 
-    return () => { clearInterval(iv); if (st) st.kill(); };
+    const setupScrollTrigger = () => {
+      let tries = 0;
+      const iv = setInterval(() => {
+        if (window.gsap && window.ScrollTrigger) {
+          clearInterval(iv);
+          window.gsap.registerPlugin(window.ScrollTrigger);
+          st = window.ScrollTrigger.create({
+            trigger: scene,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1,
+            pin: stage,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              const d = film.duration;
+              if (d && isFinite(d) && film.seekable && film.seekable.length) {
+                const t = self.progress * (d - 0.04);
+                if (Math.abs(film.currentTime - t) > 0.01) film.currentTime = t;
+              }
+            },
+          });
+          window.ScrollTrigger.refresh();
+        } else if (++tries > 100) {
+          clearInterval(iv);
+        }
+      }, 100);
+    };
+
+    film.addEventListener("loadeddata", onReady, { once: true });
+    loadFilm();
+
+    return () => {
+      cancelled = true;
+      film.removeEventListener("loadeddata", onReady);
+      if (st) st.kill();
+      if (blobUrl) URL.revokeObjectURL(blobUrl);
+    };
   }, []);
 
   return (
