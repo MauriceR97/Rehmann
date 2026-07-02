@@ -39,6 +39,63 @@ function OptionCard({ label, icon, selected, onClick }) {
   );
 }
 
+// Bildkachel (Küchenform / Küchenstil). Fällt auf Icon zurück, wenn kein Bild.
+function ImageCard({ label, img, icon, selected, onClick }) {
+  const [h, setH] = React.useState(false);
+  const [failed, setFailed] = React.useState(false);
+  const showImg = img && !failed;
+  return (
+    <button onClick={onClick} onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+      style={{
+        position: "relative", display: "flex", flexDirection: "column", width: "100%", padding: 0, cursor: "pointer",
+        borderRadius: 16, overflow: "hidden", textAlign: "left",
+        background: "#fff",
+        border: "2px solid " + (selected ? "var(--reh-red)" : h ? "var(--neutral-300)" : "var(--border-default)"),
+        boxShadow: selected ? "0 10px 24px rgba(227,6,19,0.22)" : (h ? "var(--shadow-sm)" : "none"),
+        transition: "all var(--dur-fast) var(--ease-standard)",
+      }}>
+      <span style={{ position: "relative", width: "100%", aspectRatio: "4 / 3", background: "var(--surface-sunken)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+        {showImg
+          ? <img src={img} alt={label} loading="lazy" onError={() => setFailed(true)} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+          : <I name={icon || "circle-help"} size={46} color="var(--neutral-400)" />}
+        {selected && (
+          <span style={{ position: "absolute", top: 10, right: 10, width: 30, height: 30, borderRadius: 999, background: "var(--reh-red)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "var(--shadow-sm)" }}>
+            <I name="check" size={20} color="#fff" stroke={3} />
+          </span>
+        )}
+      </span>
+      <span style={{ padding: "13px 16px", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 17, color: selected ? "var(--reh-red)" : "var(--text-strong)" }}>{label}</span>
+    </button>
+  );
+}
+
+// Farbkachel (Farbstil)
+function SwatchCard({ label, swatch, icon, selected, onClick }) {
+  const [h, setH] = React.useState(false);
+  return (
+    <button onClick={onClick} onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+      style={{
+        position: "relative", display: "flex", flexDirection: "column", width: "100%", padding: 0, cursor: "pointer",
+        borderRadius: 16, overflow: "hidden", textAlign: "left", background: "#fff",
+        border: "2px solid " + (selected ? "var(--reh-red)" : h ? "var(--neutral-300)" : "var(--border-default)"),
+        boxShadow: selected ? "0 10px 24px rgba(227,6,19,0.22)" : (h ? "var(--shadow-sm)" : "none"),
+        transition: "all var(--dur-fast) var(--ease-standard)",
+      }}>
+      <span style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr", background: "var(--surface-sunken)" }}>
+        {swatch
+          ? swatch.slice(0, 4).map((c, i) => <span key={i} style={{ background: c }} />)
+          : <span style={{ gridColumn: "1 / -1", gridRow: "1 / -1", display: "flex", alignItems: "center", justifyContent: "center" }}><I name={icon || "circle-help"} size={40} color="var(--neutral-400)" /></span>}
+        {selected && (
+          <span style={{ position: "absolute", top: 10, right: 10, width: 30, height: 30, borderRadius: 999, background: "var(--reh-red)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "var(--shadow-sm)" }}>
+            <I name="check" size={20} color="#fff" stroke={3} />
+          </span>
+        )}
+      </span>
+      <span style={{ padding: "13px 16px", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 17, color: selected ? "var(--reh-red)" : "var(--text-strong)" }}>{label}</span>
+    </button>
+  );
+}
+
 function QuestionStep({ frage, value, onPick, onNext }) {
   const isMulti = frage.type === "multi";
   const arr = value || (isMulti ? [] : null);
@@ -49,9 +106,10 @@ function QuestionStep({ frage, value, onPick, onNext }) {
       onPick(next);
     } else {
       onPick(label);
-      setTimeout(onNext, 240);
+      setTimeout(onNext, 260);
     }
   };
+  const layout = frage.layout || "list";
   return (
     <div style={{ animation: "fadeUp 0.35s var(--ease-out) both" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 8 }}>
@@ -59,11 +117,29 @@ function QuestionStep({ frage, value, onPick, onNext }) {
       </div>
       <h2 style={{ fontSize: 34, lineHeight: 1.15, margin: "0 0 8px" }}>{frage.titel}</h2>
       <p style={{ fontSize: 18, color: "var(--text-muted)", margin: "0 0 26px" }}>{frage.hinweis}</p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 13 }}>
-        {frage.optionen.map(o => (
-          <OptionCard key={o.label} label={o.label} icon={o.icon} selected={picked(o.label)} onClick={() => toggle(o.label)} />
-        ))}
-      </div>
+
+      {layout === "grid" && (
+        <div className="funnel-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
+          {frage.optionen.map(o => (
+            <ImageCard key={o.label} label={o.label} img={o.img} icon={o.icon} selected={picked(o.label)} onClick={() => toggle(o.label)} />
+          ))}
+        </div>
+      )}
+      {layout === "swatch" && (
+        <div className="funnel-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14 }}>
+          {frage.optionen.map(o => (
+            <SwatchCard key={o.label} label={o.label} swatch={o.swatch} icon={o.icon} selected={picked(o.label)} onClick={() => toggle(o.label)} />
+          ))}
+        </div>
+      )}
+      {layout === "list" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 13 }}>
+          {frage.optionen.map(o => (
+            <OptionCard key={o.label} label={o.label} icon={o.icon} selected={picked(o.label)} onClick={() => toggle(o.label)} />
+          ))}
+        </div>
+      )}
+
       {isMulti && (
         <button onClick={onNext} disabled={arr.length === 0}
           style={{ marginTop: 24, width: "100%", padding: 20, borderRadius: 16, border: "none", cursor: arr.length ? "pointer" : "not-allowed",
@@ -72,6 +148,42 @@ function QuestionStep({ frage, value, onPick, onNext }) {
           Weiter <I name="arrow-right" size={24} />
         </button>
       )}
+    </div>
+  );
+}
+
+// Detailschritt „Ihre alte Küche" (nur wenn Tauschprämie = Ja)
+function AlteKuecheStep({ data, onChange, onNext }) {
+  const L = window.LP;
+  const cfg = L.altkueche;
+  const field = { width: "100%", padding: "15px 18px", fontSize: 18, fontFamily: "var(--font-sans)", fontWeight: 500, color: "var(--text-body)", background: "#fff", border: "2px solid var(--border-default)", borderRadius: 13, outline: "none", boxSizing: "border-box", appearance: "none", cursor: "pointer" };
+  const set = (k, v) => onChange(Object.assign({}, data, { [k]: v }));
+  return (
+    <div style={{ animation: "fadeUp 0.35s var(--ease-out) both" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 8 }}>
+        <span style={{ flex: "none", width: 46, height: 46, borderRadius: 12, background: "var(--surface-brand-soft)", color: "var(--reh-red)", display: "flex", alignItems: "center", justifyContent: "center" }}><I name="recycle" size={26} /></span>
+      </div>
+      <h2 style={{ fontSize: 34, lineHeight: 1.15, margin: "0 0 8px" }}>{cfg.titel}</h2>
+      <p style={{ fontSize: 18, color: "var(--text-muted)", margin: "0 0 26px" }}>{cfg.hinweis}</p>
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        {cfg.felder.map((f) => (
+          <div key={f.key} style={{ position: "relative" }}>
+            <select value={data[f.key] || ""} onChange={(e) => set(f.key, e.target.value)} style={Object.assign({}, field, { color: data[f.key] ? "var(--text-body)" : "var(--text-subtle)" })}>
+              <option value="" disabled>{f.label}</option>
+              {f.optionen.map((o) => <option key={o} value={o} style={{ color: "var(--text-body)" }}>{o}</option>)}
+            </select>
+            <span style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "var(--text-muted)" }}><I name="chevron-down" size={20} /></span>
+          </div>
+        ))}
+        <textarea value={data.ak_besonderheiten || ""} onChange={(e) => set("ak_besonderheiten", e.target.value)} placeholder={cfg.besonderheiten} rows={3}
+          style={{ width: "100%", padding: "15px 18px", fontSize: 18, fontFamily: "var(--font-sans)", fontWeight: 500, color: "var(--text-body)", background: "#fff", border: "2px solid var(--border-default)", borderRadius: 13, outline: "none", boxSizing: "border-box", resize: "vertical" }} />
+      </div>
+      <button onClick={onNext}
+        style={{ marginTop: 24, width: "100%", padding: 20, borderRadius: 16, border: "none", cursor: "pointer",
+          background: "var(--reh-red)", color: "#fff", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22,
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 12, boxShadow: "0 12px 28px rgba(227,6,19,0.34)" }}>
+        Weiter <I name="arrow-right" size={24} />
+      </button>
     </div>
   );
 }
@@ -145,10 +257,20 @@ function ThankYou({ data, onClose }) {
 function Funnel({ open, onClose }) {
   const L = window.LP;
   const fragen = L.fragen;
-  const [step, setStep] = React.useState(0); // 0..n-1 questions, n = form, n+1 = thanks
+  const [step, setStep] = React.useState(0);
   const [answers, setAnswers] = React.useState({});
+  const [altData, setAltData] = React.useState({});
   const [lead, setLead] = React.useState(null);
   const nQ = fragen.length;
+  // Bedingter Detailschritt zur alten Küche, wenn Tauschprämie = Ja
+  const showAlt = answers.tausch === "Ja";
+  // Ansichten-Sequenz: Fragen → (alte Küche) → Formular → Danke
+  const views = fragen.map((_, i) => ({ kind: "q", i })).concat(
+    showAlt ? [{ kind: "alt" }] : [],
+    [{ kind: "form" }, { kind: "thanks" }]
+  );
+  const view = views[step] || views[views.length - 1];
+  const totalSteps = nQ + (showAlt ? 1 : 0);
   const scrollRef = React.useRef(null);
   const baseUrl = React.useRef(null);
   const firedOpen = React.useRef(false);
@@ -182,8 +304,7 @@ function Funnel({ open, onClose }) {
     };
     if (open) {
       if (baseUrl.current === null) baseUrl.current = location.pathname + location.search;
-      const isThanks = step === nQ + 1;
-      if (isThanks) {
+      if (view.kind === "thanks") {
         setPath(routes.danke);
         if (!firedLead.current) { firedLead.current = true; track("lead_submitted", { conversion: true }); }
       } else {
@@ -209,9 +330,10 @@ function Funnel({ open, onClose }) {
 
   if (!open) return null;
 
-  const isQuestion = step < nQ;
-  const isForm = step === nQ;
-  const isThanks = step === nQ + 1;
+  const isQuestion = view.kind === "q";
+  const isAlt = view.kind === "alt";
+  const isForm = view.kind === "form";
+  const isThanks = view.kind === "thanks";
   const back = () => setStep(s => Math.max(0, s - 1));
 
   // Lead-Daten an Zapier senden (form-urlencoded = kein CORS-Preflight, Zapier mappt Felder nativ)
@@ -229,7 +351,6 @@ function Funnel({ open, onClose }) {
       else if (/iPad|Tablet/i.test(ua) || w <= 980) device = "tablet";
     } catch (e) {}
     const eventid = "reh-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
-    const alterAntwort = answers.alter || "";
     const fields = {
       // Kontaktdaten
       anrede: "",
@@ -239,19 +360,20 @@ function Funnel({ open, onClose }) {
       telefon: d.telefon || "",
       plz: d.plz || "",
       datenschutz_ok: d.consent ? "ja" : "nein",
-      // Neue Küche (Funnel — wird später final gemappt)
+      // Neue Küche
       nk_starttermin: answers.zeit || "",
-      nk_form: answers.groesse || "",
-      nk_stil: "",
-      nk_farbe: "",
-      nk_finanzierung: "",
+      nk_form: answers.kform || "",
+      nk_stil: answers.kstil || "",
+      nk_farbe: answers.kfarbe || "",
+      nk_finanzierung: answers.finanzierung || "",
       nk_budget: answers.budget || "",
-      // Alte Küche (Funnel — wird später final gemappt)
-      ak_vorhanden: alterAntwort ? (/keine/i.test(alterAntwort) ? "nein" : "ja") : "",
-      ak_zustand: answers.zustand || "",
-      ak_form: "",
-      ak_egeraete_abgeben: "",
-      ak_besonderheiten: "",
+      // Alte Küche
+      ak_vorhanden: answers.tausch === "Ja" ? "ja" : (answers.tausch === "Nein" ? "nein" : (/keine/i.test(answers.tausch || "") ? "nein" : "")),
+      ak_in_zahlung: answers.tausch || "",
+      ak_zustand: altData.ak_zustand || "",
+      ak_form: altData.ak_form || "",
+      ak_egeraete_abgeben: altData.ak_egeraete_abgeben || "",
+      ak_besonderheiten: altData.ak_besonderheiten || "",
       alte_kueche_bild: "",
       // Kampagne / Tracking
       kategorie: "Küche",
@@ -287,12 +409,12 @@ function Funnel({ open, onClose }) {
       {/* Top bar */}
       <div style={{ flex: "none", background: "#fff", borderBottom: "1px solid var(--border-subtle)" }}>
         <div style={{ maxWidth: 720, margin: "0 auto", padding: "14px var(--gutter)", display: "flex", alignItems: "center", gap: 18 }}>
-          {(isQuestion && step > 0) ? (
+          {(step > 0 && !isThanks) ? (
             <button onClick={back} aria-label="Zurück" style={{ flex: "none", width: 44, height: 44, borderRadius: 999, border: "1px solid var(--border-default)", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-strong)" }}><I name="arrow-left" size={22} /></button>
           ) : (
             <img src={L.logos.farbig} alt="Rehmann" style={{ height: 36, flex: "none" }} />
           )}
-          {!isThanks && <ProgressBar current={step + 1} total={nQ} />}
+          {!isThanks && <ProgressBar current={step + 1} total={totalSteps} />}
           <button onClick={onClose} aria-label="Schließen" style={{ flex: "none", marginLeft: "auto", width: 44, height: 44, borderRadius: 999, border: "none", background: "var(--surface-sunken)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-strong)" }}><I name="x" size={24} /></button>
         </div>
       </div>
@@ -302,11 +424,14 @@ function Funnel({ open, onClose }) {
         <div style={{ maxWidth: 620, margin: "0 auto", padding: "40px var(--gutter) 56px" }}>
           {isQuestion && (
             <QuestionStep
-              frage={fragen[step]}
-              value={answers[fragen[step].key]}
-              onPick={(v) => setAnswers(a => ({ ...a, [fragen[step].key]: v }))}
+              frage={fragen[view.i]}
+              value={answers[fragen[view.i].key]}
+              onPick={(v) => setAnswers(a => ({ ...a, [fragen[view.i].key]: v }))}
               onNext={() => setStep(s => s + 1)}
             />
+          )}
+          {isAlt && (
+            <AlteKuecheStep data={altData} onChange={setAltData} onNext={() => setStep(s => s + 1)} />
           )}
           {isForm && <LeadForm onSubmit={(d) => { sendLead(d); setLead(d); setStep(s => s + 1); window.scrollTo(0,0); }} />}
           {isThanks && <ThankYou data={lead} onClose={onClose} />}

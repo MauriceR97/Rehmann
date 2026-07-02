@@ -55,84 +55,78 @@ window.LP = {
     musterkuechen: "100",
   },
 
-  // 7 Funnel-Fragen (eine pro Seite). type: "single" | "multi"
+  // Funnel-Fragen (eine pro Seite). type: "single" | "multi"
+  // layout: "list" (Standard) | "grid" (Bildkacheln) | "swatch" (Farbfelder)
+  // img: Pfad zum Thumbnail (fällt auf icon zurück, wenn leer/fehlend)
   fragen: [
     {
-      key: "objekt",
-      icon: "home",
-      titel: "Für welche Räumlichkeit planen Sie?",
-      hinweis: "Die Aktion gilt für Eigenheim und Wohnung.",
+      key: "kform",
+      icon: "layout-grid",
+      titel: "Welche Küchenform wünschen Sie sich?",
+      hinweis: "Wählen Sie die Form, die am besten passt.",
       type: "single",
+      layout: "grid",
       optionen: [
-        { label: "Eigenes Haus", icon: "house" },
-        { label: "Eigentumswohnung", icon: "building-2" },
-        { label: "Mietwohnung", icon: "key" },
-        { label: "Sonstiges", icon: "circle-help" },
+        { label: "Einzeilige Küchenzeile", img: "lp-alt-gegen-neu/assets/funnel/form-einzeilig.jpg", icon: "minus" },
+        { label: "2-zeilige Küchenzeile", img: "lp-alt-gegen-neu/assets/funnel/form-zweizeilig.jpg", icon: "equal" },
+        { label: "L-Form", img: "lp-alt-gegen-neu/assets/funnel/form-l.jpg", icon: "corner-down-right" },
+        { label: "U-Form", img: "lp-alt-gegen-neu/assets/funnel/form-u.jpg", icon: "square" },
+        { label: "Küche mit Inselblock", img: "lp-alt-gegen-neu/assets/funnel/form-insel.jpg", icon: "layout-dashboard" },
+        { label: "Andere", img: "", icon: "circle-help" },
       ],
     },
     {
-      key: "alter",
-      icon: "calendar-clock",
-      titel: "Wie alt ist Ihre jetzige Küche?",
-      hinweis: "Auch ältere Küchen sind bares Geld wert.",
-      type: "single",
-      optionen: [
-        { label: "Unter 10 Jahre" },
-        { label: "10 bis 20 Jahre" },
-        { label: "Über 20 Jahre" },
-        { label: "Ich habe noch keine Küche" },
-      ],
-    },
-    {
-      key: "zustand",
-      icon: "clipboard-check",
-      titel: "In welchem Zustand ist Ihre aktuelle Küche?",
-      hinweis: "Ehrlich genügt – wir bauen sie kostenlos ab.",
-      type: "single",
-      optionen: [
-        { label: "Gut erhalten" },
-        { label: "Übliche Gebrauchsspuren" },
-        { label: "Stark abgenutzt" },
-        { label: "Defekt / nicht mehr nutzbar" },
-      ],
-    },
-    {
-      key: "groesse",
-      icon: "ruler",
-      titel: "Wie groß ist Ihre Küche ungefähr?",
-      hinweis: "Eine grobe Einschätzung reicht völlig.",
-      type: "single",
-      optionen: [
-        { label: "Kleine Küchenzeile" },
-        { label: "Mittel, z. B. L-Form" },
-        { label: "Groß, U-Form oder mit Insel" },
-        { label: "Weiß ich nicht genau" },
-      ],
-    },
-    {
-      key: "wichtig",
+      key: "kstil",
       icon: "sparkles",
-      titel: "Was ist Ihnen bei der neuen Küche am wichtigsten?",
-      hinweis: "Mehrfachauswahl möglich.",
-      type: "multi",
+      titel: "Welchen Küchenstil wünschen Sie sich?",
+      hinweis: "Der Look, der Ihnen am meisten zusagt.",
+      type: "single",
+      layout: "grid",
       optionen: [
-        { label: "Modernes, schönes Design", icon: "palette" },
-        { label: "Viel Stauraum & Funktion", icon: "archive" },
-        { label: "Hochwertige Markengeräte", icon: "microwave" },
-        { label: "Persönliche, ehrliche Beratung", icon: "users" },
+        { label: "Hochglanz", img: "lp-alt-gegen-neu/assets/funnel/stil-hochglanz.jpg", icon: "sun" },
+        { label: "Matt", img: "lp-alt-gegen-neu/assets/funnel/stil-matt.jpg", icon: "moon" },
+        { label: "Massivholz", img: "lp-alt-gegen-neu/assets/funnel/stil-massivholz.jpg", icon: "tree-pine" },
+        { label: "Landhaus", img: "lp-alt-gegen-neu/assets/funnel/stil-landhaus.jpg", icon: "home" },
+        { label: "Andere", img: "", icon: "circle-help" },
+      ],
+    },
+    {
+      key: "kfarbe",
+      icon: "palette",
+      titel: "Welchen Farbstil wünschen Sie sich?",
+      hinweis: "Grobe Richtung genügt – Details klären wir im Gespräch.",
+      type: "single",
+      layout: "swatch",
+      optionen: [
+        { label: "Hell", swatch: ["#F5F3EE", "#C9BCA8", "#E4DDD1", "#FBF8F2"] },
+        { label: "Dunkel", swatch: ["#33302C", "#211F1D", "#4A4642", "#2B2825"] },
+        { label: "Farbig", swatch: ["#6E1F2A", "#E4C88A", "#0E2136", "#20321F"] },
+        { label: "Andere", icon: "circle-help" },
+      ],
+    },
+    {
+      key: "finanzierung",
+      icon: "percent",
+      titel: "Wünschen Sie eine Finanzierung Ihrer Küche?",
+      hinweis: "Aktuell mit 0 % Zinsen möglich.",
+      type: "single",
+      optionen: [
+        { label: "Ja, bis zu 48 Monate", icon: "badge-percent" },
+        { label: "Nein", icon: "x" },
+        { label: "Ja, mehr als 48 Monate", icon: "calendar-clock" },
       ],
     },
     {
       key: "zeit",
       icon: "calendar-check",
-      titel: "Wann möchten Sie Ihre neue Küche realisieren?",
+      titel: "Wann benötigen Sie Ihre neue Küche?",
       hinweis: "Ganz unverbindlich – Sie bestimmen das Tempo.",
       type: "single",
       optionen: [
-        { label: "So bald wie möglich" },
-        { label: "In den nächsten 1–3 Monaten" },
-        { label: "In 3–6 Monaten" },
-        { label: "Erst einmal informieren" },
+        { label: "Schnellstmöglich", icon: "rocket" },
+        { label: "1–3 Monate", icon: "calendar" },
+        { label: "3–6 Monate", icon: "calendar-days" },
+        { label: "Noch später", icon: "clock" },
       ],
     },
     {
@@ -149,7 +143,33 @@ window.LP = {
         { label: "Noch unklar" },
       ],
     },
+    {
+      key: "tausch",
+      icon: "recycle",
+      titel: "Möchten Sie Ihre alte Küche in Zahlung geben?",
+      hinweis: "Kostenfreie Demontage, Abholung und eine Tauschprämie für Ihre alte Küche.",
+      type: "single",
+      // Logiksprung: bei "Ja" folgt der Detailschritt zur alten Küche
+      branchOnYes: "Ja",
+      optionen: [
+        { label: "Ja", icon: "check" },
+        { label: "Nein", icon: "x" },
+        { label: "Ich besitze keine alte Küche", icon: "circle-help" },
+      ],
+    },
   ],
+
+  // Bedingter Detailschritt – nur wenn oben "Ja" gewählt wurde
+  altkueche: {
+    titel: "Ihre alte Küche",
+    hinweis: "Ein paar kurze Infos helfen uns, eine erste Einschätzung Ihrer Prämie zu kalkulieren.",
+    felder: [
+      { key: "ak_zustand", label: "Zustand Ihrer alten Küche", optionen: ["Gut erhalten", "Übliche Gebrauchsspuren", "Stark abgenutzt", "Defekt / nicht mehr nutzbar"] },
+      { key: "ak_form", label: "Ihre aktuelle Küchenform", optionen: ["Einzeilige Küchenzeile", "2-zeilige Küchenzeile", "L-Form", "U-Form", "Küche mit Inselblock", "Andere"] },
+      { key: "ak_egeraete_abgeben", label: "Möchten Sie Ihre E-Geräte ebenfalls abgeben?", optionen: ["Ja", "Nein", "Teilweise"] },
+    ],
+    besonderheiten: "Besonderheiten (optional)",
+  },
 
   faq: [
     {
