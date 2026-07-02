@@ -78,9 +78,9 @@ function QuestionStep({ frage, value, onPick, onNext }) {
 
 function LeadForm({ onSubmit }) {
   const L = window.LP;
-  const [f, setF] = React.useState({ name: "", tel: "", email: "", ort: "", consent: false });
+  const [f, setF] = React.useState({ vorname: "", nachname: "", email: "", telefon: "", plz: "", consent: false });
   const set = (k) => (e) => setF({ ...f, [k]: e.target.type === "checkbox" ? e.target.checked : e.target.value });
-  const valid = f.name.trim() && f.tel.trim() && f.ort.trim() && f.consent;
+  const valid = f.telefon.trim() && f.consent;
   const field = { width: "100%", padding: "16px 18px", fontSize: 19, fontFamily: "var(--font-sans)", fontWeight: 500, color: "var(--text-body)", background: "#fff", border: "2px solid var(--border-default)", borderRadius: 13, outline: "none", boxSizing: "border-box" };
   const lab = { fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 15, color: "var(--text-strong)", marginBottom: 7, display: "block" };
   return (
@@ -95,14 +95,15 @@ function LeadForm({ onSubmit }) {
       <h2 style={{ fontSize: 32, margin: "0 0 6px" }}>Aktionsplatz sichern</h2>
       <p style={{ fontSize: 18, color: "var(--text-muted)", margin: "0 0 24px" }}>Wir rufen Sie in ca. 20 Minuten persönlich an (zu unseren Öffnungszeiten).</p>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }} className="form-grid">
-        <div style={{ gridColumn: "1 / -1" }}><label style={lab}>Ihr Name *</label><input style={field} value={f.name} onChange={set("name")} placeholder="Vor- und Nachname" /></div>
-        <div><label style={lab}>Telefon *</label><input style={field} value={f.tel} onChange={set("tel")} placeholder="für unseren Rückruf" inputMode="tel" /></div>
-        <div><label style={lab}>PLZ / Wohnort *</label><input style={field} value={f.ort} onChange={set("ort")} placeholder="z. B. 42549 Velbert" /></div>
-        <div style={{ gridColumn: "1 / -1" }}><label style={lab}>E-Mail (optional)</label><input style={field} value={f.email} onChange={set("email")} placeholder="name@beispiel.de" inputMode="email" /></div>
+        <div><label style={lab}>Vorname</label><input style={field} value={f.vorname} onChange={set("vorname")} placeholder="Vorname" autoComplete="given-name" /></div>
+        <div><label style={lab}>Nachname</label><input style={field} value={f.nachname} onChange={set("nachname")} placeholder="Nachname" autoComplete="family-name" /></div>
+        <div><label style={lab}>Telefon *</label><input style={field} value={f.telefon} onChange={set("telefon")} placeholder="für unseren Rückruf" inputMode="tel" autoComplete="tel" /></div>
+        <div><label style={lab}>PLZ</label><input style={field} value={f.plz} onChange={set("plz")} placeholder="z. B. 42549" inputMode="numeric" autoComplete="postal-code" /></div>
+        <div style={{ gridColumn: "1 / -1" }}><label style={lab}>E-Mail</label><input style={field} value={f.email} onChange={set("email")} placeholder="name@beispiel.de" inputMode="email" autoComplete="email" /></div>
       </div>
       <label style={{ display: "flex", gap: 12, alignItems: "flex-start", margin: "20px 0 26px", cursor: "pointer" }}>
         <input type="checkbox" checked={f.consent} onChange={set("consent")} style={{ width: 24, height: 24, marginTop: 2, accentColor: "var(--reh-red)", flex: "none" }} />
-        <span style={{ fontSize: 15, lineHeight: 1.5, color: "var(--text-body)" }}>Ja, Interliving Rehmann darf mich telefonisch zu meiner Anfrage kontaktieren. Meine Daten werden vertraulich behandelt und nicht weitergegeben.</span>
+        <span style={{ fontSize: 15, lineHeight: 1.5, color: "var(--text-body)" }}>Ja, Interliving Rehmann darf mich telefonisch zu meiner Anfrage kontaktieren. Meine Daten werden vertraulich behandelt und nicht weitergegeben. *</span>
       </label>
       <button onClick={() => valid && onSubmit(f)} disabled={!valid}
         style={{ width: "100%", padding: 22, borderRadius: 16, border: "none", cursor: valid ? "pointer" : "not-allowed",
@@ -126,7 +127,7 @@ function ThankYou({ data, onClose }) {
       <div style={{ width: 104, height: 104, borderRadius: 999, background: "var(--green-100)", color: "var(--success)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 26px" }}>
         <I name="check" size={60} stroke={2.5} />
       </div>
-      <h2 style={{ fontSize: 38, margin: "0 0 14px" }}>Vielen Dank{data && data.name ? ", " + data.name.split(" ")[0] : ""}!</h2>
+      <h2 style={{ fontSize: 38, margin: "0 0 14px" }}>Vielen Dank{data && data.vorname ? ", " + data.vorname : ""}!</h2>
       <p style={{ fontSize: 21, lineHeight: 1.55, color: "var(--text-body)", maxWidth: 520, margin: "0 auto 28px" }}>
         Ihr Aktionsplatz ist reserviert. Wir rufen Sie <b>innerhalb von ca. 20 Minuten</b> persönlich an (zu unseren Öffnungszeiten {L.kontakt.oeffnung}).
       </p>
@@ -219,29 +220,56 @@ function Funnel({ open, onClose }) {
     if (!url) return;
     const q = {};
     try { new URLSearchParams(location.search).forEach((v, k) => { q[k] = v; }); } catch (e) {}
+    const routes = (L.routes) || {};
+    let device = "desktop";
+    try {
+      const w = window.innerWidth;
+      const ua = navigator.userAgent || "";
+      if (/Mobi|Android|iPhone/i.test(ua) || w <= 620) device = "mobil";
+      else if (/iPad|Tablet/i.test(ua) || w <= 980) device = "tablet";
+    } catch (e) {}
+    const eventid = "reh-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
+    const alterAntwort = answers.alter || "";
     const fields = {
-      name: d.name,
-      telefon: d.tel,
-      email: d.email,
-      plz_ort: d.ort,
-      einwilligung: d.consent ? "ja" : "nein",
-      aktion: "Alt gegen Neu",
-      objekt: answers.objekt || "",
-      kuechen_alter: answers.alter || "",
-      kuechen_zustand: answers.zustand || "",
-      kuechen_groesse: answers.groesse || "",
-      wichtig: Array.isArray(answers.wichtig) ? answers.wichtig.join(", ") : (answers.wichtig || ""),
-      zeitrahmen: answers.zeit || "",
-      budget: answers.budget || "",
-      zeitstempel: new Date().toISOString(),
-      seite: location.origin + location.pathname,
+      // Kontaktdaten
+      anrede: "",
+      vorname: d.vorname || "",
+      nachname: d.nachname || "",
+      email: d.email || "",
+      telefon: d.telefon || "",
+      plz: d.plz || "",
+      datenschutz_ok: d.consent ? "ja" : "nein",
+      // Neue Küche (Funnel — wird später final gemappt)
+      nk_starttermin: answers.zeit || "",
+      nk_form: answers.groesse || "",
+      nk_stil: "",
+      nk_farbe: "",
+      nk_finanzierung: "",
+      nk_budget: answers.budget || "",
+      // Alte Küche (Funnel — wird später final gemappt)
+      ak_vorhanden: alterAntwort ? (/keine/i.test(alterAntwort) ? "nein" : "ja") : "",
+      ak_zustand: answers.zustand || "",
+      ak_form: "",
+      ak_egeraete_abgeben: "",
+      ak_besonderheiten: "",
+      alte_kueche_bild: "",
+      // Kampagne / Tracking
+      kategorie: "Küche",
+      kampagne: q.kampagne || q.utm_campaign || "",
       utm_source: q.utm_source || "",
       utm_medium: q.utm_medium || "",
       utm_campaign: q.utm_campaign || "",
       utm_content: q.utm_content || "",
       utm_term: q.utm_term || "",
-      gclid: q.gclid || "",
+      source_device: device,
       fbclid: q.fbclid || "",
+      gclid: q.gclid || "",
+      eventid: eventid,
+      danke_url: location.origin + "/" + (routes.danke || "danke-formular-kueche"),
+      // Kontext
+      aktion: "Alt gegen Neu",
+      zeitstempel: new Date().toISOString(),
+      seite: location.origin + location.pathname,
     };
     const body = new URLSearchParams(fields).toString();
     try {
