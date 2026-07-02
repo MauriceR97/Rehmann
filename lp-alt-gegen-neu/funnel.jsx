@@ -96,7 +96,7 @@ function SwatchCard({ label, swatch, icon, selected, onClick }) {
   );
 }
 
-function QuestionStep({ frage, value, onPick, onNext }) {
+function QuestionStep({ frage, value, onPick, onNext, onBack, canBack }) {
   const isMulti = frage.type === "multi";
   const arr = value || (isMulti ? [] : null);
   const picked = (label) => isMulti ? arr.includes(label) : arr === label;
@@ -141,19 +141,26 @@ function QuestionStep({ frage, value, onPick, onNext }) {
       )}
 
       {isMulti && (
-        <button onClick={onNext} disabled={arr.length === 0}
-          style={{ marginTop: 24, width: "100%", padding: 20, borderRadius: 16, border: "none", cursor: arr.length ? "pointer" : "not-allowed",
-            background: arr.length ? "var(--reh-red)" : "var(--neutral-300)", color: "#fff", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22,
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 12, boxShadow: arr.length ? "0 12px 28px rgba(227,6,19,0.34)" : "none" }}>
-          Weiter <I name="arrow-right" size={24} />
-        </button>
+        <div style={{ display: "flex", gap: 12, marginTop: 24 }}>
+          {canBack && (
+            <button onClick={onBack} style={{ flex: "none", padding: "20px 22px", borderRadius: 16, border: "2px solid var(--border-default)", background: "#fff", cursor: "pointer", color: "var(--text-strong)", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 18, display: "flex", alignItems: "center", gap: 8 }}>
+              <I name="arrow-left" size={20} /> Zurück
+            </button>
+          )}
+          <button onClick={onNext} disabled={arr.length === 0}
+            style={{ flex: 1, padding: 20, borderRadius: 16, border: "none", cursor: arr.length ? "pointer" : "not-allowed",
+              background: arr.length ? "var(--reh-red)" : "var(--neutral-300)", color: "#fff", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22,
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 12, boxShadow: arr.length ? "0 12px 28px rgba(227,6,19,0.34)" : "none" }}>
+            Weiter <I name="arrow-right" size={24} />
+          </button>
+        </div>
       )}
     </div>
   );
 }
 
 // Detailschritt „Ihre alte Küche" (nur wenn Tauschprämie = Ja)
-function AlteKuecheStep({ data, onChange, onNext }) {
+function AlteKuecheStep({ data, onChange, onNext, onBack, canBack }) {
   const L = window.LP;
   const cfg = L.altkueche;
   const field = { width: "100%", padding: "15px 18px", fontSize: 18, fontFamily: "var(--font-sans)", fontWeight: 500, color: "var(--text-body)", background: "#fff", border: "2px solid var(--border-default)", borderRadius: 13, outline: "none", boxSizing: "border-box", appearance: "none", cursor: "pointer" };
@@ -178,12 +185,19 @@ function AlteKuecheStep({ data, onChange, onNext }) {
         <textarea value={data.ak_besonderheiten || ""} onChange={(e) => set("ak_besonderheiten", e.target.value)} placeholder={cfg.besonderheiten} rows={3}
           style={{ width: "100%", padding: "15px 18px", fontSize: 18, fontFamily: "var(--font-sans)", fontWeight: 500, color: "var(--text-body)", background: "#fff", border: "2px solid var(--border-default)", borderRadius: 13, outline: "none", boxSizing: "border-box", resize: "vertical" }} />
       </div>
-      <button onClick={onNext}
-        style={{ marginTop: 24, width: "100%", padding: 20, borderRadius: 16, border: "none", cursor: "pointer",
-          background: "var(--reh-red)", color: "#fff", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22,
-          display: "flex", alignItems: "center", justifyContent: "center", gap: 12, boxShadow: "0 12px 28px rgba(227,6,19,0.34)" }}>
-        Weiter <I name="arrow-right" size={24} />
-      </button>
+      <div style={{ display: "flex", gap: 12, marginTop: 24 }}>
+        {canBack && (
+          <button onClick={onBack} style={{ flex: "none", padding: "20px 22px", borderRadius: 16, border: "2px solid var(--border-default)", background: "#fff", cursor: "pointer", color: "var(--text-strong)", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 18, display: "flex", alignItems: "center", gap: 8 }}>
+            <I name="arrow-left" size={20} /> Zurück
+          </button>
+        )}
+        <button onClick={onNext}
+          style={{ flex: 1, padding: 20, borderRadius: 16, border: "none", cursor: "pointer",
+            background: "var(--reh-red)", color: "#fff", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22,
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 12, boxShadow: "0 12px 28px rgba(227,6,19,0.34)" }}>
+          Weiter <I name="arrow-right" size={24} />
+        </button>
+      </div>
     </div>
   );
 }
@@ -428,10 +442,12 @@ function Funnel({ open, onClose }) {
               value={answers[fragen[view.i].key]}
               onPick={(v) => setAnswers(a => ({ ...a, [fragen[view.i].key]: v }))}
               onNext={() => setStep(s => s + 1)}
+              onBack={back}
+              canBack={step > 0}
             />
           )}
           {isAlt && (
-            <AlteKuecheStep data={altData} onChange={setAltData} onNext={() => setStep(s => s + 1)} />
+            <AlteKuecheStep data={altData} onChange={setAltData} onNext={() => setStep(s => s + 1)} onBack={back} canBack={step > 0} />
           )}
           {isForm && <LeadForm onSubmit={(d) => { sendLead(d); setLead(d); setStep(s => s + 1); window.scrollTo(0,0); }} />}
           {isThanks && <ThankYou data={lead} onClose={onClose} />}
