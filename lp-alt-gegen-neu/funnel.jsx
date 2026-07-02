@@ -213,6 +213,53 @@ function Funnel({ open, onClose }) {
   const isThanks = step === nQ + 1;
   const back = () => setStep(s => Math.max(0, s - 1));
 
+  // Lead-Daten an Zapier senden (mit allen Funnel-Antworten + UTM-Parametern)
+  const sendLead = (d) => {
+    const url = L.zapierWebhook;
+    if (!url) return;
+    const q = {};
+    try { new URLSearchParams(location.search).forEach((v, k) => { q[k] = v; }); } catch (e) {}
+    const frageMap = {};
+    fragen.forEach((f) => { frageMap[f.titel] = answers[f.key]; });
+    const payload = Object.assign({
+      name: d.name,
+      telefon: d.tel,
+      email: d.email,
+      plz_ort: d.ort,
+      einwilligung: !!d.consent,
+      aktion: "Alt gegen Neu",
+      // Funnel-Antworten (per key)
+      objekt: answers.objekt,
+      kuechen_alter: answers.alter,
+      kuechen_zustand: answers.zustand,
+      kuechen_groesse: answers.groesse,
+      wichtig: Array.isArray(answers.wichtig) ? answers.wichtig.join(", ") : answers.wichtig,
+      zeitrahmen: answers.zeit,
+      budget: answers.budget,
+      // Kontext
+      zeitstempel: new Date().toISOString(),
+      seite: location.origin + location.pathname,
+      utm_source: q.utm_source || "",
+      utm_medium: q.utm_medium || "",
+      utm_campaign: q.utm_campaign || "",
+      utm_content: q.utm_content || "",
+      utm_term: q.utm_term || "",
+      gclid: q.gclid || "",
+      fbclid: q.fbclid || "",
+    }, { fragen_klartext: frageMap });
+    try {
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        keepalive: true,
+      }).catch(() => {
+        // Fallback ohne Preflight, falls CORS blockt — Zapier empfängt trotzdem
+        try { fetch(url, { method: "POST", mode: "no-cors", body: JSON.stringify(payload), keepalive: true }); } catch (e) {}
+      });
+    } catch (e) {}
+  };
+
   return (
     <div style={{ position: "fixed", inset: 0, zIndex: 100, background: "var(--surface-page)", display: "flex", flexDirection: "column" }}>
       {/* Top bar */}
@@ -239,7 +286,7 @@ function Funnel({ open, onClose }) {
               onNext={() => setStep(s => s + 1)}
             />
           )}
-          {isForm && <LeadForm onSubmit={(d) => { setLead(d); setStep(s => s + 1); window.scrollTo(0,0); }} />}
+          {isForm && <LeadForm onSubmit={(d) => { sendLead(d); setLead(d); setStep(s => s + 1); window.scrollTo(0,0); }} />}
           {isThanks && <ThankYou data={lead} onClose={onClose} />}
         </div>
       </div>

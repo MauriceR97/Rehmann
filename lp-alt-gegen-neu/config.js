@@ -36,6 +36,9 @@ window.LP = {
     formular: "formular-kueche",        // beim Öffnen des Formulars → /formular-kueche
     danke: "danke-formular-kueche",     // nach Absenden → /danke-formular-kueche
   },
+
+  // Zapier Catch Hook — Lead-Daten werden hierhin per POST gesendet
+  zapierWebhook: "https://hooks.zapier.com/hooks/catch/18583379/42v7xyd/",
   kontakt: {
     telefon: "02051 9640-131",
     telefonHref: "+4920519640131",
