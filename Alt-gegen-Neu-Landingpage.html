@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alt gegen Neu – bis zu 3.000 € Tauschprämie | Interliving Rehmann Küchen</title>
+<meta name="description" content="Wir nehmen Ihre alte Küche in Zahlung: bis zu 3.000 € Tauschprämie, kostenloser Abbau & Mitnahme, Lieferung & Montage inklusive, 0 % Finanzierung. Jetzt unverbindlich sichern.">
+<meta name="ext-resource-dependency" content="https://consent.cookiebot.com/uc.js">
+<meta name="ext-resource-dependency" content="https://static.elfsight.com/platform/platform.js">
+<!-- Cookiebot CMP (auto-blocking) + Elfsight — dynamisch injiziert (Cookiebot zuerst) -->
+<script>
+(function () {
+  var cb = document.createElement("script");
+  cb.id = "Cookiebot";
+  cb.src = "https://consent.cookiebot.com/uc.js";
+  cb.setAttribute("data-cbid", "814c3e68-4376-41fa-aac8-fcf731b7dfed");
+  cb.setAttribute("data-blockingmode", "auto");
+  cb.type = "text/javascript";
+  document.head.appendChild(cb);
+  var el = document.createElement("script");
+  el.src = "https://static.elfsight.com/platform/platform.js";
+  el.async = true;
+  document.head.appendChild(el);
+})();
+</script>
+<link rel="stylesheet" href="styles.css">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--surface-page); }
+  h1, h2, h3 { text-wrap: balance; }
+  @keyframes fadeUp { from { transform: translateY(14px); } to { transform: translateY(0); } }
+  /* "Alt gegen Neu" Flip-Emblem (Lottie-frei, leichtgewichtig) */
+  @keyframes agnFlip { 0%, 35% { transform: rotateY(0deg); } 50%, 85% { transform: rotateY(180deg); } 100% { transform: rotateY(360deg); } }
+  @keyframes agnBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+  .agn-coin { width: 104px; height: 104px; perspective: 700px; }
+  .agn-coin-wrap { position: relative; width: 156px; height: 156px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; }
+  .agn-ring { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--red-200); animation: agnSpin 9s linear infinite; }
+  @keyframes agnSpin { to { transform: rotate(360deg); } }
+  .agn-coin-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; animation: agnFlip 4.4s ease-in-out infinite; }
+  .agn-face { position: absolute; inset: 0; border-radius: 999px; display: flex; align-items: center; justify-content: center; backface-visibility: hidden; -webkit-backface-visibility: hidden; font-family: var(--font-display); font-weight: 800; font-size: 30px; letter-spacing: 0.04em; box-shadow: 0 12px 28px rgba(0,0,0,0.2), inset 0 0 0 4px rgba(255,255,255,0.9); }
+  .agn-front { background: var(--navy-500); color: #fff; }
+  .agn-back { background: radial-gradient(circle at 38% 32%, #ff2230, var(--reh-red) 60%, var(--red-600)); color: #fff; transform: rotateY(180deg); }
+  .agn3 { display: inline-flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+  .agn3-alt { font-family: var(--font-display); font-weight: 800; font-size: clamp(22px, 5vw, 30px); color: var(--neutral-400); text-decoration: line-through; text-decoration-thickness: 3px; letter-spacing: 0.04em; }
+  .agn3-arrow { color: var(--neutral-300); display: inline-flex; animation: agnNudge 2.2s ease-in-out infinite; }
+  .agn3-neu { font-family: var(--font-display); font-weight: 800; font-size: clamp(22px, 5vw, 30px); color: #fff; background: var(--reh-red); padding: 8px 20px; border-radius: 14px; box-shadow: 0 10px 24px rgba(227,6,19,0.32); animation: agnPop 3.4s ease-in-out infinite; }
+  @keyframes agnNudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+  @keyframes agnPop { 0%, 72%, 100% { transform: scale(1); } 82% { transform: scale(1.07); } }
+  @media (prefers-reduced-motion: reduce) { .agn-coin-inner, .agn-ring, .agn3-arrow, .agn3-neu { animation: none !important; } .agn-bob { animation: none !important; } }
+  [data-lucide] { stroke-width: inherit; }
+  /* Hero seal: floats top-right on desktop, centered topper on mobile */
+  .hero-seal { position: absolute; top: 50px; right: 5%; z-index: 3; }
+
+  /* ---------- Mobile-first responsive ---------- */
+  @media (max-width: 1024px) {
+    .hero-grid { gap: 40px !important; }
+  }
+  /* Tablet & down: stack the two-column rows */
+  @media (max-width: 900px) {
+    .hero-grid, .calc-grid, .about-grid,
+    .benefit-grid, .steps-grid, .stimmen-grid, .trust-grid, .footer-grid, .form-grid { grid-template-columns: 1fr !important; }
+    .trust-item { border-right: none !important; justify-content: flex-start !important; }
+    .problem-grid { grid-template-columns: 1fr 1fr !important; }
+    .geraete-grid { grid-template-columns: 1fr 1fr 1fr !important; }
+    .hero-seal { top: 24px; right: 3%; transform: scale(0.82); transform-origin: top right; }
+    #root h1 { font-size: clamp(34px, 6.2vw, 56px) !important; }
+    #root h2 { font-size: clamp(28px, 5vw, 40px) !important; }
+  }
+  /* Keep simple card grids 2-up on tablets */
+  @media (min-width: 621px) and (max-width: 900px) {
+    .benefit-grid, .steps-grid, .stimmen-grid { grid-template-columns: 1fr 1fr !important; }
+  }
+  /* Phones */
+  @media (max-width: 620px) {
+    .hide-sm { display: none !important; }
+    .show-sm { display: inline-flex !important; }
+    .hero-seal { top: 12px !important; right: 12px !important; transform: scale(0.46); transform-origin: top right; margin: 0 !important; }
+    .problem-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+    .geraete-grid { grid-template-columns: 1fr 1fr 1fr !important; gap: 10px !important; }
+    .problem-card { flex-direction: row !important; text-align: left !important; align-items: center !important; gap: 16px !important; padding: 16px !important; }
+    .problem-card .problem-txt { flex: 1; }
+    #root h1 { font-size: clamp(29px, 8.6vw, 40px) !important; }
+    #root h2 { font-size: clamp(24px, 6.8vw, 33px) !important; }
+    #root h3 { font-size: 20px !important; }
+    /* tighter vertical rhythm */
+    .lp-section { padding-top: 52px !important; padding-bottom: 52px !important; }
+    .hero-grid { padding: 80px var(--gutter) 40px !important; gap: 26px !important; }
+    .hero-grid p { font-size: 18px !important; }
+    .hero-grid li { font-size: 16.5px !important; }
+    /* full-width, comfortable tap targets */
+    .lp-cta { width: 100% !important; font-size: 19px !important; padding: 17px 22px !important; }
+    .sticky-cta { padding: 9px 12px !important; }
+    .sticky-cta .lp-cta { font-size: 17px !important; padding: 14px 16px !important; }
+  }
+  @media (max-width: 380px) {
+    #root h1 { font-size: 27px !important; }
+    #root h2 { font-size: 23px !important; }
+  }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- Bundler thumbnail for standalone export -->
+  <template id="__bundler_thumbnail">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" fill="#273A50"/>
+      <circle cx="50" cy="44" r="22" fill="#E30613"/>
+      <text x="50" y="50" font-family="sans-serif" font-size="15" font-weight="800" fill="#fff" text-anchor="middle">3000€</text>
+      <text x="50" y="78" font-family="sans-serif" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">Alt gegen Neu</text>
+    </svg>
+  </template>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="image-slot.js"></script>
+  <script src="lp-alt-gegen-neu/config.js"></script>
+
+  <script type="text/babel" src="lp-alt-gegen-neu/ui.jsx"></script>
+  <script type="text/babel" src="lp-alt-gegen-neu/sections1.jsx"></script>
+  <script type="text/babel" src="lp-alt-gegen-neu/sections2.jsx"></script>
+  <script type="text/babel" src="lp-alt-gegen-neu/sections3.jsx"></script>
+  <script type="text/babel" src="lp-alt-gegen-neu/funnel.jsx"></script>
+  <script type="text/babel" src="lp-alt-gegen-neu/app.jsx"></script>
+
+  <script type="text/babel">
+    function mount() {
+      if (window.LPApp && window.lucide) {
+        ReactDOM.createRoot(document.getElementById("root")).render(<LPApp />);
+      } else { setTimeout(mount, 40); }
+    }
+    mount();
+  </script>
+</body>
+</html>
