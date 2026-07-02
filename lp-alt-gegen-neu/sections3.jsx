@@ -546,16 +546,16 @@ function Verwandlung() {
   React.useEffect(() => {
     const scene = sceneRef.current;
     const film = filmRef.current;
-    const stage = stageRef.current;
     if (!scene || !film) return;
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    let st = null;
     let blobUrl = null;
     let cancelled = false;
+    let raf = 0;
+    let ready = false;
 
-    // Video komplett als Blob laden → garantiert vollständig seekbar (currentTime-Scrubbing zuverlässig)
+    // Video komplett als Blob laden → garantiert vollständig seekbar
     const loadFilm = async () => {
       const sources = [
         { src: "lp-alt-gegen-neu/assets/kueche-transform.webm", type: "video/webm" },
@@ -569,51 +569,48 @@ function Verwandlung() {
             const blob = await res.blob();
             if (cancelled) return;
             blobUrl = URL.createObjectURL(blob);
-            // vorhandene <source>-Kinder entfernen, damit die Blob-URL greift
             while (film.firstChild) film.removeChild(film.firstChild);
             film.src = blobUrl;
             film.load();
             return;
-          } catch (e) { /* nächste Quelle versuchen */ }
+          } catch (e) { /* nächste Quelle */ }
         }
       }
     };
 
-    const onReady = () => {
-      if (cancelled) return;
-      try { film.pause(); } catch (e) {}
-      // Decoder anstoßen, damit sofort ein Frame (statt Poster) gezeigt wird
-      try { film.currentTime = reduce ? Math.max(0, (film.duration || 0) - 0.04) : 0.001; } catch (e) {}
-      if (reduce) return;
-      setupScrollTrigger();
+    // Fortschritt aus Scroll-Position der Szene ableiten (natives sticky pinning via CSS)
+    const progress = () => {
+      const rect = scene.getBoundingClientRect();
+      const total = scene.offsetHeight - window.innerHeight;
+      if (total <= 0) return 0;
+      const p = -rect.top / total;
+      return p < 0 ? 0 : p > 1 ? 1 : p;
     };
 
-    const setupScrollTrigger = () => {
-      let tries = 0;
-      const iv = setInterval(() => {
-        if (window.gsap && window.ScrollTrigger) {
-          clearInterval(iv);
-          window.gsap.registerPlugin(window.ScrollTrigger);
-          st = window.ScrollTrigger.create({
-            trigger: scene,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1,
-            pin: stage,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              const d = film.duration;
-              if (d && isFinite(d) && film.seekable && film.seekable.length) {
-                const t = self.progress * (d - 0.04);
-                if (Math.abs(film.currentTime - t) > 0.01) film.currentTime = t;
-              }
-            },
-          });
-          window.ScrollTrigger.refresh();
-        } else if (++tries > 100) {
-          clearInterval(iv);
-        }
-      }, 100);
+    const render = () => {
+      raf = 0;
+      if (!ready) return;
+      const d = film.duration;
+      if (!d || !isFinite(d)) return;
+      const t = progress() * (d - 0.05);
+      if (Math.abs(film.currentTime - t) > 0.008) {
+        try { film.currentTime = t; } catch (e) {}
+      }
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(render); };
+
+    const onReady = () => {
+      if (cancelled) return;
+      ready = true;
+      try { film.pause(); } catch (e) {}
+      if (reduce) {
+        try { film.currentTime = Math.max(0, (film.duration || 0) - 0.05); } catch (e) {}
+        return;
+      }
+      try { film.currentTime = 0.001; } catch (e) {}
+      render();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll);
     };
 
     film.addEventListener("loadeddata", onReady, { once: true });
@@ -622,7 +619,9 @@ function Verwandlung() {
     return () => {
       cancelled = true;
       film.removeEventListener("loadeddata", onReady);
-      if (st) st.kill();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
       if (blobUrl) URL.revokeObjectURL(blobUrl);
     };
   }, []);
