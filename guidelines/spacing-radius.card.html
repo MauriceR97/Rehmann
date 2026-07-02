@@ -1,0 +1,23 @@
+<!-- @dsCard group="Spacing" viewport="700x150" name="Corner radii" subtitle="Friendly, rounded — echoes the logo badge" -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; padding: 20px; background: var(--surface-card); display: flex; gap: 18px; align-items: center; }
+  .col { text-align: center; }
+  .box { width: 74px; height: 74px; background: var(--navy-100); border: 2px solid var(--navy-300); }
+  .lab { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-top: 8px; }
+</style>
+</head>
+<body>
+  <div class="col"><div class="box" style="border-radius:var(--radius-xs)"></div><div class="lab">xs · 4</div></div>
+  <div class="col"><div class="box" style="border-radius:var(--radius-sm)"></div><div class="lab">sm · 8</div></div>
+  <div class="col"><div class="box" style="border-radius:var(--radius-md)"></div><div class="lab">md · 12</div></div>
+  <div class="col"><div class="box" style="border-radius:var(--radius-lg)"></div><div class="lab">lg · 18</div></div>
+  <div class="col"><div class="box" style="border-radius:var(--radius-xl)"></div><div class="lab">xl · 26</div></div>
+  <div class="col"><div class="box" style="border-radius:var(--radius-logo); background:var(--reh-gray); border-color:var(--reh-gray)"></div><div class="lab">logo · 22%</div></div>
+  <div class="col"><div class="box" style="border-radius:var(--radius-pill)"></div><div class="lab">pill</div></div>
+</body>
+</html>

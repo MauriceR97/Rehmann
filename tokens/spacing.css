@@ -1,0 +1,47 @@
+/* ============================================================
+   Interliving Rehmann — Spacing, radius, shadow, layout tokens
+   ============================================================ */
+
+:root {
+  /* Spacing scale (4px base) */
+  --space-0:  0;
+  --space-1:  0.25rem;  /* 4 */
+  --space-2:  0.5rem;   /* 8 */
+  --space-3:  0.75rem;  /* 12 */
+  --space-4:  1rem;     /* 16 */
+  --space-5:  1.5rem;   /* 24 */
+  --space-6:  2rem;     /* 32 */
+  --space-7:  3rem;     /* 48 */
+  --space-8:  4rem;     /* 64 */
+  --space-9:  6rem;     /* 96 */
+
+  /* Radii — friendly, rounded (echoes the logo's rounded square) */
+  --radius-xs:  4px;
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  18px;
+  --radius-xl:  26px;
+  --radius-pill: 999px;
+  --radius-logo: 22%; /* @kind radius */
+
+  /* Shadows — soft, warm-tinted, never harsh */
+  --shadow-xs:  0 1px 2px rgba(35, 34, 33, 0.06);
+  --shadow-sm:  0 2px 6px rgba(35, 34, 33, 0.08);
+  --shadow-md:  0 6px 18px rgba(35, 34, 33, 0.10);
+  --shadow-lg:  0 14px 38px rgba(35, 34, 33, 0.14);
+  --shadow-brand: 0 8px 22px rgba(227, 6, 19, 0.24);
+
+  /* Layout */
+  --container-sm:  640px;
+  --container-md:  960px;
+  --container-lg:  1200px;
+  --container-xl:  1400px;
+  --gutter:        clamp(1rem, 4vw, 2.5rem); /* @kind spacing */
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.4, 0.0, 0.2, 1); /* @kind other */
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --dur-fast:   120ms; /* @kind other */
+  --dur-base:   200ms; /* @kind other */
+  --dur-slow:   320ms; /* @kind other */
+}

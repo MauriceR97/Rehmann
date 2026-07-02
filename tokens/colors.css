@@ -1,0 +1,110 @@
+/* ============================================================
+   Interliving Rehmann — Color tokens
+   Source of truth: Rehmann Brand Kit
+   Brand red   #E30613   Headline navy #273A50
+   Logo gray   #4A4A49   White         #FFFFFF
+   ============================================================ */
+
+:root {
+  /* ---- Brand core (verbatim from brand kit) ---- */
+  --reh-red:        #E30613;   /* primary brand / signal red */
+  --reh-navy:       #273A50;   /* deep headline navy */
+  --reh-gray:       #4A4A49;   /* logo / body gray */
+  --reh-white:      #FFFFFF;
+
+  /* ---- Red ramp (built around #E30613) ---- */
+  --red-50:   #FEF2F3;
+  --red-100:  #FBDADC;
+  --red-200:  #F4A8AD;
+  --red-300:  #EE7077;
+  --red-400:  #E83C46;
+  --red-500:  #E30613;   /* = --reh-red */
+  --red-600:  #C00510;
+  --red-700:  #98040D;
+  --red-800:  #6E030A;
+  --red-900:  #470206;
+
+  /* ---- Navy ramp (built around #273A50) ---- */
+  --navy-50:  #EEF1F5;
+  --navy-100: #D4DAE3;
+  --navy-200: #A6B2C3;
+  --navy-300: #6F8098;
+  --navy-400: #455A75;
+  --navy-500: #273A50;   /* = --reh-navy */
+  --navy-600: #1F2F41;
+  --navy-700: #182433;
+  --navy-800: #111A25;
+  --navy-900: #0A1017;
+
+  /* ---- Warm neutral ramp (furniture-warm grays, around #4A4A49) ---- */
+  --neutral-0:   #FFFFFF;
+  --neutral-50:  #FAF8F6;   /* warm off-white page tone */
+  --neutral-100: #F3F0EC;
+  --neutral-150: #EBE7E1;
+  --neutral-200: #DDD8D1;
+  --neutral-300: #C4BEB6;
+  --neutral-400: #9C968E;
+  --neutral-500: #75716B;
+  --neutral-600: #595650;
+  --neutral-700: #4A4A49;   /* = --reh-gray */
+  --neutral-800: #353433;
+  --neutral-900: #232221;
+
+  /* ---- Accents (warm, supportive — derived, used sparingly) ---- */
+  --gold-500:    #B9942F;   /* premium / VIP accent */
+  --gold-100:    #F6ECCF;
+  --green-500:   #3F7A53;   /* eco / "gesund" cue */
+  --green-100:   #DCEAE0;
+
+  /* ============================================================
+     Semantic aliases — prefer these in components
+     ============================================================ */
+
+  /* Surfaces */
+  --surface-page:        var(--neutral-50);
+  --surface-card:        var(--neutral-0);
+  --surface-raised:      var(--neutral-0);
+  --surface-sunken:      var(--neutral-100);
+  --surface-inverse:     var(--navy-500);
+  --surface-brand:       var(--red-500);
+  --surface-brand-soft:  var(--red-50);
+
+  /* Text */
+  --text-strong:    var(--navy-500);   /* headlines */
+  --text-body:      var(--neutral-700);
+  --text-muted:     var(--neutral-500);
+  --text-subtle:    var(--neutral-400);
+  --text-inverse:   var(--neutral-0);
+  --text-brand:     var(--red-600);
+  --text-price:     var(--red-500);    /* signal price red */
+
+  /* Borders */
+  --border-subtle:  var(--neutral-200);
+  --border-default: var(--neutral-300);
+  --border-strong:  var(--neutral-400);
+  --border-brand:   var(--red-500);
+
+  /* Interactive — brand red */
+  --action:          var(--red-500);
+  --action-hover:    var(--red-600);
+  --action-active:   var(--red-700);
+  --action-contrast: var(--neutral-0);
+
+  /* Interactive — navy (secondary) */
+  --action-2:         var(--navy-500);
+  --action-2-hover:   var(--navy-600);
+  --action-2-active:  var(--navy-700);
+
+  /* Feedback */
+  --success:   #3F7A53;
+  --success-bg:#DCEAE0;
+  --warning:   #B9942F;
+  --warning-bg:#F6ECCF;
+  --danger:    var(--red-600);
+  --danger-bg: var(--red-50);
+  --info:      var(--navy-400);
+  --info-bg:   var(--navy-50);
+
+  /* Focus ring */
+  --focus-ring: var(--red-400);
+}

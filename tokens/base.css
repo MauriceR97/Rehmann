@@ -1,0 +1,64 @@
+/* ============================================================
+   Interliving Rehmann — Base element styles & helpers
+   Light-touch resets + brand defaults bound to tokens.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-md);
+  line-height: var(--lh-normal);
+  color: var(--text-body);
+  background: var(--surface-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  color: var(--text-strong);
+  line-height: var(--lh-snug);
+  margin: 0 0 0.5em;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--fs-4xl); line-height: var(--lh-tight); letter-spacing: var(--ls-tight); }
+h2 { font-size: var(--fs-3xl); letter-spacing: var(--ls-tight); }
+h3 { font-size: var(--fs-2xl); }
+h4 { font-size: var(--fs-xl); }
+h5 { font-size: var(--fs-lg); }
+h6 { font-size: var(--fs-md); text-transform: uppercase; letter-spacing: var(--ls-caps); color: var(--text-muted); }
+
+p { margin: 0 0 1em; text-wrap: pretty; }
+a { color: var(--text-brand); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+strong { font-weight: var(--fw-bold); }
+small { font-size: var(--fs-xs); }
+
+/* Brand helper classes (optional convenience) */
+.reh-eyebrow {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-caps);
+  color: var(--text-brand);
+}
+.reh-price {
+  font-family: var(--font-display);
+  font-weight: var(--fw-extra);
+  color: var(--text-price);
+  font-feature-settings: "tnum" 1;
+}
+
+::selection { background: var(--red-100); color: var(--navy-700); }
+
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}

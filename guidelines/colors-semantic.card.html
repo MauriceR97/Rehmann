@@ -1,0 +1,29 @@
+<!-- @dsCard group="Colors" viewport="700x150" name="Semantic & feedback" subtitle="Action, price, success, warning, info, accents" -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; padding: 18px; background: var(--surface-page); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .sw { display: flex; align-items: center; gap: 9px; }
+  .dot { width: 30px; height: 30px; border-radius: var(--radius-sm); flex: none; border: 1px solid var(--border-subtle); }
+  .t { font-family: var(--font-sans); }
+  .n { font-weight: var(--fw-bold); font-size: 12.5px; color: var(--text-strong); }
+  .v { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="sw"><div class="dot" style="background:var(--action)"></div><div class="t"><div class="n">action</div><div class="v">red-500</div></div></div>
+    <div class="sw"><div class="dot" style="background:var(--action-2)"></div><div class="t"><div class="n">action-2</div><div class="v">navy-500</div></div></div>
+    <div class="sw"><div class="dot" style="background:var(--text-price)"></div><div class="t"><div class="n">price</div><div class="v">red-500</div></div></div>
+    <div class="sw"><div class="dot" style="background:var(--focus-ring)"></div><div class="t"><div class="n">focus</div><div class="v">red-400</div></div></div>
+    <div class="sw"><div class="dot" style="background:var(--success)"></div><div class="t"><div class="n">success</div><div class="v">#3F7A53</div></div></div>
+    <div class="sw"><div class="dot" style="background:var(--warning)"></div><div class="t"><div class="n">warning</div><div class="v">#B9942F</div></div></div>
+    <div class="sw"><div class="dot" style="background:var(--danger)"></div><div class="t"><div class="n">danger</div><div class="v">red-600</div></div></div>
+    <div class="sw"><div class="dot" style="background:var(--info)"></div><div class="t"><div class="n">info</div><div class="v">navy-400</div></div></div>
+  </div>
+</body>
+</html>

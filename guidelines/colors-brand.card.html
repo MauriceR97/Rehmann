@@ -1,0 +1,25 @@
+<!-- @dsCard group="Colors" viewport="700x150" name="Brand core" subtitle="Red, navy, gray, white — from the brand kit" -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; padding: 18px; background: var(--surface-page); }
+  .row { display: flex; gap: 14px; }
+  .sw { flex: 1; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border-subtle); }
+  .chip { height: 78px; }
+  .meta { padding: 8px 10px; background: var(--surface-card); }
+  .name { font-family: var(--font-sans); font-weight: var(--fw-bold); font-size: 13px; color: var(--text-strong); }
+  .hex { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:var(--reh-red)"></div><div class="meta"><div class="name">Brand Red</div><div class="hex">#E30613</div></div></div>
+    <div class="sw"><div class="chip" style="background:var(--reh-navy)"></div><div class="meta"><div class="name">Navy</div><div class="hex">#273A50</div></div></div>
+    <div class="sw"><div class="chip" style="background:var(--reh-gray)"></div><div class="meta"><div class="name">Gray</div><div class="hex">#4A4A49</div></div></div>
+    <div class="sw"><div class="chip" style="background:var(--reh-white)"></div><div class="meta"><div class="name">White</div><div class="hex">#FFFFFF</div></div></div>
+  </div>
+</body>
+</html>
