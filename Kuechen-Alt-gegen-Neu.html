@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interliving Rehmann — Küchen-Aktion: Alt gegen Neu</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #14202d; }
+  body { display: flex; align-items: center; justify-content: center; overflow: hidden; }
+
+  #stage { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
+  #ad {
+    position: absolute; top: 50%; left: 50%;
+    width: 1080px; height: 1350px;
+    transform-origin: center center;
+    background: var(--navy-600);
+    font-family: var(--font-sans);
+    overflow: hidden;
+    color: #fff;
+  }
+
+  /* ---------- Photo region ---------- */
+  .photo { position: absolute; inset: 0 0 auto 0; height: 680px; overflow: hidden; background: linear-gradient(160deg, #2f4a63, #1b2b3b); }
+  .photo image-slot { position: absolute; inset: 0; width: 1080px; height: 680px; }
+  .photo .scrim {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(20,32,45,0.55) 0%, rgba(20,32,45,0) 26%),
+      linear-gradient(0deg, var(--navy-600) 2%, rgba(31,47,65,0.85) 16%, rgba(31,47,65,0.0) 44%);
+  }
+
+  /* top bar */
+  .topbar { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: flex-start; justify-content: space-between; padding: 48px 52px; z-index: 3; }
+  .topbar img { height: 64px; display: block; filter: drop-shadow(0 2px 10px rgba(0,0,0,0.35)); }
+  .urgency {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: var(--reh-red); color: #fff; font-weight: 800;
+    font-size: 19px; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 12px 20px; border-radius: 999px; box-shadow: 0 8px 22px rgba(227,6,19,0.4);
+  }
+  .urgency .dot { width: 9px; height: 9px; border-radius: 999px; background: #fff; }
+
+  /* headline over photo */
+  .head { position: absolute; left: 52px; right: 52px; bottom: 696px; z-index: 3; }
+  .eyebrow { font-size: 24px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--red-300); margin-bottom: 12px; }
+  .headline { font-family: var(--font-display); font-weight: 800; font-size: 112px; line-height: 0.92; letter-spacing: -0.02em; text-shadow: 0 4px 24px rgba(0,0,0,0.45); }
+  .headline .neu { color: var(--reh-red); }
+  .headline .gegen { font-size: 58px; font-weight: 700; color: var(--neutral-200); vertical-align: middle; margin: 0 6px; }
+
+  /* ---------- Trade-in seal ---------- */
+  .seal {
+    position: absolute; right: 62px; top: 408px; z-index: 5;
+    width: 262px; height: 262px; border-radius: 999px;
+    background: radial-gradient(circle at 38% 32%, #ff2230, var(--reh-red) 55%, var(--red-600));
+    box-shadow: 0 18px 40px rgba(227,6,19,0.5), inset 0 0 0 5px rgba(255,255,255,0.92);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transform: rotate(-7deg); text-align: center;
+  }
+  .seal .s-top { font-size: 25px; font-weight: 700; letter-spacing: 0.04em; opacity: 0.95; }
+  .seal .s-big { font-family: var(--font-display); font-weight: 800; font-size: 70px; line-height: 0.9; margin: 1px 0; white-space: nowrap; }
+  .seal .s-lab { font-size: 21px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+  .seal .s-rule { width: 108px; height: 3px; background: rgba(255,255,255,0.6); border-radius: 2px; margin: 7px 0 6px; }
+
+  /* ---------- Content panel ---------- */
+  .panel { position: absolute; left: 0; right: 0; top: 680px; bottom: 0; padding: 34px 52px 44px; display: flex; flex-direction: column; }
+  .lead { font-size: 31px; font-weight: 600; line-height: 1.32; color: var(--neutral-100); max-width: 800px; }
+  .lead b { color: #fff; font-weight: 800; }
+
+  .benefits { display: flex; flex-direction: column; gap: 15px; margin: 24px 0 20px; }
+  .benefit { display: flex; align-items: center; gap: 22px; }
+  .benefit .chip { flex: none; width: 72px; height: 72px; border-radius: 20px; background: rgba(227,6,19,0.14); color: var(--red-300); display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 2px rgba(227,6,19,0.35); }
+  .benefit .b-t { font-family: var(--font-display); font-weight: 800; font-size: 32px; line-height: 1.1; color: #fff; }
+  .benefit .b-s { font-size: 23px; font-weight: 500; color: var(--neutral-300); margin-top: 2px; }
+  .benefit .free { color: #6ee79a; font-weight: 800; }
+
+  .cta { margin-top: auto; }
+  .cta-btn {
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    width: 100%; background: var(--reh-red); color: #fff;
+    font-family: var(--font-display); font-weight: 800; font-size: 38px;
+    padding: 30px; border-radius: 20px; box-shadow: 0 14px 34px rgba(227,6,19,0.45);
+  }
+  .contact { display: flex; align-items: center; justify-content: center; gap: 26px; margin-top: 20px; font-size: 24px; font-weight: 700; color: var(--neutral-200); }
+  .contact span { display: inline-flex; align-items: center; gap: 9px; white-space: nowrap; }
+  .contact .sep { width: 6px; height: 6px; border-radius: 999px; background: var(--neutral-500); }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <div id="ad">
+      <!-- Photo -->
+      <div class="photo">
+        <image-slot id="kueche-foto" shape="rect" fit="cover" placeholder="Küchenfoto hier ablegen"></image-slot>
+        <div class="scrim"></div>
+      </div>
+
+      <!-- Top bar -->
+      <div class="topbar">
+        <img src="assets/logos/rehmann-weiss.svg" alt="Interliving Rehmann">
+        <div class="urgency"><span class="dot"></span> Nur für kurze Zeit</div>
+      </div>
+
+      <!-- Headline over photo -->
+      <div class="head">
+        <div class="eyebrow">Neue Küchen-Aktion</div>
+        <div class="headline">ALT <span class="gegen">gegen</span> <span class="neu">NEU</span></div>
+      </div>
+
+      <!-- Trade-in seal -->
+      <div class="seal">
+        <div class="s-top">bis zu</div>
+        <div class="s-big">3.000&thinsp;€</div>
+        <div class="s-rule"></div>
+        <div class="s-lab">Tauschprämie</div>
+      </div>
+
+      <!-- Content -->
+      <div class="panel">
+        <div class="lead">Wir nehmen Ihre <b>alte Küche in Zahlung</b> — die Prämie verrechnen wir direkt mit Ihrer neuen Traumküche.</div>
+
+        <div class="benefits">
+          <div class="benefit">
+            <span class="chip"><i data-lucide="recycle" style="width:38px;height:38px"></i></span>
+            <div>
+              <div class="b-t">Abbau &amp; Mitnahme Ihrer Altküche</div>
+              <div class="b-s"><span class="free">Komplett kostenlos</span> — wir kümmern uns um alles.</div>
+            </div>
+          </div>
+          <div class="benefit">
+            <span class="chip"><i data-lucide="truck" style="width:38px;height:38px"></i></span>
+            <div>
+              <div class="b-t">Lieferung &amp; Montage</div>
+              <div class="b-s"><span class="free">Inklusive &amp; kostenfrei</span> bis zu Ihnen nach Hause.</div>
+            </div>
+          </div>
+          <div class="benefit">
+            <span class="chip"><i data-lucide="percent" style="width:38px;height:38px"></i></span>
+            <div>
+              <div class="b-t">0 % Finanzierung</div>
+              <div class="b-s">Bequem über <b style="color:#fff;font-weight:800">36 Monate</b> — ohne Aufpreis.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cta">
+          <div class="cta-btn">Jetzt Beratungstermin sichern <i data-lucide="arrow-right" style="width:40px;height:40px"></i></div>
+          <div class="contact">
+            <span><i data-lucide="globe" style="width:24px;height:24px"></i> kuechen-rehmann.de</span>
+            <span class="sep"></span>
+            <span><i data-lucide="phone" style="width:24px;height:24px"></i> 02051 9640-131</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="image-slot.js"></script>
+  <script>
+    function fit() {
+      const s = Math.min(window.innerWidth / 1080, window.innerHeight / 1350);
+      document.getElementById('ad').style.transform = 'translate(-50%, -50%) scale(' + s + ')';
+    }
+    window.addEventListener('resize', fit);
+    fit();
+    function drawIcons(){ if (window.lucide) lucide.createIcons(); else setTimeout(drawIcons, 40); }
+    drawIcons();
+  </script>
+</body>
+</html>
