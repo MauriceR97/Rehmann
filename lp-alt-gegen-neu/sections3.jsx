@@ -281,6 +281,8 @@ function VideoTestimonial() {
 function Garantie() {
   const L = window.LP;
   const g = L.garantie;
+  const [sel, setSel] = React.useState(null);
+  const geraete = g.geraete || [];
   return (
     <Section bg="#fff" id="garantie">
       <div style={{ display: "grid", gridTemplateColumns: "0.85fr 1.15fr", gap: 48, alignItems: "center" }} className="calc-grid">
@@ -311,6 +313,58 @@ function Garantie() {
           <p style={{ fontSize: 13, color: "var(--text-subtle)", margin: "22px 0 0", lineHeight: 1.5 }}>{g.hinweis}</p>
         </Reveal>
       </div>
+
+      {/* Interaktive Neugeräte */}
+      {geraete.length > 0 && (
+        <div style={{ marginTop: 64 }}>
+          <Reveal style={{ textAlign: "center", marginBottom: 12 }}>
+            <h3 style={{ fontSize: 32, margin: "0 0 8px" }}>Dazu: nagelneue Markengeräte</h3>
+            <p style={{ fontSize: 18, color: "var(--text-muted)", maxWidth: 620, margin: "0 auto" }}>
+              Tippen Sie auf ein Gerät und erfahren Sie mehr – inklusive optionaler Garantieverlängerung.
+            </p>
+          </Reveal>
+          {(g.marken && g.marken.length > 0) && (
+            <Reveal style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "14px 30px", margin: "0 0 28px" }}>
+              {g.marken.map((m) => (
+                <span key={m} style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 20, letterSpacing: "0.04em", color: "var(--neutral-500)" }}>{m}</span>
+              ))}
+            </Reveal>
+          )}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 16 }} className="geraete-grid">
+            {geraete.map((d, i) => {
+              const active = sel === i;
+              return (
+                <Reveal key={d.name} delay={i * 60}>
+                  <button onClick={() => setSel(active ? null : i)}
+                    style={{ width: "100%", cursor: "pointer", background: active ? "var(--reh-red)" : "#fff", border: "2px solid " + (active ? "var(--reh-red)" : "var(--border-subtle)"), borderRadius: 18, padding: "18px 12px 16px", display: "flex", flexDirection: "column", alignItems: "center", gap: 10, transition: "all var(--dur-base) var(--ease-standard)", boxShadow: active ? "0 12px 28px rgba(227,6,19,0.28)" : "var(--shadow-xs)" }}>
+                    {d.img
+                      ? <span style={{ width: "100%", height: 84, display: "flex", alignItems: "center", justifyContent: "center" }}><img src={d.img} alt={d.marke + " " + d.name} style={{ maxWidth: "100%", maxHeight: 84, objectFit: "contain", filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.15))" }} /></span>
+                      : <span style={{ width: 58, height: 58, borderRadius: 14, background: active ? "rgba(255,255,255,0.2)" : "var(--surface-brand-soft)", color: active ? "#fff" : "var(--reh-red)", display: "flex", alignItems: "center", justifyContent: "center" }}><I name={d.icon} size={32} /></span>}
+                    <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", color: active ? "rgba(255,255,255,0.85)" : "var(--text-subtle)" }}>{d.marke}</div>
+                    <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 15, lineHeight: 1.2, textAlign: "center", color: active ? "#fff" : "var(--text-strong)" }}>{d.name}</div>
+                  </button>
+                </Reveal>
+              );
+            })}
+          </div>
+          {sel !== null && (
+            <div style={{ marginTop: 20, background: "var(--navy-500)", color: "#fff", borderRadius: 18, padding: "26px 30px", display: "flex", gap: 20, alignItems: "flex-start", animation: "fadeUp 0.3s var(--ease-out) both" }}>
+              {geraete[sel].img
+                ? <span style={{ flex: "none", width: 78, height: 78, borderRadius: 14, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", padding: 8 }}><img src={geraete[sel].img} alt={geraete[sel].name} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} /></span>
+                : <span style={{ flex: "none", width: 58, height: 58, borderRadius: 14, background: "var(--reh-red)", display: "flex", alignItems: "center", justifyContent: "center" }}><I name={geraete[sel].icon} size={32} color="#fff" /></span>}
+              <div style={{ flex: 1 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 6 }}>
+                  <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22 }}>{geraete[sel].name}</span>
+                  <span style={{ fontSize: 13, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", background: "rgba(255,255,255,0.16)", padding: "4px 11px", borderRadius: 999 }}>{geraete[sel].marke}</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 800, color: "#6ee79a" }}><I name="shield-check" size={16} /> bis 10 Jahre Garantie möglich</span>
+                </div>
+                <p style={{ margin: 0, fontSize: 17, lineHeight: 1.55, color: "var(--neutral-200)" }}>{geraete[sel].info}</p>
+              </div>
+              <button onClick={() => setSel(null)} aria-label="Schließen" style={{ flex: "none", width: 34, height: 34, borderRadius: 999, border: "none", background: "rgba(255,255,255,0.14)", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}><I name="x" size={20} /></button>
+            </div>
+          )}
+        </div>
+      )}
     </Section>
   );
 }
@@ -482,86 +536,72 @@ function Referenzen() {
 }
 
 // Alt → Neu: interaktiver Vorher/Nachher-Regler, der beim Scrollen automatisch „verwandelt"
+// Scroll-gesteuerte Küchen-Transformation (Video-Scrubbing per GSAP ScrollTrigger)
 function Verwandlung() {
-  const wrapRef = React.useRef(null);
-  const barRef = React.useRef(null);
-  const [prog, setProg] = React.useState(0);
-  const [drag, setDrag] = React.useState(false);
-  const started = React.useRef(false);
+  const L = window.LP;
+  const sceneRef = React.useRef(null);
+  const filmRef = React.useRef(null);
+  const stageRef = React.useRef(null);
 
   React.useEffect(() => {
-    const el = wrapRef.current; if (!el) return;
-    let raf;
-    const animate = (to, dur) => {
-      const t0 = performance.now();
-      const step = (t) => {
-        const k = Math.min(1, (t - t0) / dur);
-        setProg(to * (0.5 - 0.5 * Math.cos(k * Math.PI)));
-        if (k < 1) raf = requestAnimationFrame(step);
-      };
-      raf = requestAnimationFrame(step);
+    const scene = sceneRef.current;
+    const film = filmRef.current;
+    const stage = stageRef.current;
+    if (!scene || !film) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      // Endzustand statisch: letztes Frame zeigen, kein Pin/Scrub
+      const showEnd = () => { try { film.currentTime = Math.max(0, (film.duration || 0) - 0.04); } catch (e) {} };
+      if (film.readyState >= 1) showEnd(); else film.addEventListener("loadedmetadata", showEnd, { once: true });
+      return;
+    }
+
+    try { film.pause(); } catch (e) {}
+
+    let st = null;
+    const setup = () => {
+      if (!window.gsap || !window.ScrollTrigger) return false;
+      window.gsap.registerPlugin(window.ScrollTrigger);
+      st = window.ScrollTrigger.create({
+        trigger: scene,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1,
+        pin: stage,
+        onUpdate: (self) => {
+          const d = film.duration;
+          if (d && isFinite(d)) film.currentTime = self.progress * (d - 0.04);
+        },
+      });
+      // nach Metadaten neu berechnen
+      film.addEventListener("loadedmetadata", () => window.ScrollTrigger.refresh(), { once: true });
+      return true;
     };
-    const trigger = () => { if (started.current) return; started.current = true; animate(1, 1700); };
-    const inView = () => { const r = el.getBoundingClientRect(); const vh = window.innerHeight || 800; return r.top < vh * 0.72 && r.bottom > vh * 0.28; };
-    if (inView()) trigger();
-    let io;
-    if ("IntersectionObserver" in window) { io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) trigger(); }), { threshold: 0.35 }); io.observe(el); }
-    const onScroll = () => { if (inView()) trigger(); };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    const ft = setTimeout(() => { if (window.__dsIO === false) trigger(); }, 900);
-    return () => { if (io) io.disconnect(); window.removeEventListener("scroll", onScroll); cancelAnimationFrame(raf); clearTimeout(ft); };
+
+    let tries = 0;
+    const iv = setInterval(() => {
+      if (setup() || ++tries > 60) clearInterval(iv);
+    }, 100);
+
+    return () => { clearInterval(iv); if (st) st.kill(); };
   }, []);
 
-  const setFromX = (cx) => { const b = barRef.current; if (!b) return; const r = b.getBoundingClientRect(); setProg(Math.max(0, Math.min(1, (cx - r.left) / r.width))); };
-  React.useEffect(() => {
-    if (!drag) return;
-    const move = (e) => { const cx = e.touches ? e.touches[0].clientX : e.clientX; setFromX(cx); };
-    const up = () => setDrag(false);
-    window.addEventListener("pointermove", move);
-    window.addEventListener("pointerup", up);
-    return () => { window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); };
-  }, [drag]);
-
-  const pct = Math.round(prog * 100);
-  const label = (text, side, active) => (
-    <span style={{ position: "absolute", bottom: 16, [side]: 16, background: active ? "var(--reh-red)" : "rgba(20,32,45,0.78)", color: "#fff", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 14, letterSpacing: "0.06em", textTransform: "uppercase", padding: "7px 14px", borderRadius: 999, transition: "background var(--dur-base)" }}>{text}</span>
-  );
-
   return (
-    <Section bg="var(--navy-500)" style={{ color: "#fff" }} id="verwandlung">
-      <Reveal style={{ textAlign: "center", marginBottom: 34 }}>
-        <Eyebrow color="var(--red-300)">Aus Alt wird Neu</Eyebrow>
-        <h2 style={{ color: "#fff", fontSize: 44, margin: "12px 0 12px" }}>Erleben Sie die Verwandlung</h2>
-        <p style={{ fontSize: 19, color: "var(--neutral-200)", maxWidth: 640, margin: "0 auto" }}>
-          Scrollen Sie – oder ziehen Sie den Regler – und sehen Sie, wie aus einer alten Küche eine neue Traumküche wird.
-        </p>
-      </Reveal>
-      <Reveal style={{ maxWidth: 1000, margin: "0 auto" }}>
-        <div ref={wrapRef}>
-          <div ref={barRef} style={{ position: "relative", aspectRatio: "16/10", borderRadius: 22, overflow: "hidden", boxShadow: "0 24px 60px rgba(0,0,0,0.45)", userSelect: "none" }}>
-            {/* ALT – Vollbild darunter */}
-            <div style={{ position: "absolute", inset: 0, background: "var(--navy-700)" }}>
-              <image-slot id="lp-tf-alt" shape="rect" fit="cover" placeholder="Foto: ALTE Küche (gleicher Bildausschnitt)" style={{ width: "100%", height: "100%" }}></image-slot>
-              {label("Vorher", "right", false)}
-            </div>
-            {/* NEU – von links eingeblendet */}
-            <div style={{ position: "absolute", inset: 0, clipPath: `inset(0 ${100 - pct}% 0 0)`, background: "var(--navy-600)" }}>
-              <image-slot id="lp-tf-neu" shape="rect" fit="cover" placeholder="Foto: NEUE Küche (gleicher Bildausschnitt)" style={{ width: "100%", height: "100%" }}></image-slot>
-              {label("Nachher", "left", true)}
-            </div>
-            {/* Trennlinie + Griff */}
-            <div style={{ position: "absolute", top: 0, bottom: 0, left: `${pct}%`, width: 3, background: "#fff", transform: "translateX(-1.5px)", pointerEvents: "none", boxShadow: "0 0 8px rgba(0,0,0,0.3)" }} />
-            <button aria-label="Regler ziehen" onPointerDown={(e) => { e.preventDefault(); setDrag(true); }}
-              style={{ position: "absolute", top: "50%", left: `${pct}%`, transform: "translate(-50%, -50%)", width: 52, height: 52, borderRadius: 999, background: "var(--reh-red)", border: "3px solid #fff", cursor: "ew-resize", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "var(--shadow-md)", touchAction: "none" }}>
-              <I name="chevrons-left-right" size={26} color="#fff" />
-            </button>
-          </div>
-          <div style={{ textAlign: "center", marginTop: 22 }}>
-            <CTA size="lg" variant="primary">Meine Verwandlung starten</CTA>
-          </div>
+    <section ref={sceneRef} className="kx-scene" id="verwandlung" style={{ position: "relative", height: "350vh", background: "var(--surface-page)" }}>
+      <div ref={stageRef} className="kx-stage" style={{ position: "sticky", top: 0, height: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+        <div style={{ textAlign: "center", padding: "0 var(--gutter)", marginBottom: 8 }}>
+          <div style={{ fontFamily: "var(--font-sans)", fontWeight: 800, fontSize: 16, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--reh-red)" }}>Aus Alt wird Neu</div>
+          <h2 style={{ fontSize: 40, margin: "10px 0 0", color: "var(--text-strong)" }}>Erleben Sie die Verwandlung</h2>
+          <p style={{ fontSize: 17, color: "var(--text-muted)", margin: "8px 0 0" }}>Scrollen Sie – und sehen Sie zu, wie die alte Küche zur Traumküche wird.</p>
         </div>
-      </Reveal>
-    </Section>
+        <video ref={filmRef} className="kx-film" muted playsInline preload="auto" poster="lp-alt-gegen-neu/assets/kueche-poster.jpg"
+          style={{ width: "min(92vw, 1100px)", aspectRatio: "3 / 2", objectFit: "contain", display: "block" }}>
+          <source src="lp-alt-gegen-neu/assets/kueche-transform.webm" type="video/webm" />
+          <source src="lp-alt-gegen-neu/assets/kueche-transform.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </section>
   );
 }
 

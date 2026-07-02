@@ -291,6 +291,18 @@ window.LP = {
       "Climber- und Jalousiebeschläge",
     ],
     hinweis: "Funktionsgarantie auf nachfolgende mechanische und elektronische Beschläge. Gilt ausschließlich für culineo-Küchen.",
+    // Neugeräte-Marken (Logos/Namen als Vertrauensanker)
+    marken: ["Miele", "Siemens", "BORA", "NEFF", "Bosch", "AEG"],
+    // Interaktive Geräte-Karten – Klick zeigt Garantie-Info
+    // img: transparentes PNG (freigestellt) – wenn gesetzt, wird es statt des Icons gezeigt
+    geraete: [
+      { icon: "microwave", img: "https://media.miele.com/images/2000015/200001501/20000150191.png", name: "Dampfbackofen DGC 7865", marke: "Miele", info: "Griffloser Dampfbackofen mit Frisch- und Abwasseranschluss (DGC 7865 HCX Pro). Kombiniert Backen und Dämpfen – auf Wunsch mit verlängerter Garantie für viele Jahre Freude." },
+      { icon: "flame", img: "https://media.miele.com/images/2000019/200001989/20000198937.png", name: "Induktionskochfeld mit Dunstabzug", marke: "Miele", info: "KMDA 7876-1 FL: Induktionskochfeld mit integriertem Dunstabzug – zieht Dämpfe direkt nach unten ab. Premium-Technik mit langer Funktionssicherheit." },
+      { icon: "refrigerator", img: "", name: "Kühl-/Gefrierkombi", marke: "Miele", info: "Energieeffiziente Frischezone, leiser Betrieb. Langlebige Miele-Qualität mit optionaler Garantieverlängerung." },
+      { icon: "utensils", img: "", name: "Geschirrspüler", marke: "NEFF", info: "Vollintegriert, flüsterleise, mit Zeolith-Trocknung. Zuverlässig über viele Jahre." },
+      { icon: "wind", img: "", name: "Dunstabzug", marke: "Bosch", info: "Kraftvoll und dennoch leise – hält die Küche frei von Gerüchen. Robuste Technik mit langer Lebensdauer." },
+      { icon: "coffee", img: "", name: "Kaffeevollautomat", marke: "Miele", info: "Barista-Qualität als Einbaugerät. Premium-Komfort mit erweiterbarem Garantieschutz." },
+    ],
   },
 
   // Finanzierungsbeispiel (2/3-Beispiel gem. § 6a Abs. 4 PAngV)
