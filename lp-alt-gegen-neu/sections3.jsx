@@ -625,6 +625,7 @@ function Verwandlung() {
   const sceneRef = React.useRef(null);
   const filmRef = React.useRef(null);
   const stageRef = React.useRef(null);
+  const canvasRef = React.useRef(null);
   const [isMobile, setIsMobile] = React.useState(false);
 
   React.useEffect(() => {
@@ -679,28 +680,50 @@ function Verwandlung() {
       return p < 0 ? 0 : p > 1 ? 1 : p;
     };
 
+    const draw = () => {
+      const cv = canvasRef.current;
+      if (!cv || !film.videoWidth) return;
+      if (cv.width !== film.videoWidth) { cv.width = film.videoWidth; cv.height = film.videoHeight; }
+      try { cv.getContext("2d").drawImage(film, 0, 0, cv.width, cv.height); } catch (e) {}
+    };
+
+    let seeking = false;
+    let pending = null;
+    const seekTo = (t) => {
+      if (seeking) { pending = t; return; }
+      seeking = true;
+      try { film.currentTime = t; } catch (e) { seeking = false; }
+    };
+    const onSeeked = () => {
+      draw();
+      seeking = false;
+      if (pending != null) { const t = pending; pending = null; seekTo(t); }
+    };
+
     const render = () => {
       raf = 0;
       if (!ready) return;
       const d = film.duration;
       if (!d || !isFinite(d)) return;
       const t = progress() * (d - 0.05);
-      if (Math.abs(film.currentTime - t) > 0.008) {
-        try { film.currentTime = t; } catch (e) {}
-      }
+      if (Math.abs(film.currentTime - t) > 0.02) seekTo(t);
     };
     const onScroll = () => { if (!raf) raf = requestAnimationFrame(render); };
 
     const onReady = () => {
       if (cancelled) return;
       ready = true;
-      try { film.pause(); } catch (e) {}
-      if (reduce) {
-        try { film.currentTime = Math.max(0, (film.duration || 0) - 0.05); } catch (e) {}
-        return;
-      }
-      try { film.currentTime = 0.001; } catch (e) {}
-      render();
+      film.addEventListener("seeked", onSeeked);
+      // iOS: kurzer play/pause entsperrt das Frame-Seeking
+      const kick = () => {
+        try { film.pause(); } catch (e) {}
+        draw();
+        if (reduce) { seekTo(Math.max(0, (film.duration || 0) - 0.05)); return; }
+        seekTo(0.001);
+        render();
+      };
+      const p = film.play();
+      if (p && p.then) p.then(kick).catch(kick); else kick();
       window.addEventListener("scroll", onScroll, { passive: true });
       window.addEventListener("resize", onScroll);
     };
@@ -711,6 +734,7 @@ function Verwandlung() {
     return () => {
       cancelled = true;
       film.removeEventListener("loadeddata", onReady);
+      film.removeEventListener("seeked", onSeeked);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       if (raf) cancelAnimationFrame(raf);
@@ -726,11 +750,14 @@ function Verwandlung() {
           <h2 style={{ fontSize: 40, margin: "10px 0 0", color: "var(--text-strong)" }}>Erleben Sie die Verwandlung</h2>
           <p style={{ fontSize: 17, color: "var(--text-muted)", margin: "8px 0 0" }}>Scrollen Sie – und sehen Sie zu, wie die alte Küche zur Traumküche wird.</p>
         </div>
-        <video ref={filmRef} className="kx-film" muted playsInline preload="auto" poster="lp-alt-gegen-neu/assets/kueche-poster.png"
-          style={{ width: "min(92vw, 1100px)", aspectRatio: "3 / 2", objectFit: "contain", display: "block" }}>
-          <source src="lp-alt-gegen-neu/assets/kueche-transform.webm" type="video/webm" />
-          <source src="lp-alt-gegen-neu/assets/kueche-transform.mp4" type="video/mp4" />
-        </video>
+        <div style={{ position: "relative", width: "min(92vw, 1100px)", aspectRatio: "3 / 2", borderRadius: 14, overflow: "hidden", background: "#0d1520 center/contain no-repeat url('lp-alt-gegen-neu/assets/kueche-poster.png')" }}>
+          <canvas ref={canvasRef} className="kx-film" style={{ width: "100%", height: "100%", display: "block", objectFit: "contain" }} />
+          <video ref={filmRef} muted playsInline preload="auto" aria-hidden="true"
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", opacity: 0.001, pointerEvents: "none" }}>
+            <source src="lp-alt-gegen-neu/assets/kueche-transform.webm" type="video/webm" />
+            <source src="lp-alt-gegen-neu/assets/kueche-transform.mp4" type="video/mp4" />
+          </video>
+        </div>
       </div>
     </section>
   );
