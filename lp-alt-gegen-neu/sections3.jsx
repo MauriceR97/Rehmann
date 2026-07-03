@@ -128,9 +128,9 @@ function Vergleich() {
         </p>
       </Reveal>
       <Reveal style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 26, marginBottom: 30 }} className="calc-grid">
-        {[{ id: "lp-vorher", lab: "Vorher", icon: "image", note: "Ihre alte Küche", neg: true }, { id: "lp-nachher", lab: "Nachher", icon: "sparkles", note: "Ihre neue Traumküche", neg: false }].map((b) => (
+        {[{ id: "lp-vorher", lab: "Vorher", icon: "image", note: "Ihre alte Küche", neg: true, img: "lp-alt-gegen-neu/assets/vergleich-alt.webp" }, { id: "lp-nachher", lab: "Nachher", icon: "sparkles", note: "Ihre neue Traumküche", neg: false, img: "lp-alt-gegen-neu/assets/vergleich-neu.webp" }].map((b) => (
           <div key={b.id} style={{ position: "relative", borderRadius: 18, overflow: "hidden", aspectRatio: "16/11", background: "var(--neutral-150)", border: b.neg ? "1px solid var(--border-subtle)" : "2px solid var(--reh-red)" }}>
-            <image-slot id={b.id} shape="rect" fit="cover" placeholder={"Foto: " + b.note} style={{ width: "100%", height: "100%" }}></image-slot>
+            <img src={b.img} alt={b.note} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             <span style={{ position: "absolute", top: 14, left: 14, display: "inline-flex", alignItems: "center", gap: 7, background: b.neg ? "var(--navy-600)" : "var(--reh-red)", color: "#fff", fontWeight: 800, fontSize: 14, textTransform: "uppercase", letterSpacing: "0.06em", padding: "7px 13px", borderRadius: 999 }}><I name={b.icon} size={16} /> {b.lab}</span>
           </div>
         ))}
@@ -197,7 +197,7 @@ function Prozess() {
       </Reveal>
       <div style={{ display: "grid", gridTemplateColumns: "0.85fr 1.15fr", gap: 46, alignItems: "start", marginTop: 44, maxWidth: 1040, marginLeft: "auto", marginRight: "auto" }} className="calc-grid">
         <Reveal style={{ position: "sticky", top: 90 }}>
-          <img src={L.monteurBild} alt="Hauseigenes Montageteam baut die neue Küche auf und nimmt die alte mit" style={{ width: "100%", height: "auto", display: "block" }} />
+          <img src="lp-alt-gegen-neu/assets/montage-team.png" alt="Hauseigenes Montageteam baut die neue Küche auf und nimmt die alte mit" loading="lazy" style={{ width: "100%", height: "auto", display: "block" }} />
         </Reveal>
         <div>
         {steps.map((s, i) => (
@@ -417,7 +417,76 @@ function Kleingedrucktes() {
   );
 }
 
-Object.assign(window, { Problem, Beispielkuechen, Plaetze, Vergleich, Prozess, VideoTestimonial, Garantie, Finanzierung, Kleingedrucktes, Marken, Verwandlung, Referenzen });
+Object.assign(window, { Problem, Beispielkuechen, Plaetze, Vergleich, Prozess, VideoTestimonial, Garantie, Finanzierung, Kleingedrucktes, Marken, Verwandlung, Referenzen, Team });
+
+// Küchenteam — Coverflow: mittlere Person am größten, per Pfeil navigierbar
+function Team() {
+  const L = window.LP;
+  const team = L.team || [];
+  const n = team.length;
+  const [active, setActive] = React.useState(Math.min(1, n - 1));
+  const go = (d) => setActive((a) => (a + d + n) % n);
+  return (
+    <Section bg="var(--surface-page)" id="team">
+      <Reveal style={{ textAlign: "center", marginBottom: 30 }}>
+        <Eyebrow>Ihr Küchenteam</Eyebrow>
+        <h2 style={{ fontSize: 44, margin: "12px 0 12px" }}>Menschen, die Ihre Küche planen</h2>
+        <p style={{ fontSize: 19, color: "var(--text-muted)", maxWidth: 640, margin: "0 auto" }}>
+          Echte Küchenexperten – persönlich, ehrlich und mit viel Erfahrung. Klicken Sie sich durch Ihr Team.
+        </p>
+      </Reveal>
+      <Reveal>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14 }}>
+          <button onClick={() => go(-1)} aria-label="Zurück" style={{ flex: "none", width: 52, height: 52, borderRadius: 999, border: "none", background: "var(--reh-red)", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "var(--shadow-md)", zIndex: 3 }}><I name="chevron-left" size={28} /></button>
+
+          <div style={{ position: "relative", flex: 1, maxWidth: 1040, height: 440, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+            {team.map((m, i) => {
+              let off = i - active;
+              if (off > n / 2) off -= n;
+              if (off < -n / 2) off += n;
+              const abs = Math.abs(off);
+              if (abs > 2) return null;
+              const isCenter = off === 0;
+              const w = isCenter ? 300 : abs === 1 ? 220 : 172;
+              const h = isCenter ? 400 : abs === 1 ? 300 : 236;
+              return (
+                <div key={m.name} onClick={() => !isCenter && setActive(i)}
+                  style={{ position: "absolute", width: w, height: h,
+                    transform: `translateX(${off * (isCenter ? 232 : 205)}px) scale(${isCenter ? 1 : 0.92})`,
+                    zIndex: 10 - abs, opacity: abs === 2 ? 0.4 : 1,
+                    filter: isCenter ? "none" : "grayscale(0.4) brightness(0.82)",
+                    transition: "all 0.45s var(--ease-out)", cursor: isCenter ? "default" : "pointer",
+                    borderRadius: 20, overflow: "hidden", boxShadow: isCenter ? "0 22px 50px rgba(20,32,45,0.35)" : "0 10px 24px rgba(20,32,45,0.2)", background: "var(--neutral-150)" }}>
+                  <img src={m.img} alt={m.name} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                  {isCenter && (
+                    <React.Fragment>
+                      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "48%", background: "linear-gradient(180deg, transparent, rgba(20,32,45,0.8))", pointerEvents: "none" }} />
+                      <div style={{ position: "absolute", left: 18, right: 18, bottom: 16 }}>
+                        <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22, color: "#fff", lineHeight: 1.1 }}>{m.name}</div>
+                        <div style={{ fontSize: 14, fontWeight: 700, color: "var(--red-200)", marginTop: 3 }}>{m.rolle}</div>
+                      </div>
+                    </React.Fragment>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <button onClick={() => go(1)} aria-label="Weiter" style={{ flex: "none", width: 52, height: 52, borderRadius: 999, border: "none", background: "var(--reh-red)", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "var(--shadow-md)", zIndex: 3 }}><I name="chevron-right" size={28} /></button>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", gap: 7, marginTop: 22 }}>
+          {team.map((_, i) => (
+            <button key={i} onClick={() => setActive(i)} aria-label={"Person " + (i + 1)}
+              style={{ width: i === active ? 24 : 9, height: 9, borderRadius: 999, border: "none", background: i === active ? "var(--reh-red)" : "var(--neutral-300)", cursor: "pointer", padding: 0, transition: "all var(--dur-base)" }} />
+          ))}
+        </div>
+        <div style={{ textAlign: "center", marginTop: 30 }}>
+          <CTA size="lg">Jetzt Beratungstermin sichern</CTA>
+        </div>
+      </Reveal>
+    </Section>
+  );
+}
 
 // Gamifizierter Alt→Neu Toggle (Auto-Loop + klickbar)
 function AltNeuToggle() {

@@ -53,6 +53,7 @@ function App() {
       <SocialProof />
       <Garantie />
       <Finanzierung />
+      <Team />
       <About />
       <FAQ />
       <FinalCTA />

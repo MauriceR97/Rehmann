@@ -31,6 +31,8 @@ window.LP = {
     vimeoHash: "",
     // Testimonial-Video (Kundeninterview)
     testimonialVimeoId: "1052582046",
+    // YouTube-Video der Küchenabteilung (auf der Danke-Seite)
+    dankeYoutubeId: "DSUjvsweaPs",
   },
 
   // URL-Pfade für den Funnel (Werbeauswertung / Analytics)
@@ -280,6 +282,27 @@ window.LP = {
   ],
   // Foto: Monteure beim Küchenaufbau
   monteurFoto: "https://onecdn.io/media/6c6c79d2-88b9-41d9-b9b6-f5b60e814970/full",
+
+  // Bilder Möbelhaus / Ausstellung
+  haus: {
+    gebaeude: "lp-alt-gegen-neu/assets/haus/gebaeude.jpg",
+    ausstellung1: "lp-alt-gegen-neu/assets/haus/ausstellung-03.jpg",
+    ausstellung2: "lp-alt-gegen-neu/assets/haus/ausstellung-09.jpg",
+  },
+
+  // Küchenteam – Küchenleitung, Verkauf & Planung (Coverflow)
+  team: [
+    { name: "Herr Bayram", rolle: "Küchenleiter", img: "lp-alt-gegen-neu/assets/team/bayram.jpg" },
+    { name: "Michael Fromm", rolle: "Küchenplanung", img: "lp-alt-gegen-neu/assets/team/fromm.jpg" },
+    { name: "Roman Ackermann", rolle: "Küchenplanung", img: "lp-alt-gegen-neu/assets/team/ackermann.jpg" },
+    { name: "Ben Martens", rolle: "Küchenplanung", img: "lp-alt-gegen-neu/assets/team/martens.jpg" },
+    { name: "Florent Krasniqi", rolle: "Küchenplanung", img: "lp-alt-gegen-neu/assets/team/krasniqi.webp" },
+    { name: "Sila Aydin", rolle: "Küchenplanung", img: "lp-alt-gegen-neu/assets/team/aydin.webp" },
+    { name: "Frau Blücher", rolle: "Küchenberatung", img: "lp-alt-gegen-neu/assets/team/bluecher.jpg" },
+    { name: "Herr Loch", rolle: "Küchenberatung", img: "lp-alt-gegen-neu/assets/team/loch.jpg" },
+  ],
+  // Foto Inhaber (für „Seit 1887"-Sektion)
+  inhaberFoto: "lp-alt-gegen-neu/assets/team/rehmann.jpg",
 
   // Echte Kundenreferenzen (umgesetzte Küchen). img-URL eintragen, ort optional.
   referenzen: [
