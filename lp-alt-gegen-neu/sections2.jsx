@@ -5,7 +5,7 @@ function SocialProof() {
   return (
     <Section bg="#fff" id="stimmen">
       <Reveal style={{ textAlign: "center", marginBottom: 40 }}>
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+        <div className="sp-google-head" style={{ display: "inline-flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
           <GoogleG size={30} />
           <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22, color: "var(--text-strong)" }}>Google Bewertungen</span>
           <Stars size={24} />

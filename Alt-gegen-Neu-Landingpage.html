@@ -48,6 +48,9 @@
   @keyframes agnPop { 0%, 72%, 100% { transform: scale(1); } 82% { transform: scale(1.07); } }
   @media (prefers-reduced-motion: reduce) { .agn-coin-inner, .agn-ring, .agn3-arrow, .agn3-neu { animation: none !important; } .agn-bob { animation: none !important; } }
   [data-lucide] { stroke-width: inherit; }
+  /* Prevent horizontal overflow / sideways drag on mobile */
+  html, body { max-width: 100%; overflow-x: hidden; }
+  #root { overflow-x: hidden; }
   /* Hero seal: floats top-right on desktop, centered topper on mobile */
   .hero-seal { position: absolute; top: 50px; right: 5%; z-index: 3; }
 
@@ -87,9 +90,23 @@
     #root h3 { font-size: 20px !important; }
     /* tighter vertical rhythm */
     .lp-section { padding-top: 52px !important; padding-bottom: 52px !important; }
-    .hero-grid { padding: 80px var(--gutter) 40px !important; gap: 26px !important; }
+    .hero-grid { padding: 78px var(--gutter) 40px !important; gap: 22px !important; }
     .hero-grid p { font-size: 18px !important; }
     .hero-grid li { font-size: 16.5px !important; }
+    /* Hero headline larger on phones */
+    #root h1 { font-size: clamp(33px, 9.6vw, 46px) !important; }
+    /* Hero seal bigger, tilted the other way */
+    .hero-seal { top: 12px !important; right: 10px !important; transform: scale(0.62) !important; transform-origin: top right; margin: 0 !important; }
+    /* Trust bar: only the Google rating, centered */
+    .trust-grid { display: flex !important; justify-content: center !important; }
+    .trust-item { border-right: none !important; justify-content: center !important; }
+    .trust-item:not(:first-child) { display: none !important; }
+    /* Google reviews heading row: hide the icon/stars line (Elfsight widget covers it) */
+    .sp-google-head { display: none !important; }
+    /* Prozess: don't pin the image on mobile (it overlaps the text) */
+    .prozess-media { position: static !important; top: auto !important; margin-bottom: 20px; }
+    /* Scroll-transform scene: less empty space on mobile */
+    .kx-scene { height: 200vh !important; }
     /* full-width, comfortable tap targets */
     .lp-cta { width: 100% !important; font-size: 19px !important; padding: 17px 22px !important; }
     .sticky-cta { padding: 9px 12px !important; }

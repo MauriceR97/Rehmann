@@ -62,7 +62,7 @@ function Hero() {
         </div>
       )}
       {hasVideo && (
-        <div className="hero-seal"><Seal size={148} rotate={-8} /></div>
+        <div className="hero-seal"><Seal size={148} rotate={7} /></div>
       )}
       <div style={{ position: "relative", zIndex: 2, maxWidth: hasVideo ? 1000 : 1140, margin: "0 auto", padding: "56px var(--gutter) 72px", display: "grid", gridTemplateColumns: hasVideo ? "1fr" : "1.06fr 0.94fr", gap: 56, alignItems: "center" }} className="hero-grid">
         <div style={{ maxWidth: hasVideo ? 680 : "none" }}>

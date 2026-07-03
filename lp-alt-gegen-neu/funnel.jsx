@@ -54,7 +54,7 @@ function ImageCard({ label, img, icon, selected, onClick }) {
         boxShadow: selected ? "0 10px 24px rgba(227,6,19,0.22)" : (h ? "var(--shadow-sm)" : "none"),
         transition: "all var(--dur-fast) var(--ease-standard)",
       }}>
-      <span style={{ position: "relative", width: "100%", aspectRatio: "4 / 3", background: "var(--surface-sunken)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+      <span style={{ position: "relative", width: "100%", aspectRatio: "4 / 3", flex: "none", background: "var(--surface-sunken)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
         {showImg
           ? <img src={img} alt={label} loading="lazy" onError={() => setFailed(true)} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           : <I name={icon || "circle-help"} size={46} color="var(--neutral-400)" />}
@@ -64,7 +64,7 @@ function ImageCard({ label, img, icon, selected, onClick }) {
           </span>
         )}
       </span>
-      <span style={{ padding: "13px 16px", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 17, color: selected ? "var(--reh-red)" : "var(--text-strong)" }}>{label}</span>
+      <span style={{ padding: "12px 12px", minHeight: 58, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 15.5, lineHeight: 1.2, color: selected ? "var(--reh-red)" : "var(--text-strong)" }}>{label}</span>
     </button>
   );
 }
@@ -81,7 +81,7 @@ function SwatchCard({ label, swatch, icon, selected, onClick }) {
         boxShadow: selected ? "0 10px 24px rgba(227,6,19,0.22)" : (h ? "var(--shadow-sm)" : "none"),
         transition: "all var(--dur-fast) var(--ease-standard)",
       }}>
-      <span style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr", background: "var(--surface-sunken)" }}>
+      <span style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", flex: "none", display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr", background: "var(--surface-sunken)" }}>
         {swatch
           ? swatch.slice(0, 4).map((c, i) => <span key={i} style={{ background: c }} />)
           : <span style={{ gridColumn: "1 / -1", gridRow: "1 / -1", display: "flex", alignItems: "center", justifyContent: "center" }}><I name={icon || "circle-help"} size={40} color="var(--neutral-400)" /></span>}
@@ -91,7 +91,7 @@ function SwatchCard({ label, swatch, icon, selected, onClick }) {
           </span>
         )}
       </span>
-      <span style={{ padding: "13px 16px", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 17, color: selected ? "var(--reh-red)" : "var(--text-strong)" }}>{label}</span>
+      <span style={{ padding: "12px 12px", minHeight: 58, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 15.5, lineHeight: 1.2, color: selected ? "var(--reh-red)" : "var(--text-strong)" }}>{label}</span>
     </button>
   );
 }
