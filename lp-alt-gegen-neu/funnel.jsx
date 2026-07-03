@@ -110,11 +110,10 @@ function QuestionStep({ frage, value, onPick, onNext, onBack, canBack }) {
     }
   };
   const layout = frage.layout || "list";
-  const centered = layout === "grid" || layout === "swatch";
   return (
     <div style={{ animation: "fadeUp 0.35s var(--ease-out) both" }}>
-      <h2 style={{ fontSize: 32, lineHeight: 1.15, margin: "0 0 8px", textAlign: centered ? "center" : "left" }}>{frage.titel}</h2>
-      <p style={{ fontSize: 17, color: "var(--text-muted)", margin: "0 0 26px", textAlign: centered ? "center" : "left" }}>{frage.hinweis}</p>
+      <h2 style={{ fontSize: 32, lineHeight: 1.15, margin: "0 0 8px", textAlign: "center" }}>{frage.titel}</h2>
+      <p style={{ fontSize: 17, color: "var(--text-muted)", margin: "0 0 26px", textAlign: "center" }}>{frage.hinweis}</p>
 
       {layout === "grid" && (
         <div className="funnel-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
@@ -131,7 +130,7 @@ function QuestionStep({ frage, value, onPick, onNext, onBack, canBack }) {
         </div>
       )}
       {layout === "list" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: 13 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 13, maxWidth: 460, marginLeft: "auto", marginRight: "auto" }}>
           {frage.optionen.map(o => (
             <OptionCard key={o.label} label={o.label} icon={o.icon} selected={picked(o.label)} onClick={() => toggle(o.label)} />
           ))}
@@ -226,8 +225,8 @@ function AlteKuecheStep({ data, onChange, onNext, onBack, canBack }) {
   const set = (k, v) => onChange(Object.assign({}, data, { [k]: v }));
   return (
     <div style={{ animation: "fadeUp 0.35s var(--ease-out) both" }}>
-      <h2 style={{ fontSize: 32, lineHeight: 1.15, margin: "0 0 8px" }}>{cfg.titel}</h2>
-      <p style={{ fontSize: 17, color: "var(--text-muted)", margin: "0 0 26px" }}>{cfg.hinweis}</p>
+      <h2 style={{ fontSize: 32, lineHeight: 1.15, margin: "0 0 8px", textAlign: "center" }}>{cfg.titel}</h2>
+      <p style={{ fontSize: 17, color: "var(--text-muted)", margin: "0 0 26px", textAlign: "center" }}>{cfg.hinweis}</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         {cfg.felder.map((f) => (
           <div key={f.key} style={{ position: "relative" }}>
@@ -480,14 +479,25 @@ function Funnel({ open, onClose }) {
     <div style={{ position: "fixed", inset: 0, zIndex: 100, background: "var(--surface-page)", display: "flex", flexDirection: "column" }}>
       {/* Top bar */}
       <div style={{ flex: "none", background: "#fff", borderBottom: "1px solid var(--border-subtle)" }}>
-        <div style={{ maxWidth: 720, margin: "0 auto", padding: "14px var(--gutter)", display: "flex", alignItems: "center", gap: 18 }}>
-          {(step > 0 && !isThanks) ? (
-            <button onClick={back} aria-label="Zurück" style={{ flex: "none", width: 44, height: 44, borderRadius: 999, border: "1px solid var(--border-default)", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-strong)" }}><I name="arrow-left" size={22} /></button>
-          ) : (
-            <img src={L.logos.farbig} alt="Rehmann" style={{ height: 36, flex: "none" }} />
-          )}
-          {!isThanks && <ProgressBar current={step + 1} total={totalSteps} />}
-          <button onClick={onClose} aria-label="Schließen" style={{ flex: "none", marginLeft: "auto", width: 44, height: 44, borderRadius: 999, border: "none", background: "var(--surface-sunken)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-strong)" }}><I name="x" size={24} /></button>
+        <div style={{ maxWidth: 720, margin: "0 auto", padding: "12px var(--gutter) 10px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            {(step > 0 && !isThanks) && (
+              <button onClick={back} aria-label="Zurück" style={{ flex: "none", width: 40, height: 40, borderRadius: 999, border: "1px solid var(--border-default)", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-strong)" }}><I name="arrow-left" size={20} /></button>
+            )}
+            <a href={location.pathname} onClick={(e) => { e.preventDefault(); onClose(); }} aria-label="Zurück zur Startseite" style={{ flex: "none", display: "block", cursor: "pointer" }}>
+              <img src={L.logos.farbig} alt="Interliving Rehmann" style={{ height: 34, display: "block" }} />
+            </a>
+            {!isThanks && <ProgressBar current={step + 1} total={totalSteps} />}
+            <button onClick={onClose} aria-label="Schließen" style={{ flex: "none", marginLeft: "auto", width: 40, height: 40, borderRadius: 999, border: "none", background: "var(--surface-sunken)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-strong)" }}><I name="x" size={22} /></button>
+          </div>
+          {/* Google-Bewertungen — schmale Leiste, durchgehend sichtbar */}
+          <a href={L.trust.googleUrl || "#"} onClick={(e) => { if (!L.trust.googleUrl) e.preventDefault(); }} target={L.trust.googleUrl ? "_blank" : undefined} rel="noopener noreferrer"
+            style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8, textDecoration: "none", color: "var(--text-muted)" }}>
+            <GoogleG size={16} />
+            <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 14, color: "var(--text-strong)" }}>{L.trust.googleRating}</span>
+            <Stars size={14} />
+            <span style={{ fontSize: 13, fontWeight: 600 }}>· {L.trust.googleCount} Google-Bewertungen</span>
+          </a>
         </div>
       </div>
 

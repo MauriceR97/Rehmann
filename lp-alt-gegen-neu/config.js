@@ -52,6 +52,8 @@ window.LP = {
     // ▼▼ BITTE PRÜFEN: echte Google-Bewertung eintragen ▼▼
     googleRating: "4,8",
     googleCount: "320",
+    // Optional: Link zu Ihrem Google-Bewertungsprofil (Strip im Funnel verlinkt dorthin)
+    googleUrl: "",
     gegruendet: "1887",
     jahre: "130",
     musterkuechen: "100",
