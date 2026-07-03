@@ -26,14 +26,6 @@ function Problem() {
           </Reveal>
         ))}
       </div>
-      <div style={{ textAlign: "center", marginTop: 40 }}>
-        <AltNeuToggle />
-        <Reveal scaleFrom={0.8} y={16} dur={620}>
-          <div style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 800, color: "var(--text-strong)" }}>
-            Mit „Alt gegen Neu" lösen wir all das für Sie.
-          </div>
-        </Reveal>
-      </div>
     </Section>
   );
 }
@@ -247,29 +239,16 @@ function VideoTestimonial() {
         </p>
       </Reveal>
       <Reveal style={{ maxWidth: 920, margin: "0 auto" }}>
-        <div style={{ position: "relative", aspectRatio: "16/9", borderRadius: 22, overflow: "hidden", background: "var(--navy-700)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)", cursor: playing ? "default" : "pointer" }}
-          onClick={() => vid && setPlaying(true)}>
-          {playing ? (
+        <div style={{ position: "relative", aspectRatio: "16/9", borderRadius: 22, overflow: "hidden", background: "var(--navy-700)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}>
+          {vid ? (
             <iframe
-              src={`https://player.vimeo.com/video/${vid}?autoplay=1&title=0&byline=0&portrait=0&dnt=1`}
+              src={`https://player.vimeo.com/video/${vid}?title=0&byline=0&portrait=0&dnt=1`}
               title="Kundeninterview" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
               style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}
             />
           ) : (
-            <React.Fragment>
-              <image-slot id="lp-video-poster" shape="rect" fit="cover" placeholder="Video-Vorschaubild (Poster) hier ablegen" style={{ width: "100%", height: "100%" }}></image-slot>
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(20,32,45,0.1), rgba(20,32,45,0.55))", pointerEvents: "none" }} />
-              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
-                <span style={{ width: 96, height: 96, borderRadius: 999, background: "var(--reh-red)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 12px 34px rgba(227,6,19,0.5)" }}>
-                  <I name="play" size={42} color="#fff" stroke={2} style={{ marginLeft: 6 }} />
-                </span>
-              </div>
-              <div style={{ position: "absolute", bottom: 18, left: 22, right: 22, display: "flex", alignItems: "center", justifyContent: "space-between", pointerEvents: "none" }}>
-                <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 18, color: "#fff" }}>Videointerview · ca. 2 Min.</span>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 14, color: "var(--neutral-200)" }}><I name="badge-check" size={18} color="var(--red-300)" /> Echte Kunden</span>
-              </div>
-            </React.Fragment>
+            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--neutral-300)" }}>Video folgt in Kürze</div>
           )}
         </div>
       </Reveal>

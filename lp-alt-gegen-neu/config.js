@@ -224,7 +224,7 @@ window.LP = {
     { icon: "package-x", t: "Kaum noch Stauraum", s: "Alles quillt über – für eine moderne Küche fehlt der durchdachte Stauraum." },
     { icon: "clock-alert", t: "Veraltetes Design", s: "15, 20 Jahre alt – und sieht es auch. Passt längst nicht mehr zu Ihrem Zuhause." },
     { icon: "wrench", t: "Geräte machen schlapp", s: "Backofen, Kühlschrank, Dunstabzug in die Jahre gekommen – Reparaturen häufen sich." },
-    { icon: "circle-dollar-sign", t: "Angst vor Kosten & Aufwand", s: "Neue Küche klingt teuer und stressig. Und wohin mit der alten?" },
+    { icon: "euro", t: "Angst vor Kosten & Aufwand", s: "Neue Küche klingt teuer und stressig. Und wohin mit der alten?" },
   ],
 
   // Beispielküchen inkl. Rechenbeispiel mit Tauschprämie
