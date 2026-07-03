@@ -634,7 +634,7 @@ function Verwandlung() {
           <h2 style={{ fontSize: 40, margin: "10px 0 0", color: "var(--text-strong)" }}>Erleben Sie die Verwandlung</h2>
           <p style={{ fontSize: 17, color: "var(--text-muted)", margin: "8px 0 0" }}>Scrollen Sie – und sehen Sie zu, wie die alte Küche zur Traumküche wird.</p>
         </div>
-        <video ref={filmRef} className="kx-film" muted playsInline preload="auto" poster="lp-alt-gegen-neu/assets/kueche-poster.jpg"
+        <video ref={filmRef} className="kx-film" muted playsInline preload="auto" poster="lp-alt-gegen-neu/assets/kueche-poster.png"
           style={{ width: "min(92vw, 1100px)", aspectRatio: "3 / 2", objectFit: "contain", display: "block" }}>
           <source src="lp-alt-gegen-neu/assets/kueche-transform.webm" type="video/webm" />
           <source src="lp-alt-gegen-neu/assets/kueche-transform.mp4" type="video/mp4" />
