@@ -90,17 +90,16 @@
     #root h3 { font-size: 20px !important; }
     /* tighter vertical rhythm */
     .lp-section { padding-top: 52px !important; padding-bottom: 52px !important; }
-    .hero-grid { padding: 78px var(--gutter) 40px !important; gap: 22px !important; }
+    .hero-grid { padding: 92px var(--gutter) 40px !important; gap: 22px !important; }
     .hero-grid p { font-size: 18px !important; }
     .hero-grid li { font-size: 16.5px !important; }
     /* Hero headline larger on phones */
-    #root h1 { font-size: clamp(33px, 9.6vw, 46px) !important; }
+    #root h1 { font-size: clamp(37px, 10.6vw, 52px) !important; }
     /* Hero seal bigger, tilted the other way */
-    .hero-seal { top: 12px !important; right: 10px !important; transform: scale(0.62) !important; transform-origin: top right; margin: 0 !important; }
-    /* Trust bar: only the Google rating, centered */
-    .trust-grid { display: flex !important; justify-content: center !important; }
+    .hero-seal { top: 12px !important; right: 8px !important; transform: scale(0.82) !important; transform-origin: top right; margin: 0 !important; }
+    /* Trust bar: stack all signals, centered */
+    .trust-grid { display: flex !important; flex-direction: column !important; align-items: center !important; gap: 14px !important; }
     .trust-item { border-right: none !important; justify-content: center !important; }
-    .trust-item:not(:first-child) { display: none !important; }
     /* Google reviews heading row: hide the icon/stars line (Elfsight widget covers it) */
     .sp-google-head { display: none !important; }
     /* Prozess: don't pin the image on mobile (it overlaps the text) */

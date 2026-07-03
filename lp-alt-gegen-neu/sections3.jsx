@@ -303,9 +303,10 @@ function Garantie() {
             </p>
           </Reveal>
           {(g.marken && g.marken.length > 0) && (
-            <Reveal style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "14px 30px", margin: "0 0 28px" }}>
+            <Reveal style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "22px 38px", margin: "0 0 30px" }}>
               {g.marken.map((m) => (
-                <span key={m} style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 20, letterSpacing: "0.04em", color: "var(--neutral-500)" }}>{m}</span>
+                <img key={m.name} src={m.logo} alt={m.name} loading="lazy"
+                  style={{ height: "clamp(20px, 3.4vw, 30px)", width: "auto", maxWidth: 120, objectFit: "contain" }} />
               ))}
             </Reveal>
           )}
@@ -624,8 +625,18 @@ function Verwandlung() {
   const sceneRef = React.useRef(null);
   const filmRef = React.useRef(null);
   const stageRef = React.useRef(null);
+  const [isMobile, setIsMobile] = React.useState(false);
 
   React.useEffect(() => {
+    const mq = window.matchMedia("(max-width: 620px)");
+    const u = () => setIsMobile(mq.matches);
+    u();
+    mq.addEventListener ? mq.addEventListener("change", u) : mq.addListener(u);
+    return () => { mq.removeEventListener ? mq.removeEventListener("change", u) : mq.removeListener(u); };
+  }, []);
+
+  React.useEffect(() => {
+    if (isMobile) return; // Mobil: normales Loop-Video statt Scroll-Scrubbing
     const scene = sceneRef.current;
     const film = filmRef.current;
     if (!scene || !film) return;
@@ -706,7 +717,25 @@ function Verwandlung() {
       if (raf) cancelAnimationFrame(raf);
       if (blobUrl) URL.revokeObjectURL(blobUrl);
     };
-  }, []);
+  }, [isMobile]);
+
+  // Mobil: kompaktes Loop-Video, kein Scroll-Scrubbing, kein Leerraum
+  if (isMobile) {
+    return (
+      <section className="lp-section" id="verwandlung" style={{ background: "var(--surface-page)", padding: "52px var(--gutter)" }}>
+        <div style={{ textAlign: "center", marginBottom: 18 }}>
+          <div style={{ fontFamily: "var(--font-sans)", fontWeight: 800, fontSize: 15, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--reh-red)" }}>Aus Alt wird Neu</div>
+          <h2 style={{ fontSize: 30, margin: "10px 0 8px", color: "var(--text-strong)" }}>Erleben Sie die Verwandlung</h2>
+          <p style={{ fontSize: 16, color: "var(--text-muted)", margin: 0 }}>Aus einer alten Küche wird eine neue Traumküche.</p>
+        </div>
+        <video className="kx-film" muted playsInline autoPlay loop preload="auto" poster="lp-alt-gegen-neu/assets/kueche-poster.png"
+          style={{ width: "100%", aspectRatio: "3 / 2", objectFit: "cover", borderRadius: 18, display: "block", boxShadow: "var(--shadow-md)" }}>
+          <source src="lp-alt-gegen-neu/assets/kueche-transform.webm" type="video/webm" />
+          <source src="lp-alt-gegen-neu/assets/kueche-transform.mp4" type="video/mp4" />
+        </video>
+      </section>
+    );
+  }
 
   return (
     <section ref={sceneRef} className="kx-scene" id="verwandlung" style={{ position: "relative", height: "350vh", background: "var(--surface-page)" }}>

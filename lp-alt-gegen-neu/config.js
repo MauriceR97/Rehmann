@@ -338,8 +338,16 @@ window.LP = {
       "Climber- und Jalousiebeschläge",
     ],
     hinweis: "Funktionsgarantie auf nachfolgende mechanische und elektronische Beschläge. Gilt ausschließlich für culineo-Küchen.",
-    // Neugeräte-Marken (Logos/Namen als Vertrauensanker)
-    marken: ["Miele", "Siemens", "BORA", "NEFF", "Bosch", "AEG"],
+    // Neugeräte-Marken (echte Logos)
+    marken: [
+      { name: "Miele", logo: "lp-alt-gegen-neu/assets/marken/miele.png" },
+      { name: "Siemens", logo: "lp-alt-gegen-neu/assets/marken/siemens.webp" },
+      { name: "BORA", logo: "lp-alt-gegen-neu/assets/marken/bora.webp" },
+      { name: "NEFF", logo: "lp-alt-gegen-neu/assets/marken/neff.webp" },
+      { name: "Bosch", logo: "lp-alt-gegen-neu/assets/marken/bosch.webp" },
+      { name: "AEG", logo: "lp-alt-gegen-neu/assets/marken/aeg.webp" },
+      { name: "Samsung", logo: "lp-alt-gegen-neu/assets/marken/samsung.png" },
+    ],
     // Interaktive Geräte-Karten – Klick zeigt Garantie-Info
     // img: transparentes PNG (freigestellt) – wenn gesetzt, wird es statt des Icons gezeigt
     geraete: [
