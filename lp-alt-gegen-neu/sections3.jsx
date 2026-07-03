@@ -636,7 +636,6 @@ function Verwandlung() {
   }, []);
 
   React.useEffect(() => {
-    if (isMobile) return; // Mobil: normales Loop-Video statt Scroll-Scrubbing
     const scene = sceneRef.current;
     const film = filmRef.current;
     if (!scene || !film) return;
@@ -717,25 +716,7 @@ function Verwandlung() {
       if (raf) cancelAnimationFrame(raf);
       if (blobUrl) URL.revokeObjectURL(blobUrl);
     };
-  }, [isMobile]);
-
-  // Mobil: kompaktes Loop-Video, kein Scroll-Scrubbing, kein Leerraum
-  if (isMobile) {
-    return (
-      <section className="lp-section" id="verwandlung" style={{ background: "var(--surface-page)", padding: "52px var(--gutter)" }}>
-        <div style={{ textAlign: "center", marginBottom: 18 }}>
-          <div style={{ fontFamily: "var(--font-sans)", fontWeight: 800, fontSize: 15, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--reh-red)" }}>Aus Alt wird Neu</div>
-          <h2 style={{ fontSize: 30, margin: "10px 0 8px", color: "var(--text-strong)" }}>Erleben Sie die Verwandlung</h2>
-          <p style={{ fontSize: 16, color: "var(--text-muted)", margin: 0 }}>Aus einer alten Küche wird eine neue Traumküche.</p>
-        </div>
-        <video className="kx-film" muted playsInline autoPlay loop preload="auto" poster="lp-alt-gegen-neu/assets/kueche-poster.png"
-          style={{ width: "100%", aspectRatio: "3 / 2", objectFit: "cover", borderRadius: 18, display: "block", boxShadow: "var(--shadow-md)" }}>
-          <source src="lp-alt-gegen-neu/assets/kueche-transform.webm" type="video/webm" />
-          <source src="lp-alt-gegen-neu/assets/kueche-transform.mp4" type="video/mp4" />
-        </video>
-      </section>
-    );
-  }
+  }, []);
 
   return (
     <section ref={sceneRef} className="kx-scene" id="verwandlung" style={{ position: "relative", height: "350vh", background: "var(--surface-page)" }}>

@@ -51,6 +51,10 @@ function About() {
             <div style={{ width: 1, height: 40, background: "rgba(255,255,255,0.25)" }} />
             <div style={{ fontSize: 16, color: "var(--neutral-300)" }}>Inhaber &<br />Geschäftsführer</div>
           </div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 14, marginTop: 26, background: "#fff", borderRadius: 14, padding: "12px 18px" }}>
+            <img src={L.siegelUrl} alt="Auszeichnung: Herausragendes Möbelhaus 2025" loading="lazy" style={{ height: 60, width: "auto", display: "block" }} />
+            <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 15, color: "var(--text-strong)", lineHeight: 1.3 }}>Ausgezeichnet:<br /><span style={{ color: "var(--reh-red)" }}>Herausragendes Möbelhaus 2025</span></div>
+          </div>
         </Reveal>
       </div>
     </Section>

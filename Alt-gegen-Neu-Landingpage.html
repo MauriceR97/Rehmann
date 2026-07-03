@@ -66,6 +66,7 @@
     .problem-grid { grid-template-columns: 1fr 1fr !important; }
     .team-grid { grid-template-columns: 1fr 1fr 1fr !important; }
     .geraete-grid { grid-template-columns: 1fr 1fr 1fr !important; }
+    .geraete-grid > * { min-width: 0 !important; }
     .hero-seal { top: 24px; right: 3%; transform: scale(0.82); transform-origin: top right; }
     #root h1 { font-size: clamp(34px, 6.2vw, 56px) !important; }
     #root h2 { font-size: clamp(28px, 5vw, 40px) !important; }
@@ -82,7 +83,12 @@
     .problem-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
     .team-grid { grid-template-columns: 1fr 1fr !important; }
     .funnel-grid { grid-template-columns: 1fr 1fr !important; }
-    .geraete-grid { grid-template-columns: 1fr 1fr 1fr !important; gap: 10px !important; }
+    .geraete-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+    .geraete-grid > * { min-width: 0 !important; }
+    /* Kleine Google-Bewertung neben dem Logo (nur mobil) */
+    .google-mini { display: inline-flex !important; }
+    /* Trust-Leiste unter dem Hero: mobil komplett ausblenden */
+    .trust-bar { display: none !important; }
     .problem-card { flex-direction: row !important; text-align: left !important; align-items: center !important; gap: 16px !important; padding: 16px !important; }
     .problem-card .problem-txt { flex: 1; }
     #root h1 { font-size: clamp(29px, 8.6vw, 40px) !important; }
@@ -90,13 +96,13 @@
     #root h3 { font-size: 20px !important; }
     /* tighter vertical rhythm */
     .lp-section { padding-top: 52px !important; padding-bottom: 52px !important; }
-    .hero-grid { padding: 92px var(--gutter) 40px !important; gap: 22px !important; }
+    .hero-grid { padding: 172px var(--gutter) 40px !important; gap: 22px !important; }
     .hero-grid p { font-size: 18px !important; }
     .hero-grid li { font-size: 16.5px !important; }
     /* Hero headline larger on phones */
     #root h1 { font-size: clamp(37px, 10.6vw, 52px) !important; }
     /* Hero seal bigger, tilted the other way */
-    .hero-seal { top: 12px !important; right: 8px !important; transform: scale(0.82) !important; transform-origin: top right; margin: 0 !important; }
+    .hero-seal { top: 12px !important; right: 8px !important; transform: scale(0.95) !important; transform-origin: top right; margin: 0 !important; }
     /* Trust bar: stack all signals, centered */
     .trust-grid { display: flex !important; flex-direction: column !important; align-items: center !important; gap: 14px !important; }
     .trust-item { border-right: none !important; justify-content: center !important; }
@@ -104,8 +110,10 @@
     .sp-google-head { display: none !important; }
     /* Prozess: don't pin the image on mobile (it overlaps the text) */
     .prozess-media { position: static !important; top: auto !important; margin-bottom: 20px; }
-    /* Scroll-transform scene: less empty space on mobile */
-    .kx-scene { height: 200vh !important; }
+    /* Scroll-transform scene: scrubbing bleibt, aber kompakt + oben verankert */
+    .kx-scene { height: 170vh !important; }
+    .kx-stage { justify-content: flex-start !important; padding-top: 64px !important; }
+    .kx-film { width: 100% !important; }
     /* full-width, comfortable tap targets */
     .lp-cta { width: 100% !important; font-size: 19px !important; padding: 17px 22px !important; }
     .sticky-cta { padding: 9px 12px !important; }
