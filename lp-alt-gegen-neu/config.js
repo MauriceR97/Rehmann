@@ -279,6 +279,9 @@ window.LP = {
     "https://onecdn.io/media/ed363069-1f6f-488d-9b9b-aeddcfeaf2eb/full",
     "https://onecdn.io/media/1301672c-67c8-4a64-8b6f-1d86b2ca603d/full",
     "https://onecdn.io/media/a3abdd24-2665-4077-9f6a-909cd4e3cba7/full",
+    "lp-alt-gegen-neu/assets/marken/nolte.webp",
+    "lp-alt-gegen-neu/assets/marken/neff.webp",
+    "lp-alt-gegen-neu/assets/marken/quooker.webp",
   ],
   // Foto: Monteure beim Küchenaufbau
   monteurFoto: "https://onecdn.io/media/6c6c79d2-88b9-41d9-b9b6-f5b60e814970/full",
@@ -347,6 +350,7 @@ window.LP = {
       { name: "Bosch", logo: "lp-alt-gegen-neu/assets/marken/bosch.webp" },
       { name: "AEG", logo: "lp-alt-gegen-neu/assets/marken/aeg.webp" },
       { name: "Samsung", logo: "lp-alt-gegen-neu/assets/marken/samsung.png" },
+      { name: "Quooker", logo: "lp-alt-gegen-neu/assets/marken/quooker.webp" },
     ],
     // Interaktive Geräte-Karten – Klick zeigt Garantie-Info
     // img: transparentes PNG (freigestellt) – wenn gesetzt, wird es statt des Icons gezeigt
