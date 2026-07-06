@@ -54,7 +54,7 @@ function ImageCard({ label, img, icon, selected, onClick }) {
         boxShadow: selected ? "0 10px 24px rgba(227,6,19,0.22)" : (h ? "var(--shadow-sm)" : "none"),
         transition: "all var(--dur-fast) var(--ease-standard)",
       }}>
-      <span style={{ position: "relative", width: "100%", aspectRatio: "4 / 3", background: "var(--surface-sunken)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+      <span style={{ position: "relative", width: "100%", aspectRatio: "4 / 3", flex: "none", background: "var(--surface-sunken)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
         {showImg
           ? <img src={img} alt={label} loading="lazy" onError={() => setFailed(true)} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           : <I name={icon || "circle-help"} size={46} color="var(--neutral-400)" />}
@@ -64,7 +64,7 @@ function ImageCard({ label, img, icon, selected, onClick }) {
           </span>
         )}
       </span>
-      <span style={{ padding: "13px 16px", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 17, color: selected ? "var(--reh-red)" : "var(--text-strong)" }}>{label}</span>
+      <span style={{ padding: "12px 12px", minHeight: 58, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 15.5, lineHeight: 1.2, color: selected ? "var(--reh-red)" : "var(--text-strong)" }}>{label}</span>
     </button>
   );
 }
@@ -81,7 +81,7 @@ function SwatchCard({ label, swatch, icon, selected, onClick }) {
         boxShadow: selected ? "0 10px 24px rgba(227,6,19,0.22)" : (h ? "var(--shadow-sm)" : "none"),
         transition: "all var(--dur-fast) var(--ease-standard)",
       }}>
-      <span style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr", background: "var(--surface-sunken)" }}>
+      <span style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", flex: "none", display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr", background: "var(--surface-sunken)" }}>
         {swatch
           ? swatch.slice(0, 4).map((c, i) => <span key={i} style={{ background: c }} />)
           : <span style={{ gridColumn: "1 / -1", gridRow: "1 / -1", display: "flex", alignItems: "center", justifyContent: "center" }}><I name={icon || "circle-help"} size={40} color="var(--neutral-400)" /></span>}
@@ -91,7 +91,7 @@ function SwatchCard({ label, swatch, icon, selected, onClick }) {
           </span>
         )}
       </span>
-      <span style={{ padding: "13px 16px", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 17, color: selected ? "var(--reh-red)" : "var(--text-strong)" }}>{label}</span>
+      <span style={{ padding: "12px 12px", minHeight: 58, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 15.5, lineHeight: 1.2, color: selected ? "var(--reh-red)" : "var(--text-strong)" }}>{label}</span>
     </button>
   );
 }
@@ -304,6 +304,13 @@ function LeadForm({ onSubmit }) {
 
 function ThankYou({ data, onClose }) {
   const L = window.LP;
+  const yt = (L.media && L.media.dankeYoutubeId) || "";
+  const schritte = [
+    { icon: "check", t: "Anfrage abgeschickt", s: "Ihr Aktionsplatz ist reserviert.", done: true },
+    { icon: "phone-call", t: "Wir rufen Sie an", s: "In ca. 20 Min. persönlich (zu Öffnungszeiten).", current: true },
+    { icon: "armchair", t: "Beratung & Planung", s: "Kostenlos – bei Ihnen oder in der Ausstellung." },
+    { icon: "party-popper", t: "Alt raus, neu rein", s: "Abbau, Lieferung & Montage inklusive." },
+  ];
   return (
     <div style={{ textAlign: "center", padding: "20px 0", animation: "fadeUp 0.35s var(--ease-out) both" }}>
       <div style={{ width: 104, height: 104, borderRadius: 999, background: "var(--green-100)", color: "var(--success)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 26px" }}>
@@ -313,6 +320,41 @@ function ThankYou({ data, onClose }) {
       <p style={{ fontSize: 21, lineHeight: 1.55, color: "var(--text-body)", maxWidth: 520, margin: "0 auto 28px" }}>
         Ihr Aktionsplatz ist reserviert. Wir rufen Sie <b>innerhalb von ca. 20 Minuten</b> persönlich an (zu unseren Öffnungszeiten {L.kontakt.oeffnung}).
       </p>
+
+      {/* Nächste Schritte – wo der Nutzer gerade steht */}
+      <div style={{ textAlign: "left", maxWidth: 560, margin: "0 auto 30px" }}>
+        <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 19, color: "var(--text-strong)", marginBottom: 16, textAlign: "center" }}>So geht es jetzt weiter</div>
+        {schritte.map((s, i) => {
+          const active = s.done || s.current;
+          return (
+            <div key={s.t} style={{ display: "flex", gap: 16, alignItems: "flex-start", paddingBottom: i < schritte.length - 1 ? 18 : 0 }}>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: "none" }}>
+                <span style={{ width: 44, height: 44, borderRadius: 999, background: s.done ? "var(--success)" : (s.current ? "var(--reh-red)" : "#fff"), color: active ? "#fff" : "var(--text-subtle)", border: "2px solid " + (s.done ? "var(--success)" : (s.current ? "var(--reh-red)" : "var(--border-default)")), display: "flex", alignItems: "center", justifyContent: "center", boxShadow: s.current ? "0 8px 20px rgba(227,6,19,0.34)" : "none" }}><I name={s.icon} size={22} /></span>
+                {i < schritte.length - 1 && <span style={{ width: 2, flex: 1, minHeight: 22, background: s.done ? "var(--success)" : "var(--border-default)", marginTop: 4 }} />}
+              </div>
+              <div style={{ paddingTop: 4 }}>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 9, flexWrap: "wrap" }}>
+                  <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 18, color: "var(--text-strong)" }}>{s.t}</span>
+                  {s.current && <span style={{ background: "var(--surface-brand-soft)", color: "var(--reh-red)", fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", padding: "3px 9px", borderRadius: 999 }}>Sie sind hier</span>}
+                  {s.done && <span style={{ color: "var(--success)", display: "inline-flex", alignItems: "center" }}><I name="check-circle" size={16} /></span>}
+                </div>
+                <div style={{ fontSize: 15.5, color: "var(--text-muted)", marginTop: 2 }}>{s.s}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Video der Küchenabteilung */}
+      {yt && (
+        <div style={{ maxWidth: 620, margin: "0 auto 30px" }}>
+          <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 19, color: "var(--text-strong)", marginBottom: 14 }}>Lernen Sie uns schon jetzt kennen</div>
+          <div style={{ position: "relative", aspectRatio: "16/9", borderRadius: 18, overflow: "hidden", background: "var(--navy-700)", boxShadow: "0 16px 40px rgba(0,0,0,0.2)" }}>
+            <iframe src={`https://www.youtube-nocookie.com/embed/${yt}?rel=0`} title="Unsere Küchenabteilung" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}></iframe>
+          </div>
+        </div>
+      )}
+
       <div style={{ display: "inline-flex", flexDirection: "column", gap: 12, background: "var(--surface-page)", borderRadius: 16, padding: "22px 28px", marginBottom: 30, textAlign: "left" }}>
         <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 18, color: "var(--text-strong)" }}>Lieber sofort sprechen?</div>
         <a href={"tel:" + L.kontakt.telefonHref} style={{ display: "inline-flex", alignItems: "center", gap: 12, color: "var(--reh-red)", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 26, textDecoration: "none", whiteSpace: "nowrap" }}>

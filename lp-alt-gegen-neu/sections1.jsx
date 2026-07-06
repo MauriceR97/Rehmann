@@ -5,12 +5,19 @@ function Header() {
   return (
     <header style={{ position: "sticky", top: 0, zIndex: 30, background: "rgba(255,255,255,0.96)", backdropFilter: "blur(8px)", boxShadow: "var(--shadow-sm)" }}>
       <div style={{ maxWidth: 1140, margin: "0 auto", padding: "12px var(--gutter)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
-        <a href="#" onClick={(e) => e.preventDefault()} style={{ display: "block", textDecoration: "none" }}>
-          <img src={L.logos.farbig} alt="Interliving Rehmann" style={{ height: 46, display: "block" }} />
-          <div style={{ display: "flex", alignItems: "center", gap: 5, marginTop: 4, fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 12.5, color: "var(--text-muted)" }}>
-            <I name="map-pin" size={13} color="var(--reh-red)" /> Ihr Möbelhaus in Velbert · direkt an der A44
-          </div>
-        </a>
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <a href="#" onClick={(e) => e.preventDefault()} style={{ display: "block", textDecoration: "none" }}>
+            <img src={L.logos.farbig} alt="Interliving Rehmann" style={{ height: 46, display: "block" }} />
+            <div style={{ display: "flex", alignItems: "center", gap: 5, marginTop: 4, fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 12.5, color: "var(--text-muted)" }}>
+              <I name="map-pin" size={13} color="var(--reh-red)" /> Ihr Möbelhaus in Velbert · direkt an der A44
+            </div>
+          </a>
+          <a className="google-mini" href={L.trust.googleUrl || "#"} target="_blank" rel="noopener" style={{ display: "none", alignItems: "center", gap: 5, textDecoration: "none", padding: "4px 8px", borderRadius: 999, border: "1px solid var(--border-subtle)", background: "#fff" }}>
+            <img src="https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png" alt="Google" style={{ height: 15, width: 15 }} />
+            <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 13, color: "var(--text-strong)" }}>{L.trust.googleRating}</span>
+            <span style={{ color: "#fbbc05", fontSize: 12, letterSpacing: "-1px" }}>★★★★★</span>
+          </a>
+        </div>
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
           <a href={"tel:" + L.kontakt.telefonHref} style={{ display: "inline-flex", alignItems: "center", gap: 9, color: "var(--navy-500)", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 19, textDecoration: "none", whiteSpace: "nowrap" }}>
             <I name="phone" size={20} color="var(--reh-red)" /> <span className="hide-sm">{L.kontakt.telefon}</span>
@@ -62,7 +69,7 @@ function Hero() {
         </div>
       )}
       {hasVideo && (
-        <div className="hero-seal"><Seal size={148} rotate={-8} /></div>
+        <div className="hero-seal"><Seal size={148} rotate={7} /></div>
       )}
       <div style={{ position: "relative", zIndex: 2, maxWidth: hasVideo ? 1000 : 1140, margin: "0 auto", padding: "56px var(--gutter) 72px", display: "grid", gridTemplateColumns: hasVideo ? "1fr" : "1.06fr 0.94fr", gap: 56, alignItems: "center" }} className="hero-grid">
         <div style={{ maxWidth: hasVideo ? 680 : "none" }}>
@@ -114,7 +121,7 @@ function TrustBar() {
     { el: <img src={L.siegelUrl} alt="Auszeichnung Küche Rehmann" style={{ height: 62, width: "auto", display: "block" }} />, sub: "" },
   ];
   return (
-    <div style={{ background: "#fff", borderBottom: "1px solid var(--border-subtle)" }}>
+    <div className="trust-bar" style={{ background: "#fff", borderBottom: "1px solid var(--border-subtle)" }}>
       <div style={{ maxWidth: 1140, margin: "0 auto", padding: "22px var(--gutter)", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20 }} className="trust-grid">
         {items.map((it, i) => (
           <div key={i} style={{ display: "flex", alignItems: "center", gap: 14, justifyContent: "center", borderRight: i < 3 ? "1px solid var(--border-subtle)" : "none" }} className="trust-item">

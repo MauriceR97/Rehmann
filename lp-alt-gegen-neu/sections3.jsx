@@ -128,9 +128,9 @@ function Vergleich() {
         </p>
       </Reveal>
       <Reveal style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 26, marginBottom: 30 }} className="calc-grid">
-        {[{ id: "lp-vorher", lab: "Vorher", icon: "image", note: "Ihre alte Küche", neg: true }, { id: "lp-nachher", lab: "Nachher", icon: "sparkles", note: "Ihre neue Traumküche", neg: false }].map((b) => (
+        {[{ id: "lp-vorher", lab: "Vorher", icon: "image", note: "Ihre alte Küche", neg: true, img: "lp-alt-gegen-neu/assets/vergleich-alt.webp" }, { id: "lp-nachher", lab: "Nachher", icon: "sparkles", note: "Ihre neue Traumküche", neg: false, img: "lp-alt-gegen-neu/assets/vergleich-neu.webp" }].map((b) => (
           <div key={b.id} style={{ position: "relative", borderRadius: 18, overflow: "hidden", aspectRatio: "16/11", background: "var(--neutral-150)", border: b.neg ? "1px solid var(--border-subtle)" : "2px solid var(--reh-red)" }}>
-            <image-slot id={b.id} shape="rect" fit="cover" placeholder={"Foto: " + b.note} style={{ width: "100%", height: "100%" }}></image-slot>
+            <img src={b.img} alt={b.note} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             <span style={{ position: "absolute", top: 14, left: 14, display: "inline-flex", alignItems: "center", gap: 7, background: b.neg ? "var(--navy-600)" : "var(--reh-red)", color: "#fff", fontWeight: 800, fontSize: 14, textTransform: "uppercase", letterSpacing: "0.06em", padding: "7px 13px", borderRadius: 999 }}><I name={b.icon} size={16} /> {b.lab}</span>
           </div>
         ))}
@@ -196,8 +196,8 @@ function Prozess() {
         </p>
       </Reveal>
       <div style={{ display: "grid", gridTemplateColumns: "0.85fr 1.15fr", gap: 46, alignItems: "start", marginTop: 44, maxWidth: 1040, marginLeft: "auto", marginRight: "auto" }} className="calc-grid">
-        <Reveal style={{ position: "sticky", top: 90 }}>
-          <img src={L.monteurBild} alt="Hauseigenes Montageteam baut die neue Küche auf und nimmt die alte mit" style={{ width: "100%", height: "auto", display: "block" }} />
+        <Reveal className="prozess-media" style={{ position: "sticky", top: 90 }}>
+          <img src="lp-alt-gegen-neu/assets/montage-team.png" alt="Hauseigenes Montageteam baut die neue Küche auf und nimmt die alte mit" loading="lazy" style={{ width: "100%", height: "auto", display: "block" }} />
         </Reveal>
         <div>
         {steps.map((s, i) => (
@@ -303,9 +303,10 @@ function Garantie() {
             </p>
           </Reveal>
           {(g.marken && g.marken.length > 0) && (
-            <Reveal style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "14px 30px", margin: "0 0 28px" }}>
+            <Reveal style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "22px 38px", margin: "0 0 30px" }}>
               {g.marken.map((m) => (
-                <span key={m} style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 20, letterSpacing: "0.04em", color: "var(--neutral-500)" }}>{m}</span>
+                <img key={m.name} src={m.logo} alt={m.name} loading="lazy"
+                  style={{ height: "clamp(20px, 3.4vw, 30px)", width: "auto", maxWidth: 120, objectFit: "contain" }} />
               ))}
             </Reveal>
           )}
@@ -348,6 +349,48 @@ function Garantie() {
   );
 }
 
+// Interaktiver 0%-Finanzierungsrechner
+function FinanzRechner({ f, maxMonate }) {
+  const laufzeiten = [12, 24, 36, 48].filter((m) => m <= (maxMonate || 48));
+  const [betrag, setBetrag] = React.useState(12000);
+  const [monate, setMonate] = React.useState(laufzeiten.includes(36) ? 36 : laufzeiten[laufzeiten.length - 1]);
+  const rate = betrag / monate;
+  const rateStr = rate.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return (
+    <div>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
+        <I name="calculator" size={22} color="var(--reh-red)" />
+        <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 18, color: "var(--text-strong)" }}>Ihr Finanzierungsrechner</span>
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
+        <span style={{ fontSize: 15, fontWeight: 600, color: "var(--text-muted)" }}>Küchenpreis</span>
+        <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 20, color: "var(--text-strong)" }}>{betrag.toLocaleString("de-DE")} €</span>
+      </div>
+      <input type="range" min="3000" max="30000" step="500" value={betrag} onChange={(e) => setBetrag(+e.target.value)}
+        style={{ width: "100%", accentColor: "var(--reh-red)", height: 6, cursor: "pointer", marginBottom: 20 }} />
+      <div style={{ fontSize: 15, fontWeight: 600, color: "var(--text-muted)", marginBottom: 8 }}>Laufzeit</div>
+      <div style={{ display: "flex", gap: 8, marginBottom: 24, flexWrap: "wrap" }}>
+        {laufzeiten.map((m) => (
+          <button key={m} onClick={() => setMonate(m)}
+            style={{ flex: "1 1 auto", padding: "11px 8px", borderRadius: 11, border: "2px solid " + (monate === m ? "var(--reh-red)" : "var(--border-default)"), background: monate === m ? "var(--reh-red)" : "#fff", color: monate === m ? "#fff" : "var(--text-strong)", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 15, cursor: "pointer", transition: "all var(--dur-fast)" }}>
+            {m} Mon.
+          </button>
+        ))}
+      </div>
+      <div style={{ background: "var(--surface-brand-soft)", borderRadius: 14, padding: "18px 20px", display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
+        <div>
+          <div style={{ fontSize: 14, fontWeight: 600, color: "var(--text-muted)" }}>Ihre monatliche Rate</div>
+          <div style={{ fontSize: 13, color: "var(--success)", fontWeight: 700, marginTop: 2 }}>0,00 % Zinsen · keine Anzahlung</div>
+        </div>
+        <div style={{ display: "flex", alignItems: "flex-end", gap: 5 }}>
+          <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 40, color: "var(--reh-red)", lineHeight: 1 }}>{rateStr} €</span>
+          <span style={{ fontSize: 15, color: "var(--text-muted)", marginBottom: 4 }}>/ Mon.</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // 0 % Finanzierung
 function Finanzierung() {
   const L = window.LP;
@@ -370,22 +413,7 @@ function Finanzierung() {
           </ul>
         </Reveal>
         <Reveal delay={120} style={{ background: "#fff", borderRadius: 22, padding: 36, border: "1px solid var(--border-subtle)", boxShadow: "var(--shadow-md)" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-            <I name="calculator" size={22} color="var(--reh-red)" />
-            <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 18, color: "var(--text-strong)" }}>Finanzierungsbeispiel</span>
-          </div>
-          <div style={{ fontSize: 14, color: "var(--text-muted)", marginBottom: 18 }}>Beispielküche · Kaufpreis {f.beispielPreis} €</div>
-          <div style={{ display: "flex", alignItems: "flex-end", gap: 8, marginBottom: 18 }}>
-            <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 50, color: "var(--reh-red)", lineHeight: 1 }}>{f.beispielRate} €</span>
-            <span style={{ fontSize: 18, color: "var(--text-muted)", marginBottom: 6 }}>/ Monat</span>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px 16px", fontSize: 15 }}>
-            {[["Laufzeit", f.monate + " Monate"], ["Sollzins p. a.", f.sollzins + " %"], ["Eff. Jahreszins", f.effektiv + " %"], ["Anzahlung", "0 €"]].map(([k, val]) => (
-              <div key={k} style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid var(--border-subtle)", paddingBottom: 8 }}>
-                <span style={{ color: "var(--text-muted)" }}>{k}</span><span style={{ fontWeight: 700, color: "var(--text-strong)" }}>{val}</span>
-              </div>
-            ))}
-          </div>
+          <FinanzRechner f={f} maxMonate={L.aktion.finanzierungMonate} />
           <p style={{ fontSize: 12, color: "var(--text-subtle)", margin: "18px 0 0", lineHeight: 1.5 }}>
             Repräsentatives Beispiel (2/3 gem. § 6a Abs. 4 PAngV): Nobilia Küche, Barzahlungspreis {f.barzahlung} €, Nettodarlehensbetrag {f.barzahlung} €, {f.laufzeit} Monatsraten à {f.rate} €, Sollzins {f.sollzins} % p. a., effektiver Jahreszins {f.effektiv} % p. a. Bonität vorausgesetzt. Partner: {f.partner}. Gilt ab 500 € Einkaufswert (Mindest-Monatsrate 15 €).
           </p>
@@ -417,7 +445,83 @@ function Kleingedrucktes() {
   );
 }
 
-Object.assign(window, { Problem, Beispielkuechen, Plaetze, Vergleich, Prozess, VideoTestimonial, Garantie, Finanzierung, Kleingedrucktes, Marken, Verwandlung, Referenzen });
+Object.assign(window, { Problem, Beispielkuechen, Plaetze, Vergleich, Prozess, VideoTestimonial, Garantie, Finanzierung, Kleingedrucktes, Marken, Verwandlung, Referenzen, Team });
+
+// Küchenteam — Coverflow: mittlere Person am größten, per Pfeil navigierbar
+function Team() {
+  const L = window.LP;
+  const team = L.team || [];
+  const n = team.length;
+  const [active, setActive] = React.useState(Math.min(1, n - 1));
+  const [mob, setMob] = React.useState(false);
+  React.useEffect(() => {
+    const calc = () => setMob(window.innerWidth <= 620);
+    calc(); window.addEventListener("resize", calc);
+    return () => window.removeEventListener("resize", calc);
+  }, []);
+  const go = (d) => setActive((a) => (a + d + n) % n);
+  return (
+    <Section bg="var(--surface-page)" id="team">
+      <Reveal style={{ textAlign: "center", marginBottom: 30 }}>
+        <Eyebrow>Ihr Küchenteam</Eyebrow>
+        <h2 style={{ fontSize: 44, margin: "12px 0 12px" }}>Menschen, die Ihre Küche planen</h2>
+        <p style={{ fontSize: 19, color: "var(--text-muted)", maxWidth: 640, margin: "0 auto" }}>
+          Echte Küchenexperten – persönlich, ehrlich und mit viel Erfahrung. Klicken Sie sich durch Ihr Team.
+        </p>
+      </Reveal>
+      <Reveal>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14 }}>
+          <button onClick={() => go(-1)} aria-label="Zurück" style={{ flex: "none", width: 52, height: 52, borderRadius: 999, border: "none", background: "var(--reh-red)", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "var(--shadow-md)", zIndex: 3 }}><I name="chevron-left" size={28} /></button>
+
+          <div style={{ position: "relative", flex: 1, maxWidth: 1040, height: mob ? 340 : 440, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+            {team.map((m, i) => {
+              let off = i - active;
+              if (off > n / 2) off -= n;
+              if (off < -n / 2) off += n;
+              const abs = Math.abs(off);
+              if (abs > 2) return null;
+              const isCenter = off === 0;
+              const w = mob ? (isCenter ? 190 : abs === 1 ? 130 : 104) : (isCenter ? 300 : abs === 1 ? 220 : 172);
+              const h = mob ? (isCenter ? 256 : abs === 1 ? 180 : 144) : (isCenter ? 400 : abs === 1 ? 300 : 236);
+              const shift = mob ? (isCenter ? 128 : 116) : (isCenter ? 232 : 205);
+              return (
+                <div key={m.name} onClick={() => !isCenter && setActive(i)}
+                  style={{ position: "absolute", width: w, height: h,
+                    transform: `translateX(${off * shift}px) scale(${isCenter ? 1 : 0.92})`,
+                    zIndex: 10 - abs, opacity: abs === 2 ? 0.4 : 1,
+                    filter: isCenter ? "none" : "grayscale(0.4) brightness(0.82)",
+                    transition: "all 0.45s var(--ease-out)", cursor: isCenter ? "default" : "pointer",
+                    borderRadius: mob ? 16 : 20, overflow: "hidden", boxShadow: isCenter ? "0 22px 50px rgba(20,32,45,0.35)" : "0 10px 24px rgba(20,32,45,0.2)", background: "var(--neutral-150)" }}>
+                  <img src={m.img} alt={m.name} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                  {isCenter && (
+                    <React.Fragment>
+                      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "52%", background: "linear-gradient(180deg, transparent, rgba(20,32,45,0.82))", pointerEvents: "none" }} />
+                      <div style={{ position: "absolute", left: mob ? 12 : 18, right: mob ? 12 : 18, bottom: mob ? 12 : 16 }}>
+                        <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: mob ? 16 : 22, color: "#fff", lineHeight: 1.12 }}>{m.name}</div>
+                        <div style={{ fontSize: mob ? 12 : 14, fontWeight: 700, color: "var(--red-200)", marginTop: 2 }}>{m.rolle}</div>
+                      </div>
+                    </React.Fragment>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <button onClick={() => go(1)} aria-label="Weiter" style={{ flex: "none", width: 52, height: 52, borderRadius: 999, border: "none", background: "var(--reh-red)", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "var(--shadow-md)", zIndex: 3 }}><I name="chevron-right" size={28} /></button>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", gap: 7, marginTop: 22 }}>
+          {team.map((_, i) => (
+            <button key={i} onClick={() => setActive(i)} aria-label={"Person " + (i + 1)}
+              style={{ width: i === active ? 24 : 9, height: 9, borderRadius: 999, border: "none", background: i === active ? "var(--reh-red)" : "var(--neutral-300)", cursor: "pointer", padding: 0, transition: "all var(--dur-base)" }} />
+          ))}
+        </div>
+        <div style={{ textAlign: "center", marginTop: 30 }}>
+          <CTA size="lg">Jetzt Beratungstermin sichern</CTA>
+        </div>
+      </Reveal>
+    </Section>
+  );
+}
 
 // Gamifizierter Alt→Neu Toggle (Auto-Loop + klickbar)
 function AltNeuToggle() {
