@@ -17,7 +17,7 @@ function Problem() {
         {L.probleme.map((p, i) => (
           <Reveal key={p.t} delay={i * 70} style={{ height: "100%" }}>
             <div className="problem-card" style={{ height: "100%", boxSizing: "border-box", background: "#fff", borderRadius: 16, padding: 20, border: "1px solid var(--border-subtle)", boxShadow: "var(--shadow-xs)", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 10 }}>
-              <span style={{ flex: "none", width: 52, height: 52, borderRadius: 13, background: "var(--neutral-100)", color: "var(--neutral-500)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><I name={p.icon} size={28} /></span>
+              <span style={{ flex: "none", width: 52, height: 52, borderRadius: 13, background: "var(--surface-brand-soft)", color: "var(--reh-red)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><I name="x" size={30} stroke={3} /></span>
               <div className="problem-txt">
                 <h3 style={{ fontSize: 18, margin: "0 0 5px" }}>{p.t}</h3>
                 <p style={{ margin: 0, fontSize: 15, lineHeight: 1.45, color: "var(--text-body)" }}>{p.s}</p>
