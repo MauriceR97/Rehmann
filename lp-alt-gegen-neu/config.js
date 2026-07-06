@@ -122,9 +122,9 @@ window.LP = {
       hinweis: "Aktuell mit 0 % Zinsen möglich.",
       type: "single",
       optionen: [
-        { label: "Ja, bis zu 48 Monate", icon: "badge-percent" },
+        { label: "Ja, bis zu 36 Monate", icon: "badge-percent" },
         { label: "Nein", icon: "x" },
-        { label: "Ja, mehr als 48 Monate", icon: "calendar-clock" },
+        { label: "Ja, mehr als 36 Monate", icon: "calendar-clock" },
       ],
     },
     {
@@ -147,11 +147,9 @@ window.LP = {
       hinweis: "Hilft uns, passende Küchen für Sie vorzubereiten.",
       type: "single",
       optionen: [
-        { label: "Bis 8.000 €" },
-        { label: "8.000 – 15.000 €" },
+        { label: "10.000 – 15.000 €" },
         { label: "15.000 – 25.000 €" },
         { label: "Über 25.000 €" },
-        { label: "Noch unklar" },
       ],
     },
     {

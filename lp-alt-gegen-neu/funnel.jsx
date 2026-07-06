@@ -274,6 +274,13 @@ function LeadForm({ onSubmit }) {
           <div style={{ fontSize: 16, color: "var(--text-body)" }}>Nur noch Ihre Kontaktdaten – dann sichern wir Ihren Aktionsplatz.</div>
         </div>
       </div>
+      <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 14 }}>
+        {["100 % kostenfrei", "Unverbindlich", "In 60 Sek. erledigt"].map((t) => (
+          <span key={t} style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "var(--green-100)", color: "var(--success)", border: "1px solid #bcdcc6", padding: "8px 14px", borderRadius: 999, fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 15 }}>
+            <I name="check" size={17} stroke={3} /> {t}
+          </span>
+        ))}
+      </div>
       <h2 style={{ fontSize: 32, margin: "0 0 6px" }}>Aktionsplatz sichern</h2>
       <p style={{ fontSize: 18, color: "var(--text-muted)", margin: "0 0 24px" }}>Wir rufen Sie in ca. 20 Minuten persönlich an (zu unseren Öffnungszeiten).</p>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }} className="form-grid">
