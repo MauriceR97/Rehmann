@@ -399,14 +399,21 @@ function Funnel({ open, onClose }) {
   React.useEffect(() => {
     const routes = (L.routes) || { formular: "formular-kueche", danke: "danke-formular-kueche" };
     const track = (name, extra) => {
+      var evid = "";
+      try { evid = window.REH_TRACK ? window.REH_TRACK.leadEventId() : ""; } catch (e) {}
       try {
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push(Object.assign({ event: name }, extra || {}));
+        window.dataLayer.push(Object.assign({ event: name, event_id: evid }, extra || {}));
       } catch (e) {}
       // Optional: virtueller Seitenaufruf für GA4 (falls gtag vorhanden)
       try { if (typeof window.gtag === "function") window.gtag("event", "page_view", { page_path: location.pathname }); } catch (e) {}
-      // Meta Pixel (falls vorhanden): Lead-Event auf Danke-Seite
-      try { if (name === "lead_submitted" && typeof window.fbq === "function") window.fbq("track", "Lead"); } catch (e) {}
+      // Meta Pixel — mit event_id für CAPI-Deduplizierung
+      try {
+        if (typeof window.fbq === "function") {
+          if (name === "funnel_open") window.fbq("track", "InitiateCheckout", {}, { eventID: evid });
+          if (name === "lead_submitted") window.fbq("track", "Lead", { content_name: "Alt gegen Neu" }, { eventID: evid });
+        }
+      } catch (e) {}
     };
     const setPath = (slug) => {
       const target = location.origin + "/" + slug + location.search;
@@ -454,6 +461,10 @@ function Funnel({ open, onClose }) {
     if (!url) return;
     const q = {};
     try { new URLSearchParams(location.search).forEach((v, k) => { q[k] = v; }); } catch (e) {}
+    // Dauerhaft gespeicherte Ad-/Klick-Daten (bleiben auch nach URL-Wechsel erhalten)
+    var T = {};
+    try { T = window.REH_TRACK ? window.REH_TRACK.getAll() : {}; } catch (e) {}
+    const pick = (k) => T[k] || q[k] || "";
     const routes = (L.routes) || {};
     let device = "desktop";
     try {
@@ -462,7 +473,8 @@ function Funnel({ open, onClose }) {
       if (/Mobi|Android|iPhone/i.test(ua) || w <= 620) device = "mobil";
       else if (/iPad|Tablet/i.test(ua) || w <= 980) device = "tablet";
     } catch (e) {}
-    const eventid = "reh-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
+    let eventid = "reh-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
+    try { if (window.REH_TRACK) eventid = window.REH_TRACK.leadEventId(); } catch (e) {}
     const fields = {
       // Kontaktdaten
       anrede: "",
@@ -488,17 +500,37 @@ function Funnel({ open, onClose }) {
       ak_besonderheiten: altData.ak_besonderheiten || "",
       alte_kueche_bild: altData.ak_bild_name || "",
       alte_kueche_bild_data: (altData.ak_bild_data && altData.ak_bild_data.length < 700000) ? altData.ak_bild_data : "",
-      // Kampagne / Tracking
+      // Kampagne / Tracking (dauerhaft über REH_TRACK)
       kategorie: "Küche",
-      kampagne: q.kampagne || q.utm_campaign || "",
-      utm_source: q.utm_source || "",
-      utm_medium: q.utm_medium || "",
-      utm_campaign: q.utm_campaign || "",
-      utm_content: q.utm_content || "",
-      utm_term: q.utm_term || "",
+      kampagne: pick("kampagne") || pick("utm_campaign"),
+      utm_source: pick("utm_source"),
+      utm_medium: pick("utm_medium"),
+      utm_campaign: pick("utm_campaign"),
+      utm_content: pick("utm_content"),
+      utm_term: pick("utm_term"),
+      utm_id: pick("utm_id"),
+      // First-Touch (Erstkontakt-Attribution)
+      ft_utm_source: T.ft_utm_source || "",
+      ft_utm_medium: T.ft_utm_medium || "",
+      ft_utm_campaign: T.ft_utm_campaign || "",
+      first_landing_url: T.first_landing_url || "",
+      first_referrer: T.first_referrer || "",
+      first_seen: T.first_seen || "",
       source_device: device,
-      fbclid: q.fbclid || "",
-      gclid: q.gclid || "",
+      // Meta Conversions API (CAPI) — Zapier hasht E-Mail/Telefon und sendet serverseitig
+      event_name: "Lead",
+      event_id: eventid,
+      action_source: "website",
+      event_source_url: T.event_source_url || (location.origin + location.pathname),
+      client_user_agent: T.client_user_agent || (navigator.userAgent || ""),
+      fbp: T.fbp || "",
+      fbc: T.fbc || "",
+      fbclid: pick("fbclid"),
+      gclid: pick("gclid"),
+      gbraid: pick("gbraid"),
+      wbraid: pick("wbraid"),
+      ttclid: pick("ttclid"),
+      msclkid: pick("msclkid"),
       eventid: eventid,
       danke_url: location.origin + "/" + (routes.danke || "danke-formular-kueche"),
       // Kontext
@@ -507,6 +539,13 @@ function Funnel({ open, onClose }) {
       seite: location.origin + location.pathname,
     };
     const body = new URLSearchParams(fields).toString();
+    // Debug-Modus: ?debug=1 in der URL → Payload in der Konsole ausgeben
+    try {
+      if (/[?&]debug=1\b/.test(location.search) || localStorage.getItem("reh_debug") === "1") {
+        console.log("%c[REH Lead → Zapier]", "background:#E30613;color:#fff;padding:2px 8px;border-radius:4px;font-weight:bold", fields);
+        console.table(fields);
+      }
+    } catch (e) {}
     try {
       fetch(url, {
         method: "POST",
