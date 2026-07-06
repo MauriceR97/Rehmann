@@ -33,6 +33,16 @@ function App() {
   const open = () => setFunnelOpen(true);
   React.useEffect(() => { window.openFunnel = open; }, []);
 
+  // Direktaufruf der Funnel-URLs (z. B. /formular-kueche) → Funnel öffnen (kein 404)
+  React.useEffect(() => {
+    try {
+      const L = window.LP || {};
+      const r = L.routes || { formular: "formular-kueche", danke: "danke-formular-kueche" };
+      const path = location.pathname.replace(/^\/+|\/+$/g, "");
+      if (path === r.formular || path === r.danke) setFunnelOpen(true);
+    } catch (e) {}
+  }, []);
+
   return (
     <div>
       <Header />
