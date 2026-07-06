@@ -172,15 +172,31 @@ function AlteKuecheUpload({ data, onChange }) {
     reader.onload = (e) => {
       const img = new Image();
       img.onload = () => {
-        const maxW = 1000;
+        const maxW = 1400;
         const s = Math.min(1, maxW / img.width);
         const w = Math.round(img.width * s), h = Math.round(img.height * s);
         const c = document.createElement("canvas");
         c.width = w; c.height = h;
         c.getContext("2d").drawImage(img, 0, 0, w, h);
-        const dataUrl = c.toDataURL("image/jpeg", 0.7);
-        set({ ak_bild_name: file.name, ak_bild_data: dataUrl });
-        setBusy(false);
+        const dataUrl = c.toDataURL("image/jpeg", 0.72);
+        set({ ak_bild_name: file.name, ak_bild_data: dataUrl, ak_bild_url: "" });
+        // Echter Upload zu Cloudinary (falls konfiguriert) → feste URL
+        const up = (window.LP && window.LP.upload) || {};
+        if (up.cloudName && up.uploadPreset) {
+          c.toBlob((blob) => {
+            if (!blob) { setBusy(false); return; }
+            const fd = new FormData();
+            fd.append("file", blob, (file.name || "kueche") + ".jpg");
+            fd.append("upload_preset", up.uploadPreset);
+            if (up.folder) fd.append("folder", up.folder);
+            fetch("https://api.cloudinary.com/v1_1/" + up.cloudName + "/image/upload", { method: "POST", body: fd })
+              .then((r) => r.json())
+              .then((j) => { set({ ak_bild_name: file.name, ak_bild_data: dataUrl, ak_bild_url: (j && (j.secure_url || j.url)) || "" }); setBusy(false); })
+              .catch(() => setBusy(false));
+          }, "image/jpeg", 0.72);
+        } else {
+          setBusy(false);
+        }
       };
       img.onerror = () => setBusy(false);
       img.src = e.target.result;
@@ -203,7 +219,7 @@ function AlteKuecheUpload({ data, onChange }) {
             <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{data.ak_bild_name || "Bild"}</div>
             <div style={{ fontSize: 14, color: "var(--success)", display: "inline-flex", alignItems: "center", gap: 6 }}><I name="check-circle" size={16} /> hochgeladen</div>
           </div>
-          <button onClick={() => set({ ak_bild_name: "", ak_bild_data: "" })} aria-label="Entfernen" style={{ flex: "none", width: 38, height: 38, borderRadius: 999, border: "none", background: "var(--surface-sunken)", cursor: "pointer", color: "var(--text-strong)", display: "flex", alignItems: "center", justifyContent: "center" }}><I name="trash-2" size={18} /></button>
+          <button onClick={() => set({ ak_bild_name: "", ak_bild_data: "", ak_bild_url: "" })} aria-label="Entfernen" style={{ flex: "none", width: 38, height: 38, borderRadius: 999, border: "none", background: "var(--surface-sunken)", cursor: "pointer", color: "var(--text-strong)", display: "flex", alignItems: "center", justifyContent: "center" }}><I name="trash-2" size={18} /></button>
         </div>
       ) : (
         <button onClick={() => inputRef.current && inputRef.current.click()} onDragOver={(e) => e.preventDefault()} onDrop={onDrop}
@@ -513,7 +529,8 @@ function Funnel({ open, onClose, startView }) {
       ak_egeraete_abgeben: altData.ak_egeraete_abgeben || "",
       ak_besonderheiten: altData.ak_besonderheiten || "",
       alte_kueche_bild: altData.ak_bild_name || "",
-      alte_kueche_bild_data: (altData.ak_bild_data && altData.ak_bild_data.length < 700000) ? altData.ak_bild_data : "",
+      alte_kueche_bild_url: altData.ak_bild_url || "",
+      alte_kueche_bild_data: (!altData.ak_bild_url && altData.ak_bild_data && altData.ak_bild_data.length < 300000) ? altData.ak_bild_data : "",
       // Kampagne / Tracking (dauerhaft über REH_TRACK)
       kategorie: "Küche",
       kampagne: pick("kampagne") || pick("utm_campaign"),
@@ -553,13 +570,17 @@ function Funnel({ open, onClose, startView }) {
       seite: location.origin + location.pathname,
     };
     const body = new URLSearchParams(fields).toString();
+    // WICHTIG: KEIN keepalive (64 KB-Limit) — der Body kann mit Küchenfoto größer sein.
+    // Sichtbare Diagnose in der Konsole (hilft beim Live-Test):
+    try { console.log("%c[Rehmann] Lead wird an Zapier gesendet …", "color:#E30613;font-weight:bold", { bytes: body.length, url: url }); } catch (e) {}
     try {
       fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
         body: body,
-        keepalive: true,
-      }).catch(() => {});
+      })
+        .then(function (r) { try { console.log("%c[Rehmann] Zapier-Antwort:", "color:#1F8A5B;font-weight:bold", r.status, r.statusText); } catch (e) {} })
+        .catch(function (err) { try { console.error("[Rehmann] Zapier-Fehler:", err); } catch (e) {} });
     } catch (e) {}
   };
 
