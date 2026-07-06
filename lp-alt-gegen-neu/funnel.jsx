@@ -396,6 +396,11 @@ function Funnel({ open, onClose, startView }) {
     if (open && scrollRef.current) scrollRef.current.scrollTop = 0;
   }, [open, step]);
 
+  // Direktaufruf /danke-formular-kueche → Danke-Ansicht erzwingen (Startview kommt nach dem Mount an)
+  React.useEffect(() => {
+    if (open && startView === "danke") setStep(nQ + 1);
+  }, [open, startView]);
+
   // --- URL-Routing + Analytics für Werbeauswertung ---
   // Öffnet Funnel  -> /formular-kueche
   // Danke-Seite    -> /danke-formular-kueche
@@ -410,10 +415,9 @@ function Funnel({ open, onClose, startView }) {
       } catch (e) {}
       // Optional: virtueller Seitenaufruf für GA4 (falls gtag vorhanden)
       try { if (typeof window.gtag === "function") window.gtag("event", "page_view", { page_path: location.pathname }); } catch (e) {}
-      // Meta Pixel — mit event_id für CAPI-Deduplizierung
+      // Meta Pixel — nur Lead an Facebook (InitiateCheckout bleibt dem CRM/Angebot vorbehalten)
       try {
         if (typeof window.fbq === "function") {
-          if (name === "funnel_open") window.fbq("track", "InitiateCheckout", {}, { eventID: evid });
           if (name === "lead_submitted") window.fbq("track", "Lead", { content_name: "Alt gegen Neu" }, { eventID: evid });
         }
       } catch (e) {}
