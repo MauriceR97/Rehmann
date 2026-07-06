@@ -35,8 +35,11 @@ function Hero() {
   const frei = L.aktion.plaetzeFrei, ges = L.aktion.plaetzeGesamt;
   const vimeoId = (L.media && L.media.vimeoId) || "";
   const vimeoHash = (L.media && L.media.vimeoHash) || "";
-  const hasVideo = !!vimeoId;
-  const vimeoSrc = hasVideo
+  const selfMp4 = (L.media && L.media.heroVideoMp4) || "";
+  const selfWebm = (L.media && L.media.heroVideoWebm) || "";
+  const hasSelf = !!(selfMp4 || selfWebm);
+  const hasVideo = hasSelf || !!vimeoId;
+  const vimeoSrc = (!hasSelf && vimeoId)
     ? `https://player.vimeo.com/video/${vimeoId}?background=1&autoplay=1&loop=1&muted=1&autopause=0&dnt=1` + (vimeoHash ? `&h=${vimeoHash}` : "")
     : "";
   const [py, setPy] = useState(0);
@@ -59,13 +62,23 @@ function Hero() {
     <section style={{ background: "linear-gradient(165deg, var(--navy-500) 0%, var(--navy-600) 60%, var(--navy-700) 100%)", color: "#fff", position: "relative", overflow: "hidden" }}>
       {hasVideo && (
         <div aria-hidden="true" style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
-          <iframe
-            src={vimeoSrc} title="Drohnenflug" frameBorder="0" allow="autoplay; fullscreen"
-            style={{ position: "absolute", top: "50%", left: "50%", width: "max(100%, calc(100vh * 16 / 9))", height: "max(100%, calc(100vw * 9 / 16))", transform: `translate(-50%, calc(-50% + ${py * 0.08}px))`, border: 0, pointerEvents: "none" }}
-          />
+          <img src="lp-alt-gegen-neu/assets/haus/gebaeude.jpg" alt="" aria-hidden="true"
+            style={{ position: "absolute", top: "50%", left: "50%", width: "max(100%, calc(100vh * 16 / 9))", height: "max(100%, calc(100vw * 9 / 16))", transform: "translate(-50%, -50%)", objectFit: "cover", zIndex: 0, pointerEvents: "none" }} />
+          {isMobile ? null : hasSelf ? (
+            <video autoPlay muted loop playsInline preload="auto" poster="lp-alt-gegen-neu/assets/haus/gebaeude.jpg"
+              style={{ position: "absolute", top: "50%", left: "50%", width: "max(100%, calc(100vh * 16 / 9))", height: "max(100%, calc(100vw * 9 / 16))", transform: `translate(-50%, calc(-50% + ${py * 0.08}px))`, objectFit: "cover", border: 0, pointerEvents: "none", zIndex: 1 }}>
+              {selfWebm ? <source src={selfWebm} type="video/webm" /> : null}
+              {selfMp4 ? <source src={selfMp4} type="video/mp4" /> : null}
+            </video>
+          ) : (
+            <iframe
+              src={vimeoSrc} title="Drohnenflug" frameBorder="0" allow="autoplay; fullscreen"
+              style={{ position: "absolute", top: "50%", left: "50%", width: "max(100%, calc(100vh * 16 / 9))", height: "max(100%, calc(100vw * 9 / 16))", transform: `translate(-50%, calc(-50% + ${py * 0.08}px))`, border: 0, pointerEvents: "none", zIndex: 1 }}
+            />
+          )}
           {/* Lesbarkeits-Scrim über dem Hintergrund */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(100deg, rgba(20,32,45,0.93) 0%, rgba(20,32,45,0.78) 42%, rgba(20,32,45,0.45) 72%, rgba(20,32,45,0.30) 100%)" }} />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(20,32,45,0.55) 0%, rgba(20,32,45,0) 22%, rgba(20,32,45,0) 70%, rgba(20,32,45,0.5) 100%)" }} />
+          <div style={{ position: "absolute", inset: 0, zIndex: 2, background: "linear-gradient(100deg, rgba(20,32,45,0.93) 0%, rgba(20,32,45,0.78) 42%, rgba(20,32,45,0.45) 72%, rgba(20,32,45,0.30) 100%)" }} />
+          <div style={{ position: "absolute", inset: 0, zIndex: 2, background: "linear-gradient(180deg, rgba(20,32,45,0.55) 0%, rgba(20,32,45,0) 22%, rgba(20,32,45,0) 70%, rgba(20,32,45,0.5) 100%)" }} />
         </div>
       )}
       {hasVideo && (

@@ -25,7 +25,12 @@ window.LP = {
 
   // Hintergrund-Video im Hero (Drohnenflug von Vimeo)
   media: {
-    // Drohnenflug-Video (Hero-Hintergrund)
+    // Selbst-gehostetes Hero-Video (schnellste Ladezeit). Wenn gesetzt, wird es
+    // STATT Vimeo genutzt. Dateien hier ablegen (komprimiert, ~3–10 MB, ohne Ton):
+    //   lp-alt-gegen-neu/assets/hero-drohne.mp4  (+ optional .webm)
+    heroVideoMp4: "",
+    heroVideoWebm: "lp-alt-gegen-neu/assets/drohne-2.webm",  // 3,4 MB, selbst-gehostet
+    // Drohnenflug-Video (Hero-Hintergrund) — Fallback via Vimeo, falls kein Self-Hosted-Video
     vimeoId: "1204560290",
     // Bei „nicht gelistet"/privat zusätzlich den Hash aus der URL (…/123456789/HASH) hier eintragen:
     vimeoHash: "",
