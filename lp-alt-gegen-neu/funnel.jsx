@@ -570,17 +570,13 @@ function Funnel({ open, onClose, startView }) {
       seite: location.origin + location.pathname,
     };
     const body = new URLSearchParams(fields).toString();
-    // WICHTIG: KEIN keepalive (64 KB-Limit) — der Body kann mit Küchenfoto größer sein.
-    // Sichtbare Diagnose in der Konsole (hilft beim Live-Test):
-    try { console.log("%c[Rehmann] Lead wird an Zapier gesendet …", "color:#E30613;font-weight:bold", { bytes: body.length, url: url }); } catch (e) {}
+    // KEIN keepalive (64 KB-Limit) — der Body kann mit Küchenfoto größer sein.
     try {
       fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
         body: body,
-      })
-        .then(function (r) { try { console.log("%c[Rehmann] Zapier-Antwort:", "color:#1F8A5B;font-weight:bold", r.status, r.statusText); } catch (e) {} })
-        .catch(function (err) { try { console.error("[Rehmann] Zapier-Fehler:", err); } catch (e) {} });
+      }).catch(function () {});
     } catch (e) {}
   };
 
