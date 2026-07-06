@@ -96,7 +96,7 @@ function SwatchCard({ label, swatch, icon, selected, onClick }) {
   );
 }
 
-function QuestionStep({ frage, value, onPick, onNext, onBack, canBack }) {
+function QuestionStep({ frage, value, onPick, onNext }) {
   const isMulti = frage.type === "multi";
   const arr = value || (isMulti ? [] : null);
   const picked = (label) => isMulti ? arr.includes(label) : arr === label;
@@ -110,11 +110,13 @@ function QuestionStep({ frage, value, onPick, onNext, onBack, canBack }) {
     }
   };
   const layout = frage.layout || "list";
-  const centered = layout === "grid" || layout === "swatch";
   return (
     <div style={{ animation: "fadeUp 0.35s var(--ease-out) both" }}>
-      <h2 style={{ fontSize: 32, lineHeight: 1.15, margin: "0 0 8px", textAlign: centered ? "center" : "left" }}>{frage.titel}</h2>
-      <p style={{ fontSize: 17, color: "var(--text-muted)", margin: "0 0 26px", textAlign: centered ? "center" : "left" }}>{frage.hinweis}</p>
+      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 8 }}>
+        <span style={{ flex: "none", width: 46, height: 46, borderRadius: 12, background: "var(--surface-brand-soft)", color: "var(--reh-red)", display: "flex", alignItems: "center", justifyContent: "center" }}><I name={frage.icon} size={26} /></span>
+      </div>
+      <h2 style={{ fontSize: 34, lineHeight: 1.15, margin: "0 0 8px" }}>{frage.titel}</h2>
+      <p style={{ fontSize: 18, color: "var(--text-muted)", margin: "0 0 26px" }}>{frage.hinweis}</p>
 
       {layout === "grid" && (
         <div className="funnel-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
@@ -138,80 +140,12 @@ function QuestionStep({ frage, value, onPick, onNext, onBack, canBack }) {
         </div>
       )}
 
-      {/* Navigation: Zurück immer sichtbar (außer bei Schritt 1); Weiter nur bei Mehrfachauswahl */}
-      {(canBack || isMulti) && (
-        <div style={{ display: "flex", gap: 12, marginTop: 24, alignItems: "center" }}>
-          {canBack && (
-            <button onClick={onBack} style={{ flex: isMulti ? "none" : "0 0 auto", padding: "14px 20px", borderRadius: 14, border: "2px solid var(--border-default)", background: "#fff", cursor: "pointer", color: "var(--text-muted)", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 16, display: "inline-flex", alignItems: "center", gap: 7 }}>
-              <I name="arrow-left" size={18} /> Zurück
-            </button>
-          )}
-          {isMulti && (
-            <button onClick={onNext} disabled={arr.length === 0}
-              style={{ flex: 1, padding: 20, borderRadius: 16, border: "none", cursor: arr.length ? "pointer" : "not-allowed",
-                background: arr.length ? "var(--reh-red)" : "var(--neutral-300)", color: "#fff", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22,
-                display: "flex", alignItems: "center", justifyContent: "center", gap: 12, boxShadow: arr.length ? "0 12px 28px rgba(227,6,19,0.34)" : "none" }}>
-              Weiter <I name="arrow-right" size={24} />
-            </button>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-
-// Bild-Upload der alten Küche (Vorschau + komprimiert für den Webhook)
-function AlteKuecheUpload({ data, onChange }) {
-  const inputRef = React.useRef(null);
-  const [busy, setBusy] = React.useState(false);
-  const set = (obj) => onChange(Object.assign({}, data, obj));
-
-  const handleFile = (file) => {
-    if (!file || !/^image\//.test(file.type)) return;
-    setBusy(true);
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        const maxW = 1000;
-        const s = Math.min(1, maxW / img.width);
-        const w = Math.round(img.width * s), h = Math.round(img.height * s);
-        const c = document.createElement("canvas");
-        c.width = w; c.height = h;
-        c.getContext("2d").drawImage(img, 0, 0, w, h);
-        const dataUrl = c.toDataURL("image/jpeg", 0.7);
-        set({ ak_bild_name: file.name, ak_bild_data: dataUrl });
-        setBusy(false);
-      };
-      img.onerror = () => setBusy(false);
-      img.src = e.target.result;
-    };
-    reader.onerror = () => setBusy(false);
-    reader.readAsDataURL(file);
-  };
-
-  const onDrop = (e) => { e.preventDefault(); handleFile(e.dataTransfer.files && e.dataTransfer.files[0]); };
-  const hasImg = !!data.ak_bild_data;
-
-  return (
-    <div>
-      <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 15, color: "var(--text-strong)", marginBottom: 8 }}>Foto Ihrer aktuellen Küche (optional)</div>
-      <input ref={inputRef} type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => handleFile(e.target.files && e.target.files[0])} />
-      {hasImg ? (
-        <div style={{ display: "flex", alignItems: "center", gap: 16, background: "#fff", border: "2px solid var(--border-default)", borderRadius: 14, padding: 14 }}>
-          <img src={data.ak_bild_data} alt="Vorschau" style={{ width: 76, height: 76, objectFit: "cover", borderRadius: 10, flex: "none" }} />
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{data.ak_bild_name || "Bild"}</div>
-            <div style={{ fontSize: 14, color: "var(--success)", display: "inline-flex", alignItems: "center", gap: 6 }}><I name="check-circle" size={16} /> hochgeladen</div>
-          </div>
-          <button onClick={() => set({ ak_bild_name: "", ak_bild_data: "" })} aria-label="Entfernen" style={{ flex: "none", width: 38, height: 38, borderRadius: 999, border: "none", background: "var(--surface-sunken)", cursor: "pointer", color: "var(--text-strong)", display: "flex", alignItems: "center", justifyContent: "center" }}><I name="trash-2" size={18} /></button>
-        </div>
-      ) : (
-        <button onClick={() => inputRef.current && inputRef.current.click()} onDragOver={(e) => e.preventDefault()} onDrop={onDrop}
-          style={{ width: "100%", padding: "26px 18px", borderRadius: 14, border: "2px dashed var(--border-strong)", background: "#fff", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, color: "var(--text-muted)" }}>
-          <I name={busy ? "loader" : "upload"} size={30} color="var(--reh-red)" />
-          <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)" }}>{busy ? "Wird verarbeitet…" : "Bild auswählen oder hierher ziehen"}</span>
-          <span style={{ fontSize: 13 }}>JPG oder PNG · hilft uns bei der Prämien-Einschätzung</span>
+      {isMulti && (
+        <button onClick={onNext} disabled={arr.length === 0}
+          style={{ marginTop: 24, width: "100%", padding: 20, borderRadius: 16, border: "none", cursor: arr.length ? "pointer" : "not-allowed",
+            background: arr.length ? "var(--reh-red)" : "var(--neutral-300)", color: "#fff", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22,
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 12, boxShadow: arr.length ? "0 12px 28px rgba(227,6,19,0.34)" : "none" }}>
+          Weiter <I name="arrow-right" size={24} />
         </button>
       )}
     </div>
@@ -219,15 +153,18 @@ function AlteKuecheUpload({ data, onChange }) {
 }
 
 // Detailschritt „Ihre alte Küche" (nur wenn Tauschprämie = Ja)
-function AlteKuecheStep({ data, onChange, onNext, onBack, canBack }) {
+function AlteKuecheStep({ data, onChange, onNext }) {
   const L = window.LP;
   const cfg = L.altkueche;
   const field = { width: "100%", padding: "15px 18px", fontSize: 18, fontFamily: "var(--font-sans)", fontWeight: 500, color: "var(--text-body)", background: "#fff", border: "2px solid var(--border-default)", borderRadius: 13, outline: "none", boxSizing: "border-box", appearance: "none", cursor: "pointer" };
   const set = (k, v) => onChange(Object.assign({}, data, { [k]: v }));
   return (
     <div style={{ animation: "fadeUp 0.35s var(--ease-out) both" }}>
-      <h2 style={{ fontSize: 32, lineHeight: 1.15, margin: "0 0 8px" }}>{cfg.titel}</h2>
-      <p style={{ fontSize: 17, color: "var(--text-muted)", margin: "0 0 26px" }}>{cfg.hinweis}</p>
+      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 8 }}>
+        <span style={{ flex: "none", width: 46, height: 46, borderRadius: 12, background: "var(--surface-brand-soft)", color: "var(--reh-red)", display: "flex", alignItems: "center", justifyContent: "center" }}><I name="recycle" size={26} /></span>
+      </div>
+      <h2 style={{ fontSize: 34, lineHeight: 1.15, margin: "0 0 8px" }}>{cfg.titel}</h2>
+      <p style={{ fontSize: 18, color: "var(--text-muted)", margin: "0 0 26px" }}>{cfg.hinweis}</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         {cfg.felder.map((f) => (
           <div key={f.key} style={{ position: "relative" }}>
@@ -240,21 +177,13 @@ function AlteKuecheStep({ data, onChange, onNext, onBack, canBack }) {
         ))}
         <textarea value={data.ak_besonderheiten || ""} onChange={(e) => set("ak_besonderheiten", e.target.value)} placeholder={cfg.besonderheiten} rows={3}
           style={{ width: "100%", padding: "15px 18px", fontSize: 18, fontFamily: "var(--font-sans)", fontWeight: 500, color: "var(--text-body)", background: "#fff", border: "2px solid var(--border-default)", borderRadius: 13, outline: "none", boxSizing: "border-box", resize: "vertical" }} />
-        <AlteKuecheUpload data={data} onChange={onChange} />
       </div>
-      <div style={{ display: "flex", gap: 12, marginTop: 24 }}>
-        {canBack && (
-          <button onClick={onBack} style={{ flex: "none", padding: "14px 20px", borderRadius: 14, border: "2px solid var(--border-default)", background: "#fff", cursor: "pointer", color: "var(--text-muted)", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 16, display: "inline-flex", alignItems: "center", gap: 7 }}>
-            <I name="arrow-left" size={18} /> Zurück
-          </button>
-        )}
-        <button onClick={onNext}
-          style={{ flex: 1, padding: 20, borderRadius: 16, border: "none", cursor: "pointer",
-            background: "var(--reh-red)", color: "#fff", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22,
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 12, boxShadow: "0 12px 28px rgba(227,6,19,0.34)" }}>
-          Weiter <I name="arrow-right" size={24} />
-        </button>
-      </div>
+      <button onClick={onNext}
+        style={{ marginTop: 24, width: "100%", padding: 20, borderRadius: 16, border: "none", cursor: "pointer",
+          background: "var(--reh-red)", color: "#fff", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22,
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 12, boxShadow: "0 12px 28px rgba(227,6,19,0.34)" }}>
+        Weiter <I name="arrow-right" size={24} />
+      </button>
     </div>
   );
 }
@@ -445,8 +374,7 @@ function Funnel({ open, onClose }) {
       ak_form: altData.ak_form || "",
       ak_egeraete_abgeben: altData.ak_egeraete_abgeben || "",
       ak_besonderheiten: altData.ak_besonderheiten || "",
-      alte_kueche_bild: altData.ak_bild_name || "",
-      alte_kueche_bild_data: (altData.ak_bild_data && altData.ak_bild_data.length < 700000) ? altData.ak_bild_data : "",
+      alte_kueche_bild: "",
       // Kampagne / Tracking
       kategorie: "Küche",
       kampagne: q.kampagne || q.utm_campaign || "",
@@ -500,12 +428,10 @@ function Funnel({ open, onClose }) {
               value={answers[fragen[view.i].key]}
               onPick={(v) => setAnswers(a => ({ ...a, [fragen[view.i].key]: v }))}
               onNext={() => setStep(s => s + 1)}
-              onBack={back}
-              canBack={step > 0}
             />
           )}
           {isAlt && (
-            <AlteKuecheStep data={altData} onChange={setAltData} onNext={() => setStep(s => s + 1)} onBack={back} canBack={step > 0} />
+            <AlteKuecheStep data={altData} onChange={setAltData} onNext={() => setStep(s => s + 1)} />
           )}
           {isForm && <LeadForm onSubmit={(d) => { sendLead(d); setLead(d); setStep(s => s + 1); window.scrollTo(0,0); }} />}
           {isThanks && <ThankYou data={lead} onClose={onClose} />}
