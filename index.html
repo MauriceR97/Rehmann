@@ -5,11 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Alt gegen Neu – bis zu 3.000 € Tauschprämie | Interliving Rehmann Küchen</title>
 <meta name="description" content="Wir nehmen Ihre alte Küche in Zahlung: bis zu 3.000 € Tauschprämie, kostenloser Abbau & Mitnahme, Lieferung & Montage inklusive, 0 % Finanzierung. Jetzt unverbindlich sichern.">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=20260706e">
-<link rel="icon" type="image/png" sizes="512x512" href="favicon.png?v=20260706e">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20260706e">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=20260706h">
+<link rel="icon" type="image/png" sizes="512x512" href="favicon.png?v=20260706h">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20260706h">
 <meta name="ext-resource-dependency" content="https://consent.cookiebot.com/uc.js">
 <meta name="ext-resource-dependency" content="https://static.elfsight.com/platform/platform.js">
+<meta name="ext-resource-dependency" content="https://connect.facebook.net/en_US/fbevents.js">
+<!-- First-Party Ad-Tracking (hält fbclid/utm dauerhaft fest) — muss FRÜH laden -->
+<script src="lp-alt-gegen-neu/tracking.js?v=20260706h"></script>
 <!-- Cookiebot CMP (auto-blocking) + Elfsight — dynamisch injiziert (Cookiebot zuerst) -->
 <script>
 (function () {
@@ -25,6 +28,12 @@
   el.async = true;
   document.head.appendChild(el);
 })();
+</script>
+<!-- Meta Pixel (Conversions API: Deduplizierung via event_id) -->
+<script>
+  window.REH_PIXEL_ID = "1397306551180465"; // Meta Pixel-ID
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  if (window.REH_PIXEL_ID) { try { fbq('init', window.REH_PIXEL_ID); fbq('track', 'PageView'); } catch (e) {} }
 </script>
 <link rel="stylesheet" href="styles.css">
 <style>
@@ -142,15 +151,15 @@
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-  <script src="image-slot.js?v=20260706d"></script>
-  <script src="lp-alt-gegen-neu/config.js?v=20260706d"></script>
+  <script src="image-slot.js?v=20260706h"></script>
+  <script src="lp-alt-gegen-neu/config.js?v=20260706h"></script>
 
-  <script type="text/babel" src="lp-alt-gegen-neu/ui.jsx?v=20260706d"></script>
-  <script type="text/babel" src="lp-alt-gegen-neu/sections1.jsx?v=20260706d"></script>
-  <script type="text/babel" src="lp-alt-gegen-neu/sections2.jsx?v=20260706d"></script>
-  <script type="text/babel" src="lp-alt-gegen-neu/sections3.jsx?v=20260706d"></script>
-  <script type="text/babel" src="lp-alt-gegen-neu/funnel.jsx?v=20260706d"></script>
-  <script type="text/babel" src="lp-alt-gegen-neu/app.jsx?v=20260706d"></script>
+  <script type="text/babel" src="lp-alt-gegen-neu/ui.jsx?v=20260706h"></script>
+  <script type="text/babel" src="lp-alt-gegen-neu/sections1.jsx?v=20260706h"></script>
+  <script type="text/babel" src="lp-alt-gegen-neu/sections2.jsx?v=20260706h"></script>
+  <script type="text/babel" src="lp-alt-gegen-neu/sections3.jsx?v=20260706h"></script>
+  <script type="text/babel" src="lp-alt-gegen-neu/funnel.jsx?v=20260706h"></script>
+  <script type="text/babel" src="lp-alt-gegen-neu/app.jsx?v=20260706h"></script>
 
   <script type="text/babel">
     function mount() {
