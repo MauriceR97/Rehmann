@@ -366,10 +366,12 @@ function ThankYou({ data, onClose }) {
   );
 }
 
-function Funnel({ open, onClose }) {
+function Funnel({ open, onClose, startView }) {
   const L = window.LP;
   const fragen = L.fragen;
-  const [step, setStep] = React.useState(0);
+  const nQ0 = fragen.length;
+  // Direktaufruf /danke-formular-kueche → direkt die Danke-Ansicht zeigen (kein Sprung ins Formular)
+  const [step, setStep] = React.useState(() => (startView === "danke" ? nQ0 + 1 : 0));
   const [answers, setAnswers] = React.useState({});
   const [altData, setAltData] = React.useState({});
   const [lead, setLead] = React.useState(null);
@@ -386,7 +388,8 @@ function Funnel({ open, onClose }) {
   const scrollRef = React.useRef(null);
   const baseUrl = React.useRef(null);
   const firedOpen = React.useRef(false);
-  const firedLead = React.useRef(false);
+  // Bei Direktaufruf der Danke-Seite KEIN falsches Conversion-Event feuern
+  const firedLead = React.useRef(startView === "danke");
 
   React.useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -539,13 +542,6 @@ function Funnel({ open, onClose }) {
       seite: location.origin + location.pathname,
     };
     const body = new URLSearchParams(fields).toString();
-    // Debug-Modus: ?debug=1 in der URL → Payload in der Konsole ausgeben
-    try {
-      if (/[?&]debug=1\b/.test(location.search) || localStorage.getItem("reh_debug") === "1") {
-        console.log("%c[REH Lead → Zapier]", "background:#E30613;color:#fff;padding:2px 8px;border-radius:4px;font-weight:bold", fields);
-        console.table(fields);
-      }
-    } catch (e) {}
     try {
       fetch(url, {
         method: "POST",

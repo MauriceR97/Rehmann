@@ -30,7 +30,8 @@ function StickyCTA({ onOpen }) {
 
 function App() {
   const [funnelOpen, setFunnelOpen] = React.useState(false);
-  const open = () => setFunnelOpen(true);
+  const [startView, setStartView] = React.useState(null);
+  const open = () => { setStartView(null); setFunnelOpen(true); };
   React.useEffect(() => { window.openFunnel = open; }, []);
 
   // Direktaufruf der Funnel-URLs (z. B. /formular-kueche) → Funnel öffnen (kein 404)
@@ -39,7 +40,8 @@ function App() {
       const L = window.LP || {};
       const r = L.routes || { formular: "formular-kueche", danke: "danke-formular-kueche" };
       const path = location.pathname.replace(/^\/+|\/+$/g, "");
-      if (path === r.formular || path === r.danke) setFunnelOpen(true);
+      if (path === r.danke) { setStartView("danke"); setFunnelOpen(true); }
+      else if (path === r.formular) { setStartView(null); setFunnelOpen(true); }
     } catch (e) {}
   }, []);
 
@@ -70,7 +72,7 @@ function App() {
       <Kleingedrucktes />
       <Footer />
       <StickyCTA onOpen={open} />
-      <Funnel open={funnelOpen} onClose={() => setFunnelOpen(false)} />
+      <Funnel open={funnelOpen} startView={startView} onClose={() => setFunnelOpen(false)} />
     </div>
   );
 }
