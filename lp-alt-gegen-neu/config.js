@@ -49,8 +49,8 @@ window.LP = {
   // Zapier Catch Hook — Lead-Daten werden hierhin per POST gesendet
   zapierWebhook: "https://hooks.zapier.com/hooks/catch/18583379/42v7xyd/",
   kontakt: {
-    telefon: "02051 9640-131",
-    telefonHref: "+4920519640131",
+    telefon: "02051 9640-515",
+    telefonHref: "+4920519640515",
     web: "kuechen-rehmann.de",
     adresse: "Flandersbacher Weg 2, 42549 Velbert",
     oeffnung: "Mo.–Sa. 10–19 Uhr",
