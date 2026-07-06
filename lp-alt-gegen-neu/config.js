@@ -48,6 +48,14 @@ window.LP = {
 
   // Zapier Catch Hook — Lead-Daten werden hierhin per POST gesendet
   zapierWebhook: "https://hooks.zapier.com/hooks/catch/18583379/42v7xyd/",
+
+  // Bild-Upload für Foto der alten Küche (Cloudinary Unsigned Upload)
+  // ▼ Beide Werte aus deinem Cloudinary-Konto eintragen (Settings → Upload → Unsigned preset):
+  upload: {
+    cloudName: "wxypghzz",
+    uploadPreset: "alt-gegen-neu",    // muss in Cloudinary als UNSIGNED Preset existieren
+    folder: "alt-gegen-neu",
+  },
   kontakt: {
     telefon: "02051 9640-515",
     telefonHref: "+4920519640515",
