@@ -441,7 +441,12 @@ function Funnel({ open, onClose, startView }) {
       // Meta Pixel — nur Lead an Facebook (InitiateCheckout bleibt dem CRM/Angebot vorbehalten)
       try {
         if (typeof window.fbq === "function") {
-          if (name === "lead_submitted") window.fbq("track", "Lead", { content_name: "Alt gegen Neu" }, { eventID: evid });
+          if (name === "lead_submitted") {
+            // SPA: kein echter Seitenaufruf -> PageView manuell feuern, damit
+            // URL-basierte Custom Conversions (/danke-formular-kueche) greifen
+            window.fbq("track", "PageView");
+            window.fbq("track", "Lead", { content_name: "Alt gegen Neu" }, { eventID: evid });
+          }
         }
       } catch (e) {}
     };
