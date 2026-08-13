@@ -16,11 +16,13 @@
         "patterns": [
           {
             "group": [
+              "aktionen/alt-gegen-neu-kueche/lp/**",
               "components/core/**",
               "components/forms/**",
               "components/surfaces/**",
               "image-slot.js",
-              "lp-alt-gegen-neu/**",
+              "pages/raeumungsverkauf/**",
+              "raeumungsverkauf/**",
               "ui_kits/moebelhaus/**"
             ],
             "message": "Import design-system components from 'index.js', not component internals."

@@ -63,13 +63,13 @@ function Hero() {
       {hasVideo && (
         <div aria-hidden="true" style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
           {hasSelf ? (
-            <video autoPlay muted loop playsInline preload={isMobile ? "metadata" : "auto"} poster="lp/assets/rehmann-heroshot-1.webp"
+            <video autoPlay muted loop playsInline preload={isMobile ? "metadata" : "auto"} poster="lp-alt-gegen-neu/assets/rehmann-heroshot-1.webp"
               style={{ position: "absolute", top: "50%", left: "50%", width: "max(100%, calc(100vh * 16 / 9))", height: "max(100%, calc(100vw * 9 / 16))", transform: `translate(-50%, calc(-50% + ${py * 0.08}px))`, objectFit: "cover", border: 0, pointerEvents: "none", zIndex: 1 }}>
               {selfWebm ? <source src={selfWebm} type="video/webm" /> : null}
               {selfMp4 ? <source src={selfMp4} type="video/mp4" /> : null}
             </video>
           ) : isMobile ? (
-            <img src="lp/assets/rehmann-heroshot-1.webp" alt="" aria-hidden="true"
+            <img src="lp-alt-gegen-neu/assets/rehmann-heroshot-1.webp" alt="" aria-hidden="true"
               style={{ position: "absolute", top: "50%", left: "50%", width: "max(100%, calc(100vh * 16 / 9))", height: "max(100%, calc(100vw * 9 / 16))", transform: "translate(-50%, -50%)", objectFit: "cover", zIndex: 1, pointerEvents: "none" }} />
           ) : (
             <iframe

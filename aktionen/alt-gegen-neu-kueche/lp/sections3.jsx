@@ -128,7 +128,7 @@ function Vergleich() {
         </p>
       </Reveal>
       <Reveal style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 26, marginBottom: 30 }} className="calc-grid">
-        {[{ id: "lp-vorher", lab: "Vorher", icon: "image", note: "Ihre alte Küche", neg: true, img: "lp/assets/vergleich-alt.webp" }, { id: "lp-nachher", lab: "Nachher", icon: "sparkles", note: "Ihre neue Traumküche", neg: false, img: "lp/assets/vergleich-neu.webp" }].map((b) => (
+        {[{ id: "lp-vorher", lab: "Vorher", icon: "image", note: "Ihre alte Küche", neg: true, img: "lp-alt-gegen-neu/assets/vergleich-alt.webp" }, { id: "lp-nachher", lab: "Nachher", icon: "sparkles", note: "Ihre neue Traumküche", neg: false, img: "lp-alt-gegen-neu/assets/vergleich-neu.webp" }].map((b) => (
           <div key={b.id} style={{ position: "relative", borderRadius: 18, overflow: "hidden", aspectRatio: "16/11", background: "var(--neutral-150)", border: b.neg ? "1px solid var(--border-subtle)" : "2px solid var(--reh-red)" }}>
             <img src={b.img} alt={b.note} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             <span style={{ position: "absolute", top: 14, left: 14, display: "inline-flex", alignItems: "center", gap: 7, background: b.neg ? "var(--navy-600)" : "var(--reh-red)", color: "#fff", fontWeight: 800, fontSize: 14, textTransform: "uppercase", letterSpacing: "0.06em", padding: "7px 13px", borderRadius: 999 }}><I name={b.icon} size={16} /> {b.lab}</span>
@@ -197,7 +197,7 @@ function Prozess() {
       </Reveal>
       <div style={{ display: "grid", gridTemplateColumns: "0.85fr 1.15fr", gap: 46, alignItems: "start", marginTop: 44, maxWidth: 1040, marginLeft: "auto", marginRight: "auto" }} className="calc-grid">
         <Reveal className="prozess-media" style={{ position: "sticky", top: 90 }}>
-          <img src="lp/assets/montage-team.png" alt="Hauseigenes Montageteam baut die neue Küche auf und nimmt die alte mit" loading="lazy" style={{ width: "100%", height: "auto", display: "block" }} />
+          <img src="lp-alt-gegen-neu/assets/montage-team.png" alt="Hauseigenes Montageteam baut die neue Küche auf und nimmt die alte mit" loading="lazy" style={{ width: "100%", height: "auto", display: "block" }} />
         </Reveal>
         <div>
         {steps.map((s, i) => (
@@ -641,8 +641,8 @@ function Verwandlung() {
     // Video komplett als Blob laden → garantiert vollständig seekbar
     const loadFilm = async () => {
       const sources = [
-        { src: "lp/assets/kueche-transform.webm", type: "video/webm" },
-        { src: "lp/assets/kueche-transform.mp4", type: "video/mp4" },
+        { src: "lp-alt-gegen-neu/assets/kueche-transform.webm", type: "video/webm" },
+        { src: "lp-alt-gegen-neu/assets/kueche-transform.mp4", type: "video/mp4" },
       ];
       for (const s of sources) {
         if (!film.canPlayType || film.canPlayType(s.type)) {
@@ -717,10 +717,10 @@ function Verwandlung() {
           <h2 style={{ fontSize: 40, margin: "10px 0 0", color: "var(--text-strong)" }}>Erleben Sie die Verwandlung</h2>
           <p style={{ fontSize: 17, color: "var(--text-muted)", margin: "8px 0 0" }}>Scrollen Sie – und sehen Sie zu, wie die alte Küche zur Traumküche wird.</p>
         </div>
-        <video ref={filmRef} className="kx-film" muted playsInline preload="auto" poster="lp/assets/kueche-poster.png"
+        <video ref={filmRef} className="kx-film" muted playsInline preload="auto" poster="lp-alt-gegen-neu/assets/kueche-poster.png"
           style={{ width: "min(92vw, 1100px)", aspectRatio: "3 / 2", objectFit: "contain", display: "block" }}>
-          <source src="lp/assets/kueche-transform.webm" type="video/webm" />
-          <source src="lp/assets/kueche-transform.mp4" type="video/mp4" />
+          <source src="lp-alt-gegen-neu/assets/kueche-transform.webm" type="video/webm" />
+          <source src="lp-alt-gegen-neu/assets/kueche-transform.mp4" type="video/mp4" />
         </video>
       </div>
     </section>
