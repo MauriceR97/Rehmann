@@ -1,5 +1,13 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/aktionen/alt-gegen-neu-kueche/:slug*", "destination": "/aktionen/alt-gegen-neu-kueche/index.html" },
+    { "source": "/formular-kueche", "destination": "/aktionen/alt-gegen-neu-kueche/index.html" },
+    { "source": "/danke-formular-kueche", "destination": "/aktionen/alt-gegen-neu-kueche/index.html" },
+    { "source": "/raeumungsverkauf/:slug*", "destination": "/raeumungsverkauf/index.html" }
+  ],
+  "redirects": [
+    { "source": "/alt-gegen-neu", "destination": "/aktionen/alt-gegen-neu-kueche", "permanent": false }
   ]
 }
