@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<!-- Basis-Pfad dieser Aktion: macht alle relativen Pfade unabhaengig vom Trailing-Slash -->
+<base href="/aktionen/raeumungsverkauf/">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Räumungsverkauf – Möbel Rehmann</title>
+<link rel="stylesheet" href="../styles.css">
+<style>
+  html, body { max-width: 100%; overflow-x: clip; }
+  body { margin: 0; background: var(--surface-page); font-family: var(--font-sans, "Fira Sans", Arial, sans-serif); }
+  a { color: var(--reh-red); }
+  a:hover { color: var(--red-600); }
+  @keyframes rvTicker { from { transform: translateX(0); } to { transform: translateX(-33.333%); } }
+  @media (prefers-reduced-motion: reduce) { [style*="rvTicker"] { animation: none !important; } }
+  .rv-cats::-webkit-scrollbar { display: none; }
+  @media (max-width: 720px) {
+    .fav-label { display: none !important; }
+    .rv-fav { padding: 0 !important; width: 40px !important; height: 40px !important; border-radius: 999px !important; justify-content: center !important; }
+    .rv-modal { max-width: 100% !important; width: 100% !important; height: 94vh !important; max-height: 94vh !important; border-radius: 16px 16px 0 0 !important; display: flex !important; flex-direction: column !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; }
+    .rv-modal-img { flex: 0 0 auto !important; height: auto !important; min-height: 0 !important; }
+    .rv-modal-img > div:first-child { height: 46vh !important; flex: 0 0 auto !important; }
+    .rv-modal-body { flex: 1 1 auto !important; overflow: visible !important; min-height: 0 !important; }
+    .rv-modal-cta { position: sticky !important; bottom: 0 !important; margin-top: 18px !important; z-index: 3; box-shadow: 0 -10px 18px rgba(255,255,255,0.95); }
+    .rv-modal-body { padding: 20px 20px 26px !important; }
+    .rv-cats { justify-content: flex-start !important; gap: 8px !important; padding: 0 22px !important; scroll-padding-left: 22px; }
+    .rv-cats-wrap::after { content: "\203A"; position: absolute; top: 36px; right: 0; transform: translateY(-50%); pointer-events: none; font-family: var(--font-display); font-weight: 800; font-size: 34px; line-height: 1; color: var(--reh-red); }
+    .rv-cats-wrap::before { content: "\2039"; position: absolute; top: 36px; left: 0; transform: translateY(-50%); z-index: 2; pointer-events: none; font-family: var(--font-display); font-weight: 800; font-size: 34px; line-height: 1; color: var(--reh-red); }
+    .rv-foot, .vorteil-grid { grid-template-columns: 1fr !important; }
+    /* Hero kompakter */
+    .hero-wrap { padding: 26px 16px 30px !important; }
+    .hero-kicker { font-size: 12px !important; letter-spacing: 0.16em !important; margin-bottom: 8px !important; }
+    .hero-deals { grid-template-columns: 1fr 1fr 1fr !important; gap: 8px !important; margin-top: 20px !important; }
+    .deal-box { min-height: 0 !important; padding: 12px 10px 13px !important; border-top-width: 4px !important; }
+    .deal-box > div:first-child { font-size: 10px !important; letter-spacing: 0.06em !important; }
+    .deal-box span:first-of-type { font-size: 30px !important; }
+    .deal-box span:last-of-type { font-size: 13px !important; }
+    .deal-box > div:last-child { font-size: 11px !important; margin-top: 6px !important; line-height: 1.25 !important; }
+    /* Kategorien: eine scrollbare Zeile */
+    .rv-cats { flex-wrap: nowrap !important; overflow-x: auto !important; justify-content: flex-start !important; margin: 6px -16px 26px !important; padding: 2px 16px 8px !important; scrollbar-width: none; }
+      .rv-cats button { flex: 0 0 auto !important; padding: 0 !important; font-size: 13px !important; }
+    .rv-cat { width: calc((100% - 16px) / 3) !important; min-width: 0 !important; flex: 0 0 calc((100% - 16px) / 3) !important; }
+    .rv-cat-img { width: 72px !important; height: 72px !important; margin: 0 auto !important; }
+    /* Artikel: 2 Spalten → weniger Scrollen */
+    .rv-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+    /* Anfahrt: einspaltig */
+    .rv-visit { grid-template-columns: 1fr !important; gap: 24px !important; }
+    /* Suche/Sortierung: gestapelt, volle Breite */
+    .rv-tools { flex-direction: column !important; align-items: stretch !important; }
+    .rv-hsearch { order: 3; flex: 1 1 100% !important; max-width: 100% !important; margin-top: 10px; }
+    .rv-tools select { width: 100% !important; }
+  }
+</style>
+  <script src="https://static.elfsight.com/platform/platform.js" async></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.min.js"></script>
+  <script src="config.js?v=20260813a"></script>
+  <script type="text/babel" src="app.jsx?v=20260813a"></script>
+</body>
+</html>
