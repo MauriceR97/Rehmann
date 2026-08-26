@@ -173,6 +173,17 @@ function DetailModal({ artikel, onClose, onReserve }) {
             <span>Ausstellungsstück aus unserer {artikel.abteilung}-Abteilung – original wie ausgestellt.</span>
           </div>
 
+          {!(sold || reserved) && (
+            <div style={{ borderTop: "1px solid var(--border-subtle)", paddingTop: 16, marginBottom: 20 }}>
+              <div style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 600, fontSize: 14, color: "var(--text-strong)", marginBottom: 10 }}>Artikel jetzt anfragen</div>
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                <button onClick={() => onReserve(artikel)} style={{ flex: "1 1 150px", padding: "12px 14px", borderRadius: 10, border: "none", background: "var(--reh-red)", color: "#fff", fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 700, fontSize: 14.5, cursor: "pointer" }}>Anfrage senden</button>
+                <a href={"https://api.whatsapp.com/send/?phone=" + RV.kontakt.whatsapp + "&text=" + encodeURIComponent("Hallo, ich interessiere mich für: " + artikel.name + " (" + artikel.id + ")")} target="_blank" rel="noopener" style={{ flex: "1 1 130px", textAlign: "center", padding: "12px 14px", borderRadius: 10, background: "#25D366", color: "#fff", fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 700, fontSize: 14.5, textDecoration: "none" }}>WhatsApp</a>
+                <a href={"tel:" + RV.kontakt.telefonHref} style={{ flex: "1 1 130px", textAlign: "center", padding: "12px 14px", borderRadius: 10, background: "#1A1A1A", color: "#fff", fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 700, fontSize: 14.5, textDecoration: "none" }}>☎ Anrufen</a>
+              </div>
+            </div>
+          )}
+
           <div style={{ borderTop: "1px solid var(--border-subtle)", paddingTop: 16, marginBottom: 6, display: "flex", alignItems: "center", gap: 10, fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 18, color: "var(--text-strong)" }}>
             <span style={{ fontSize: 22 }}>📦</span> Verfügbarkeit
           </div>
@@ -192,7 +203,7 @@ function DetailModal({ artikel, onClose, onReserve }) {
 
           {(sold || reserved)
             ? <div className="rv-modal-cta" style={{ marginTop: "auto", width: "100%", padding: 16, textAlign: "center", background: "var(--neutral-200)", color: "var(--text-muted)", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 16 }}>{sold ? "Bereits verkauft" : "Aktuell reserviert"}</div>
-            : <button className="rv-modal-cta" onClick={() => onReserve(artikel)} style={{ marginTop: "auto", width: "100%", padding: 16, borderRadius: 12, border: "none", background: "var(--reh-red)", color: "#fff", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 17, cursor: "pointer" }}>Verfügbarkeit prüfen & anfragen</button>}
+            : <button className="rv-modal-cta" onClick={() => onReserve(artikel)} style={{ marginTop: "auto", width: "100%", padding: 16, borderRadius: 12, border: "none", background: "var(--reh-red)", color: "#fff", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 17, cursor: "pointer" }}>Anfrage senden</button>}
         </div>
       </div>
     </div>
@@ -215,7 +226,7 @@ function ReserveModal({ artikel, onClose, onConfirm }) {
           <a href={"tel:" + RV.kontakt.telefonHref} style={{ flex: 1, textAlign: "center", padding: "13px", borderRadius: 10, background: "#1A1A1A", color: "#fff", fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 700, fontSize: 15, textDecoration: "none" }}>☎ Anrufen</a>
           <a href={"https://wa.me/" + RV.kontakt.whatsapp + "?text=" + waText} target="_blank" rel="noopener" style={{ flex: 1, textAlign: "center", padding: "13px", borderRadius: 10, background: "#25D366", color: "#fff", fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 700, fontSize: 15, textDecoration: "none" }}>✆ WhatsApp</a>
         </div>
-        <div style={{ textAlign: "center", fontSize: 13, color: "var(--text-subtle)", margin: "0 0 14px" }}>oder Rückruf anfragen:</div>
+        <div style={{ textAlign: "center", fontSize: 13, color: "var(--text-subtle)", margin: "0 0 14px" }}>oder Anfrage senden – wir melden uns direkt:</div>
         <div style={{ display: "flex", gap: 10 }}>
           <input style={field} placeholder="Vorname *" value={f.vorname} onChange={set("vorname")} autoComplete="given-name" />
           <input style={field} placeholder="Nachname *" value={f.nachname} onChange={set("nachname")} autoComplete="family-name" />
@@ -226,7 +237,7 @@ function ReserveModal({ artikel, onClose, onConfirm }) {
           <input type="checkbox" checked={f.consent} onChange={set("consent")} style={{ width: 20, height: 20, marginTop: 2, accentColor: "var(--reh-red)", flex: "none" }} />
           <span style={{ fontSize: 13.5, lineHeight: 1.5, color: "var(--text-body)" }}>Ich habe die <a href="https://www.moebel-rehmann.de/informationen/datenschutz/" target="_blank" rel="noopener" style={{ color: "var(--reh-red)" }}>Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu. *</span>
         </label>
-        <button onClick={() => { if (valid && !sending) { setSending(true); onConfirm(f); } }} disabled={!valid || sending} style={{ width: "100%", padding: 16, borderRadius: 12, border: "none", background: (valid && !sending) ? "var(--reh-red)" : "var(--neutral-300)", color: "#fff", fontWeight: 800, fontSize: 17, cursor: (valid && !sending) ? "pointer" : "not-allowed", marginTop: 4 }}>{sending ? "Wird gesendet…" : "Anfragen"}</button>
+        <button onClick={() => { if (valid && !sending) { setSending(true); onConfirm(f); } }} disabled={!valid || sending} style={{ width: "100%", padding: 16, borderRadius: 12, border: "none", background: (valid && !sending) ? "var(--reh-red)" : "var(--neutral-300)", color: "#fff", fontWeight: 800, fontSize: 17, cursor: (valid && !sending) ? "pointer" : "not-allowed", marginTop: 4 }}>{sending ? "Wird gesendet…" : "Anfrage senden"}</button>
         <button onClick={onClose} style={{ width: "100%", padding: 12, borderRadius: 10, border: "none", background: "transparent", color: "var(--text-muted)", fontWeight: 600, fontSize: 14, cursor: "pointer", marginTop: 8 }}>Abbrechen</button>
         <div style={{ marginTop: 10, paddingTop: 14, borderTop: "1px solid var(--border-subtle)", fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 300, fontSize: 13.5, lineHeight: 1.55, color: "var(--text-muted)", textAlign: "center" }}>Oder einfach vorbeikommen: {RV.kontakt.ort} · {RV.kontakt.oeffnung}. Unser Team berät Sie gerne direkt vor Ort.</div>
       </div>
@@ -340,7 +351,7 @@ function App() {
       } catch (e) {}
     }
     setModal(null);
-    setToast("Anfrage für „" + art.name + "“ gesendet – wir melden uns telefonisch!");
+    setToast("Anfrage für „" + art.name + "“ gesendet – wir melden uns direkt bei Ihnen!");
     setTimeout(() => setToast(""), 4000);
   };
 
