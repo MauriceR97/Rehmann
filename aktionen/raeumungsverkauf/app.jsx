@@ -111,6 +111,7 @@ function ArtikelCard({ a, onDetail, onReserve, isFav, onToggleFav }) {
 function DetailModal({ artikel, onClose, onReserve }) {
   const bilder = (artikel.bilder && artikel.bilder.length) ? artikel.bilder : (artikel.img ? [artikel.img] : []);
   const [idx, setIdx] = useState(0);
+  const [zoom, setZoom] = useState(false);
   const sold = artikel.status === "verkauft";
   const reserved = artikel.status === "reserviert";
   const go = (d) => setIdx((i) => (i + d + bilder.length) % bilder.length);
@@ -126,6 +127,7 @@ function DetailModal({ artikel, onClose, onReserve }) {
         <div className="rv-modal-img" style={{ background: "#F4F3F1", position: "relative", display: "flex", flexDirection: "column", minHeight: 0 }}>
           <div style={{ position: "relative", flex: 1, minHeight: 0, background: "#F4F3F1", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
             {bilder[idx] && <img src={bilder[idx] + "?v=3"} alt={artikel.name} decoding="async" fetchpriority="high" style={{ maxWidth: "100%", maxHeight: "100%", width: "auto", height: "auto", objectFit: "contain", display: "block" }} />}
+            {bilder[idx] && <button onClick={() => setZoom(true)} aria-label="Bild vergrößern" title="Bild vergrößern" style={{ position: "absolute", bottom: 10, right: 10, width: 38, height: 38, borderRadius: 999, border: "none", background: "rgba(255,255,255,0.94)", color: "var(--text-strong)", fontSize: 17, cursor: "pointer", boxShadow: "var(--shadow-sm)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>⤢</button>}
             {bilder.length > 1 && <React.Fragment>
               <button onClick={() => go(-1)} aria-label="Zurück" style={{ position: "absolute", top: "50%", left: 10, transform: "translateY(-50%)", width: 42, height: 42, borderRadius: 999, border: "none", background: "rgba(255,255,255,0.92)", color: "var(--text-strong)", fontSize: 20, cursor: "pointer", boxShadow: "var(--shadow-sm)" }}>‹</button>
               <button onClick={() => go(1)} aria-label="Weiter" style={{ position: "absolute", top: "50%", right: 10, transform: "translateY(-50%)", width: 42, height: 42, borderRadius: 999, border: "none", background: "rgba(255,255,255,0.92)", color: "var(--text-strong)", fontSize: 20, cursor: "pointer", boxShadow: "var(--shadow-sm)" }}>›</button>
@@ -206,6 +208,17 @@ function DetailModal({ artikel, onClose, onReserve }) {
             </div>
           </div>
 
+          {zoom && bilder[idx] && (
+            <div onClick={() => setZoom(false)} style={{ position: "fixed", inset: 0, zIndex: 200, background: "rgba(0,0,0,0.92)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
+              <img src={bilder[idx] + "?v=3"} alt={artikel.name} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", display: "block" }} />
+              <button onClick={(e) => { e.stopPropagation(); setZoom(false); }} aria-label="Schließen" style={{ position: "fixed", top: 14, right: 14, width: 42, height: 42, borderRadius: 999, border: "none", background: "var(--reh-red)", color: "#fff", fontSize: 20, fontWeight: 700, cursor: "pointer" }}>✕</button>
+              {bilder.length > 1 && <React.Fragment>
+                <button onClick={(e) => { e.stopPropagation(); go(-1); }} aria-label="Zurück" style={{ position: "fixed", top: "50%", left: 10, transform: "translateY(-50%)", width: 46, height: 46, borderRadius: 999, border: "none", background: "rgba(255,255,255,0.9)", fontSize: 22, cursor: "pointer" }}>‹</button>
+                <button onClick={(e) => { e.stopPropagation(); go(1); }} aria-label="Weiter" style={{ position: "fixed", top: "50%", right: 10, transform: "translateY(-50%)", width: 46, height: 46, borderRadius: 999, border: "none", background: "rgba(255,255,255,0.9)", fontSize: 22, cursor: "pointer" }}>›</button>
+                <span style={{ position: "fixed", bottom: 16, left: "50%", transform: "translateX(-50%)", background: "rgba(255,255,255,0.9)", color: "var(--text-strong)", fontSize: 13, padding: "5px 12px", borderRadius: 999 }}>{idx + 1} / {bilder.length}</span>
+              </React.Fragment>}
+            </div>
+          )}
           {(sold || reserved)
             ? <div className="rv-modal-cta" style={{ marginTop: "auto", width: "100%", padding: 16, textAlign: "center", background: "var(--neutral-200)", color: "var(--text-muted)", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 16 }}>{sold ? "Bereits verkauft" : "Aktuell reserviert"}</div>
             : <button className="rv-modal-cta" onClick={() => onReserve(artikel)} style={{ marginTop: "auto", width: "100%", padding: 16, borderRadius: 12, border: "none", background: "var(--reh-red)", color: "#fff", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 17, cursor: "pointer" }}>Anfrage senden</button>}
