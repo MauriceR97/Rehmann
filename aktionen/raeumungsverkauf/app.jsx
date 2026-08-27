@@ -386,11 +386,21 @@ function App() {
         datenschutz_ok: form.consent ? "ja" : "nein",
         seite: location.origin + location.pathname,
         zeitstempel: new Date().toISOString(),
+        event_name: "Lead",
+        action_source: "website",
+        event_source_url: location.origin + location.pathname,
+        client_user_agent: navigator.userAgent || "",
       };
       try {
         fetch(url, { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" }, body: new URLSearchParams(fields).toString() }).catch(function () {});
       } catch (e) {}
     }
+    // --- Conversion-Tracking ---
+    var evid = "rv-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
+    try { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: "lead_submitted", event_id: evid, artikel: art.name, artikel_id: art.id, wert: art.neu || 0 }); } catch (e) {}
+    try { if (typeof window.fbq === "function") window.fbq("track", "Lead", { content_name: art.name, content_ids: [art.id], value: art.neu || 0, currency: "EUR" }, { eventID: evid }); } catch (e) {}
+    try { if (typeof window.gtag === "function") window.gtag("event", "conversion", { send_to: "AW-1025569671", value: art.neu || 0, currency: "EUR", transaction_id: evid }); } catch (e) {}
+
     setModal(null);
     setToast("Anfrage für „" + art.name + "“ gesendet – wir melden uns direkt bei Ihnen!");
     setTimeout(() => setToast(""), 4000);
