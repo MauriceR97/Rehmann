@@ -11,8 +11,8 @@ window.RVLP = {
   siegelUrl: "https://onecdn.io/media/8fcf1df0-50ac-4adc-8369-c8210d1bc53d/xlg",
   zapierWebhook: "https://hooks.zapier.com/hooks/catch/18583379/4tjnlg2/",
   kontakt: {
-    telefon: "02051 9640-0",
-    telefonHref: "+49205196400",
+    telefon: "02051 9640515",
+    telefonHref: "+4920519640515",
     whatsapp: "4915758080106",
     ort: "Flandersbacher Weg 2 · 42551 Velbert",
     oeffnung: "Mo–Sa 10–19 Uhr",
