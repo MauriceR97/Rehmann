@@ -114,9 +114,15 @@ function DetailModal({ artikel, onClose, onReserve }) {
   const sold = artikel.status === "verkauft";
   const reserved = artikel.status === "reserviert";
   const go = (d) => setIdx((i) => (i + d + bilder.length) % bilder.length);
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, []);
   return (
-    <div onClick={onClose} style={{ position: "fixed", inset: 0, zIndex: 100, background: "rgba(20,32,45,0.72)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-      <div onClick={(e) => e.stopPropagation()} className="rv-modal rv-detail rv-modal-shell" style={{ background: "#fff", borderRadius: 16, width: "100%", maxWidth: 1120, height: "min(700px, 92vh)", overflow: "hidden", display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: 0, boxShadow: "0 30px 80px rgba(0,0,0,0.32)" }}>
+    <div onClick={onClose} className="rv-modal-wrap" style={{ position: "fixed", inset: 0, zIndex: 100, background: "rgba(20,32,45,0.72)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+      <div onClick={(e) => e.stopPropagation()} className="rv-modal rv-detail rv-modal-shell" style={{ position: "relative", background: "#fff", borderRadius: 16, width: "100%", maxWidth: 1120, height: "min(700px, 92vh)", overflow: "hidden", display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: 0, boxShadow: "0 30px 80px rgba(0,0,0,0.32)" }}>
+        <button onClick={onClose} aria-label="Schließen" className="rv-close" style={{ position: "absolute", top: 12, right: 12, zIndex: 10, width: 36, height: 36, borderRadius: 999, border: "none", background: "var(--reh-red)", color: "#fff", fontWeight: 700, fontSize: 19, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 10px rgba(0,0,0,0.25)" }}>✕</button>
         <div className="rv-modal-img" style={{ background: "#F4F3F1", position: "relative", display: "flex", flexDirection: "column", minHeight: 0 }}>
           <div style={{ position: "relative", flex: 1, minHeight: 0, background: "#F4F3F1", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
             {bilder[idx] && <img src={bilder[idx] + "?v=3"} alt={artikel.name} decoding="async" fetchpriority="high" style={{ maxWidth: "100%", maxHeight: "100%", width: "auto", height: "auto", objectFit: "contain", display: "block" }} />}
@@ -135,7 +141,6 @@ function DetailModal({ artikel, onClose, onReserve }) {
           </div>}
         </div>
         <div className="rv-modal-body" style={{ padding: "26px 34px 30px", gap: 2, display: "flex", flexDirection: "column", minHeight: 0, overflow: "auto" }}>
-          <button onClick={onClose} aria-label="Schließen" className="rv-close" style={{ alignSelf: "flex-end", width: 34, height: 34, borderRadius: 999, border: "none", background: "var(--reh-red)", color: "#fff", fontWeight: 700, fontSize: 18, cursor: "pointer", marginBottom: 6 }}>×</button>
           {artikel.marke && <div style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--text-subtle)", marginBottom: 4 }}>{artikel.marke}</div>}
           <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 23, color: "var(--text-strong)", margin: "0 0 6px", lineHeight: 1.2 }}>{artikel.name}</h3>
           {artikel.artikelnummer && <div style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 300, fontSize: 13.5, color: "var(--text-muted)", marginBottom: 14 }}>Artikelnummer: {artikel.artikelnummer}</div>}
@@ -215,6 +220,11 @@ function ReserveModal({ artikel, onClose, onConfirm }) {
   const [sending, setSending] = useState(false);
   const set = (k) => (e) => setF({ ...f, [k]: e.target.type === "checkbox" ? e.target.checked : e.target.value });
   const valid = f.vorname.trim() && f.nachname.trim() && f.tel.trim() && f.email.trim() && f.consent;
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, []);
   const field = { width: "100%", padding: "14px 16px", fontSize: 16, border: "2px solid var(--border-default)", borderRadius: 10, outline: "none", boxSizing: "border-box", marginBottom: 12 };
   const waText = encodeURIComponent("Hallo, ich interessiere mich für: " + artikel.name + " (" + eur(artikel.neu) + "). Ist der Artikel noch verfügbar?");
   return (
@@ -430,8 +440,8 @@ function App() {
             if (i !== 3) return card;
             return [
               card,
-              <a key="rv-banner" href={"tel:" + RV.kontakt.telefonHref} className="rv-banner" style={{ display: "block", gridColumn: "span 2", alignSelf: "stretch", overflow: "hidden", borderRadius: 12 }}>
-                <img src="assets/banner-70.jpg" alt="Wir brauchen Platz – in allen Abteilungen bis zu 70 % Rabatt" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              <a key="rv-banner" href={"tel:" + RV.kontakt.telefonHref} className="rv-banner" style={{ display: "block", position: "relative", gridColumn: "span 2", alignSelf: "stretch", overflow: "hidden", borderRadius: 12 }}>
+                <img className="rv-banner-img" src="assets/banner-70.jpg" alt="Wir brauchen Platz – in allen Abteilungen bis zu 70 % Rabatt" loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
               </a>,
             ];
           })}
