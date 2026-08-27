@@ -399,7 +399,7 @@ function App() {
     var evid = "rv-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
     try { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: "lead_submitted", event_id: evid, artikel: art.name, artikel_id: art.id, wert: art.neu || 0 }); } catch (e) {}
     try { if (typeof window.fbq === "function") window.fbq("track", "Lead", { content_name: art.name, content_ids: [art.id], value: art.neu || 0, currency: "EUR" }, { eventID: evid }); } catch (e) {}
-    try { if (typeof window.gtag === "function") window.gtag("event", "conversion", { send_to: "AW-1025569671", value: art.neu || 0, currency: "EUR", transaction_id: evid }); } catch (e) {}
+    try { if (typeof window.gtag === "function") window.gtag("event", "conversion", { send_to: "AW-1025569671/CtCrCK6N4ugcEIfng-kD", value: art.neu || 0, currency: "EUR", transaction_id: evid }); } catch (e) {}
 
     setModal(null);
     setToast("Anfrage für „" + art.name + "“ gesendet – wir melden uns direkt bei Ihnen!");
