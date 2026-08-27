@@ -30,6 +30,11 @@
     .rv-modal-body { overscroll-behavior: contain; flex: 1 1 auto !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; min-height: 0 !important; padding: 18px 18px 28px !important; }
     .rv-close { position: absolute !important; top: 10px !important; right: 10px !important; z-index: 130 !important; width: 40px !important; height: 40px !important; align-self: auto !important; margin: 0 !important; background: var(--reh-red) !important; color: #fff !important; box-shadow: 0 2px 10px rgba(0,0,0,0.3) !important; }
     .rv-modal-cta { display: none !important; }
+    /* Kontaktbuttons direkt unter "Abholpreis" */
+    .rv-modal-body { display: flex !important; flex-direction: column !important; }
+    .rv-modal-body > * { order: 2; }
+    .rv-modal-body > div:nth-child(-n+4) { order: 0; }
+    .rv-cta-group { order: 1 !important; border-top: none !important; padding-top: 0 !important; margin-bottom: 18px !important; }
     .rv-cats { justify-content: flex-start !important; gap: 8px !important; padding: 0 22px !important; scroll-padding-left: 22px; }
     .rv-cats-wrap::after { content: "\203A"; position: absolute; top: 36px; right: 0; transform: translateY(-50%); pointer-events: none; font-family: var(--font-display); font-weight: 800; font-size: 34px; line-height: 1; color: var(--reh-red); }
     .rv-cats-wrap::before { content: "\2039"; position: absolute; top: 36px; left: 0; transform: translateY(-50%); z-index: 2; pointer-events: none; font-family: var(--font-display); font-weight: 800; font-size: 34px; line-height: 1; color: var(--reh-red); }
@@ -99,7 +104,7 @@
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.min.js"></script>
-  <script src="config.js?v=20260827n"></script>
-  <script type="text/babel" src="app.jsx?v=20260827n"></script>
+  <script src="config.js?v=20260827o"></script>
+  <script type="text/babel" src="app.jsx?v=20260827o"></script>
 </body>
 </html>

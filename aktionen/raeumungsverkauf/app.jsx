@@ -157,7 +157,7 @@ function DetailModal({ artikel, onClose, onReserve }) {
             <span style={{ background: "#FFE500", color: "#1A1A1A", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 20, padding: "5px 10px", lineHeight: 1 }}>{eur(artikel.neu)}</span>
             {artikel.alt > artikel.neu && <span style={{ border: "1.5px solid var(--reh-red)", color: "var(--reh-red)", fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 600, fontSize: 13, padding: "5px 10px", borderRadius: 6 }}>− {rabatt(artikel.alt, artikel.neu)}% gegenüber UVP</span>}
           </div>
-          <div style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 600, fontSize: 15, color: "var(--reh-red)", marginBottom: 10 }}>Abholpreis</div>
+          <div className="rv-abholpreis" style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 600, fontSize: 15, color: "var(--reh-red)", marginBottom: 10 }}>Abholpreis</div>
           <div style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 300, fontSize: 13, lineHeight: 1.55, color: "var(--text-muted)", marginBottom: 16 }}>Abholpreis ohne Montage. Alle etwaigen Rabatte bereits abgezogen. Inkl. MwSt.</div>
 
           {artikel.details && (
@@ -186,7 +186,7 @@ function DetailModal({ artikel, onClose, onReserve }) {
           </div>
 
           {!(sold || reserved) && (
-            <div style={{ borderTop: "1px solid var(--border-subtle)", paddingTop: 16, marginBottom: 20 }}>
+            <div className="rv-cta-group" style={{ borderTop: "1px solid var(--border-subtle)", paddingTop: 16, marginBottom: 20 }}>
               <div style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 600, fontSize: 14, color: "var(--text-strong)", marginBottom: 10 }}>Artikel jetzt anfragen</div>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                 <button onClick={() => onReserve(artikel)} style={{ flex: "1 1 150px", padding: "12px 14px", borderRadius: 10, border: "none", background: "var(--reh-red)", color: "#fff", fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 700, fontSize: 14.5, cursor: "pointer" }}>Anfrage senden</button>
