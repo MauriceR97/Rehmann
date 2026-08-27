@@ -261,7 +261,7 @@ function LucideIcon({ name, size = 32, color = "currentColor" }) {
 function Faq() {
   const [open, setOpen] = useState(0);
   const items = [
-    ["Kann ich Artikel online kaufen oder reservieren?", "Die Artikel aus dem Räumungsverkauf verkaufen wir ausschließlich vor Ort in unserem Möbelhaus. Über die Anfrage-Funktion prüfen wir gerne die Verfügbarkeit für Sie und melden uns zurück – telefonisch, per WhatsApp oder per Rückruf."],
+    ["Kann ich Artikel online kaufen oder reservieren?", "Die Artikel aus dem Räumungsverkauf verkaufen wir ausschließlich vor Ort in unserem Möbelhaus. Über die Anfrage-Funktion prüfen wir gerne die Verfügbarkeit für Sie und melden uns direkt bei Ihnen – telefonisch, per WhatsApp oder per Anfrage."],
     ["Liefern und montieren Sie auch?", "Ja, gerne liefern und montieren wir Ihre Möbel gegen einen geringen Mehrpreis."],
     ["Kann ich in Raten zahlen?", "Ja, eine Finanzierung ist möglich. Sprechen Sie uns einfach direkt vor Ort oder telefonisch an – wir beraten Sie zu den Möglichkeiten."],
     ["Sind die Möbel neu oder gebraucht?", "Es handelt sich um Ausstellungsstücke aus unserem Möbelhaus – also gepflegte Markenware, die bei uns ausgestellt war. Kleine Gebrauchsspuren sind möglich; wir zeigen Ihnen jedes Stück vor dem Kauf ganz genau."],
@@ -364,7 +364,7 @@ function App() {
         <div style={{ textAlign: "center", marginBottom: 22, marginTop: 40 }}>
           <div style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 600, fontSize: 15, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--reh-red)", marginBottom: 6 }}>Möbel Abverkauf</div>
           <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 42, textTransform: "uppercase", color: "var(--text-strong)", margin: "0 0 14px" }}>Alles muss raus</h2>
-          <div style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 300, fontSize: 16, lineHeight: 1.6, color: "var(--text-muted)", maxWidth: 640, margin: "0 auto" }}>Aufgrund unseres großen Umbaus geben wir Ausstellungsstücke aus allen Abteilungen mit hohen Preisvorteilen ab. Fragen Sie Ihren Favoriten unverbindlich an – telefonisch, per WhatsApp oder Rückruf.</div>
+          <div style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 300, fontSize: 16, lineHeight: 1.6, color: "var(--text-muted)", maxWidth: 640, margin: "0 auto" }}>Aufgrund unseres großen Umbaus geben wir Ausstellungsstücke aus allen Abteilungen mit hohen Preisvorteilen ab. Fragen Sie Ihren Favoriten unverbindlich an – telefonisch, per WhatsApp oder per Anfrage – wir melden uns direkt bei Ihnen.</div>
         </div>
         {!showFav && <div className="rv-cats-wrap" style={{ position: "relative", margin: "10px 0 44px" }}><div style={{ display: "flex", flexWrap: "nowrap", gap: 20, justifyContent: "center", overflowX: "auto", WebkitOverflowScrolling: "touch", scrollbarWidth: "none", paddingBottom: 4 }} className="rv-cats">
           {RV.abteilungen.map((ab) => {
@@ -387,7 +387,7 @@ function App() {
           <button onClick={() => setShowFav(false)} style={{ background: "transparent", border: "1px solid var(--border-subtle)", borderRadius: 999, padding: "7px 16px", fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 600, fontSize: 14, cursor: "pointer", color: "var(--text-strong)" }}>← Alle Artikel</button>
         </div>}
         {/* Sortierung */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, marginBottom: 26, flexWrap: "wrap" }}>
+        <div className="rv-tools" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, marginBottom: 26, flexWrap: "wrap" }}>
         <div className="rv-hsearch" style={{ position: "relative", flex: "1 1 340px", maxWidth: 420, minWidth: 0 }}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-subtle)" strokeWidth="2" strokeLinecap="round" aria-hidden="true"
             style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
@@ -420,7 +420,7 @@ function App() {
           {sichtbar.map((a) => <ArtikelCard key={a.id} a={a} onDetail={setDetail} onReserve={setModal} isFav={fav.includes(a.id)} onToggleFav={toggleFav} />)}
         </div>
         {seiten > 1 && (
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, flexWrap: "wrap", marginTop: 40 }}>
+          <div className="rv-pager" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, flexWrap: "wrap", marginTop: 40 }}>
             <button onClick={() => zuSeite(Math.max(1, seiteAkt - 1))} disabled={seiteAkt === 1}
               style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: 15, padding: "10px 16px", background: "#fff", border: "1px solid var(--border-default)", color: seiteAkt === 1 ? "var(--text-subtle)" : "var(--text-strong)", cursor: seiteAkt === 1 ? "default" : "pointer", borderRadius: 2 }}>Zurück</button>
             {(() => {
@@ -477,7 +477,7 @@ function App() {
         </div>
       </section>
 
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "56px 24px" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "56px 24px" }} className="rv-sec">
           <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 32, lineHeight: 1.15, color: "var(--text-strong)", margin: "0 0 8px" }}>Abverkauf &amp; Restposten bei Möbel Rehmann</h2>
           <div style={{ fontSize: 19, fontWeight: 600, color: "var(--reh-red)", marginBottom: 22 }}>Sichern Sie sich Top-Angebote auf Möbel und Wohnaccessoires</div>
           <div style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 300, fontSize: 16, lineHeight: 1.75, color: "var(--text-body)", display: "flex", flexDirection: "column", gap: 16 }}>
@@ -494,7 +494,7 @@ function App() {
 
       {/* Google-Bewertungen */}
       <section style={{ background: "var(--surface-page)", borderTop: "1px solid var(--border-subtle)" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "56px 24px" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "56px 24px" }} className="rv-sec">
           <div style={{ textAlign: "center", marginBottom: 28 }}>
             <div style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 600, fontSize: 14, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--reh-red)", marginBottom: 6 }}>Kundenstimmen</div>
             <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 34, textTransform: "uppercase", color: "var(--text-strong)", margin: 0 }}>Das sagen unsere Kunden</h2>
@@ -533,7 +533,7 @@ function App() {
 
       {/* FAQ */}
       <section style={{ background: "var(--surface-page)", borderTop: "1px solid var(--border-subtle)" }}>
-        <div style={{ maxWidth: 860, margin: "0 auto", padding: "56px 24px" }}>
+        <div style={{ maxWidth: 860, margin: "0 auto", padding: "56px 24px" }} className="rv-sec">
           <div style={{ textAlign: "center", marginBottom: 30 }}>
             <div style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 600, fontSize: 14, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--reh-red)", marginBottom: 6 }}>Gut zu wissen</div>
             <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 34, textTransform: "uppercase", color: "var(--text-strong)", margin: 0 }}>Häufige Fragen</h2>
