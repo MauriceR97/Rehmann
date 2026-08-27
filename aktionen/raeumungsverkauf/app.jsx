@@ -21,7 +21,7 @@ function Header({ favCount, favActive, onToggleFav, suche, setSuche }) {
             <span style={{ fontSize: 16 }}>{favActive ? "♥" : "♡"}</span><span className="fav-label"> Favoriten</span>
             {favCount > 0 && <span style={{ background: favActive ? "#fff" : "var(--reh-red)", color: favActive ? "var(--reh-red)" : "#fff", fontWeight: 700, fontSize: 12, minWidth: 20, height: 20, borderRadius: 999, display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "0 5px" }}>{favCount}</span>}
           </button>
-          <a href={"tel:" + k.telefonHref} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--reh-red)", color: "#fff", textDecoration: "none", fontWeight: 700, padding: "9px 14px", borderRadius: 10, fontSize: 13.5, whiteSpace: "nowrap", flex: "0 0 auto" }} className="rv-tel">☏ {k.telefon}</a>
+          <a href={"tel:" + k.telefonHref} className="rv-callbtn" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--reh-red)", color: "#fff", textDecoration: "none", fontWeight: 700, padding: "9px 14px", borderRadius: 10, fontSize: 13.5, whiteSpace: "nowrap", flex: "0 0 auto" }} className="rv-tel">☏ {k.telefon}</a>
         </div>
       </div>
     </header>
@@ -135,7 +135,7 @@ function DetailModal({ artikel, onClose, onReserve }) {
           </div>}
         </div>
         <div className="rv-modal-body" style={{ padding: "26px 34px 30px", gap: 2, display: "flex", flexDirection: "column", minHeight: 0, overflow: "auto" }}>
-          <button onClick={onClose} aria-label="Schließen" style={{ alignSelf: "flex-end", width: 34, height: 34, borderRadius: 999, border: "none", background: "var(--neutral-100)", color: "var(--text-muted)", fontSize: 18, cursor: "pointer", marginBottom: 6 }}>×</button>
+          <button onClick={onClose} aria-label="Schließen" className="rv-close" style={{ alignSelf: "flex-end", width: 34, height: 34, borderRadius: 999, border: "none", background: "var(--reh-red)", color: "#fff", fontWeight: 700, fontSize: 18, cursor: "pointer", marginBottom: 6 }}>×</button>
           {artikel.marke && <div style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--text-subtle)", marginBottom: 4 }}>{artikel.marke}</div>}
           <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 23, color: "var(--text-strong)", margin: "0 0 6px", lineHeight: 1.2 }}>{artikel.name}</h3>
           {artikel.artikelnummer && <div style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 300, fontSize: 13.5, color: "var(--text-muted)", marginBottom: 14 }}>Artikelnummer: {artikel.artikelnummer}</div>}
@@ -219,9 +219,17 @@ function ReserveModal({ artikel, onClose, onConfirm }) {
   const waText = encodeURIComponent("Hallo, ich interessiere mich für: " + artikel.name + " (" + eur(artikel.neu) + "). Ist der Artikel noch verfügbar?");
   return (
     <div onClick={onClose} style={{ position: "fixed", inset: 0, zIndex: 100, background: "rgba(20,32,45,0.6)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-      <div onClick={(e) => e.stopPropagation()} style={{ background: "#fff", borderRadius: 18, maxWidth: 440, width: "100%", padding: 28 }}>
-        <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22, color: "var(--text-strong)", marginBottom: 4 }}>Verfügbarkeit anfragen</div>
-        <div style={{ fontSize: 15, color: "var(--text-muted)", marginBottom: 18 }}>{artikel.name} · <b style={{ color: "var(--reh-red)" }}>{eur(artikel.neu)}</b> — wir prüfen die Verfügbarkeit und melden uns.</div>
+      <div onClick={(e) => e.stopPropagation()} style={{ background: "#fff", borderRadius: 18, maxWidth: 440, width: "100%", padding: 28, position: "relative", maxHeight: "88vh", overflow: "auto" }}>
+        <button onClick={onClose} aria-label="Schließen" style={{ position: "absolute", top: 12, right: 12, width: 36, height: 36, borderRadius: 999, border: "none", background: "var(--reh-red)", color: "#fff", fontSize: 20, lineHeight: 1, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", zIndex: 5 }}>✕</button>
+        <div style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 600, fontSize: 12.5, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--reh-red)", marginBottom: 6 }}>Anfrage zu diesem Artikel</div>
+        <div style={{ display: "flex", gap: 12, alignItems: "center", background: "var(--surface-page)", border: "1px solid var(--border-subtle)", borderRadius: 12, padding: 12, marginBottom: 16 }}>
+          {artikel.img && <img src={artikel.img} alt="" style={{ width: 58, height: 58, objectFit: "cover", borderRadius: 8, flex: "0 0 auto" }} />}
+          <div style={{ minWidth: 0 }}>
+            <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 16.5, color: "var(--text-strong)", lineHeight: 1.25 }}>{artikel.name}</div>
+            <div style={{ fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 700, fontSize: 15, color: "var(--reh-red)", marginTop: 2 }}>{eur(artikel.neu)}</div>
+          </div>
+        </div>
+        <div style={{ fontSize: 14, color: "var(--text-muted)", marginBottom: 16 }}>Wir prüfen die Verfügbarkeit und melden uns direkt bei Ihnen.</div>
         <div style={{ display: "flex", gap: 10, marginBottom: 18 }}>
           <a href={"tel:" + RV.kontakt.telefonHref} style={{ flex: 1, textAlign: "center", padding: "13px", borderRadius: 10, background: "#1A1A1A", color: "#fff", fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 700, fontSize: 15, textDecoration: "none" }}>☎ Anrufen</a>
           <a href={"https://wa.me/" + RV.kontakt.whatsapp + "?text=" + waText} target="_blank" rel="noopener" style={{ flex: 1, textAlign: "center", padding: "13px", borderRadius: 10, background: "#25D366", color: "#fff", fontFamily: "'Fira Sans', Arial, sans-serif", fontWeight: 700, fontSize: 15, textDecoration: "none" }}>✆ WhatsApp</a>
@@ -417,7 +425,16 @@ function App() {
         )}
         {/* Grid */}
         <div id="artikel" className="rv-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 22 }}>
-          {sichtbar.map((a) => <ArtikelCard key={a.id} a={a} onDetail={setDetail} onReserve={setModal} isFav={fav.includes(a.id)} onToggleFav={toggleFav} />)}
+          {sichtbar.map((a, i) => {
+            const card = <ArtikelCard key={a.id} a={a} onDetail={setDetail} onReserve={setModal} isFav={fav.includes(a.id)} onToggleFav={toggleFav} />;
+            if (i !== 3) return card;
+            return [
+              card,
+              <a key="rv-banner" href={"tel:" + RV.kontakt.telefonHref} className="rv-banner" style={{ display: "block", gridColumn: "span 2", alignSelf: "stretch", overflow: "hidden", borderRadius: 12 }}>
+                <img src="assets/banner-70.jpg" alt="Wir brauchen Platz – in allen Abteilungen bis zu 70 % Rabatt" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              </a>,
+            ];
+          })}
         </div>
         {seiten > 1 && (
           <div className="rv-pager" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, flexWrap: "wrap", marginTop: 40 }}>
