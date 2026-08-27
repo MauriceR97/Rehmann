@@ -116,9 +116,14 @@ function DetailModal({ artikel, onClose, onReserve }) {
   const reserved = artikel.status === "reserviert";
   const go = (d) => setIdx((i) => (i + d + bilder.length) % bilder.length);
   useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = prev; };
+    const y = window.scrollY;
+    const s = document.body.style;
+    const prev = { overflow: s.overflow, position: s.position, top: s.top, width: s.width };
+    s.overflow = "hidden"; s.position = "fixed"; s.top = -y + "px"; s.width = "100%";
+    return () => {
+      s.overflow = prev.overflow; s.position = prev.position; s.top = prev.top; s.width = prev.width;
+      window.scrollTo(0, y);
+    };
   }, []);
   return (
     <div onClick={onClose} className="rv-modal-wrap" style={{ position: "fixed", inset: 0, zIndex: 100, background: "rgba(20,32,45,0.72)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
@@ -234,9 +239,14 @@ function ReserveModal({ artikel, onClose, onConfirm }) {
   const set = (k) => (e) => setF({ ...f, [k]: e.target.type === "checkbox" ? e.target.checked : e.target.value });
   const valid = f.vorname.trim() && f.nachname.trim() && f.tel.trim() && f.email.trim() && f.consent;
   useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = prev; };
+    const y = window.scrollY;
+    const s = document.body.style;
+    const prev = { overflow: s.overflow, position: s.position, top: s.top, width: s.width };
+    s.overflow = "hidden"; s.position = "fixed"; s.top = -y + "px"; s.width = "100%";
+    return () => {
+      s.overflow = prev.overflow; s.position = prev.position; s.top = prev.top; s.width = prev.width;
+      window.scrollTo(0, y);
+    };
   }, []);
   const field = { width: "100%", padding: "14px 16px", fontSize: 16, border: "2px solid var(--border-default)", borderRadius: 10, outline: "none", boxSizing: "border-box", marginBottom: 12 };
   const waText = encodeURIComponent("Hallo, ich interessiere mich für: " + artikel.name + " (" + eur(artikel.neu) + "). Ist der Artikel noch verfügbar?");
