@@ -469,7 +469,7 @@ function App() {
         {/* Grid */}
         <div id="artikel" className="rv-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 22 }}>
           {sichtbar.map((a, i) => {
-            const card = <ArtikelCard key={a.id} a={a} onDetail={setDetail} onReserve={setModal} isFav={fav.includes(a.id)} onToggleFav={toggleFav} />;
+            const card = <ArtikelCard key={a.id} a={a} onDetail={(x) => { try { if (typeof window.fbq === "function") window.fbq("track", "ViewContent", { content_name: x.name, content_ids: [x.id], content_type: "product", value: x.neu || 0, currency: "EUR" }); } catch (e) {} setDetail(x); }} onReserve={setModal} isFav={fav.includes(a.id)} onToggleFav={toggleFav} />;
             if (i !== 3) return card;
             return [
               card,
