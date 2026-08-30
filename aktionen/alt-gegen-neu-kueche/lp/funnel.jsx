@@ -411,6 +411,7 @@ function Funnel({ open, onClose, startView }) {
   const scrollRef = React.useRef(null);
   const baseUrl = React.useRef(null);
   const firedOpen = React.useRef(false);
+  const lastStepFired = React.useRef(-1);
   // Bei Direktaufruf der Danke-Seite KEIN falsches Conversion-Event feuern
   const firedLead = React.useRef(startView === "danke");
 
@@ -446,6 +447,9 @@ function Funnel({ open, onClose, startView }) {
             // URL-basierte Custom Conversions (/danke-formular-kueche) greifen
             window.fbq("track", "PageView");
             window.fbq("track", "Lead", { content_name: "Alt gegen Neu" }, { eventID: evid });
+          } else if (name === "quiz_step") {
+            // Schritt-Events für die Abbruch-Analyse je Quiz-Schritt (Custom Event, keine Conversion)
+            window.fbq("trackCustom", "QuizStep", extra || {});
           }
         }
       } catch (e) {}
@@ -466,6 +470,12 @@ function Funnel({ open, onClose, startView }) {
       } else {
         setPath(routes.formular);
         if (!firedOpen.current) { firedOpen.current = true; track("funnel_open"); }
+        // Abbruch-Analyse: welcher Schritt wurde gesehen? (step_index 1..n, step_key = Frage-Key / alt / form)
+        if (lastStepFired.current !== step) {
+          lastStepFired.current = step;
+          const stepKey = view.kind === "q" ? (fragen[view.i] && fragen[view.i].key) || ("q" + view.i) : view.kind;
+          track("quiz_step", { step_index: step + 1, step_total: totalSteps + 1, step_key: stepKey, step_kind: view.kind });
+        }
       }
     } else if (baseUrl.current !== null) {
       // Funnel geschlossen -> Original-URL wiederherstellen
@@ -528,6 +538,7 @@ function Funnel({ open, onClose, startView }) {
       nk_farbe: answers.kfarbe || "",
       nk_finanzierung: answers.finanzierung || "",
       nk_budget: answers.budget || "",
+      lp_version: (L.lpVersion || "AgN-2026-08"), // A/B-Kennung für CRM-Auswertung
       // Alte Küche
       ak_vorhanden: answers.tausch === "Ja" ? "ja" : (answers.tausch === "Nein" ? "nein" : (/keine/i.test(answers.tausch || "") ? "nein" : "")),
       ak_in_zahlung: answers.tausch || "",
