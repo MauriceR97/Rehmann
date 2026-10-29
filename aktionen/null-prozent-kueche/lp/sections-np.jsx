@@ -29,7 +29,7 @@ function HeroNP() {
     <section className="np-h2-wrap" style={{ background: "#fff", padding: "14px var(--gutter) 56px" }}>
       <div className="np-h2" style={{ position: "relative", maxWidth: 1320, margin: "0 auto", borderRadius: 28, overflow: "hidden", minHeight: 660, background: "#1B2B3D", display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)" }}>
         <div className="np-h2-img" style={{ position: "relative", gridColumn: 2, gridRow: 1, minHeight: 660, marginLeft: "-22%" }}>
-          <img src="lp/assets/hero-np-0.jpg" alt="Paar in neuer Küche mit großer roter Null" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "58% 50%", display: "block" }} />
+          <img src="lp/assets/hero-np-0.webp" alt="Paar in neuer Küche mit großer roter Null" fetchpriority="high" decoding="async" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "58% 50%", display: "block" }} />
           <div className="np-h2-edge" aria-hidden="true" style={{ position: "absolute", top: 0, bottom: 0, left: 0, width: "100%", background: "linear-gradient(90deg, #1B2B3D 0%, rgba(27,43,61,0.86) 10%, rgba(27,43,61,0.66) 22%, rgba(27,43,61,0.46) 36%, rgba(27,43,61,0.28) 52%, rgba(27,43,61,0.14) 68%, rgba(27,43,61,0.05) 84%, rgba(27,43,61,0) 100%)" }} />
         </div>
                 
@@ -572,7 +572,7 @@ function ProspektNP() {
                       <img src={L.logos.farbig} alt="Interliving Rehmann" style={{ height: 22, width: "auto", display: "block" }} />
                       <span style={{ fontWeight: 800, fontSize: 9.5, letterSpacing: "0.14em", textTransform: "uppercase", color: "#1B2B3D" }}>Küchen 2026</span>
                     </div>
-                    <div style={{ position: "relative", flex: "1 1 auto", minHeight: 0, background: "#1B2B3D url(lp/assets/hero-np.jpg) center/cover no-repeat" }}>
+                    <div style={{ position: "relative", flex: "1 1 auto", minHeight: 0, background: "#1B2B3D url(lp/assets/hero-np.webp) center/cover no-repeat" }}>
                       <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(27,43,61,0) 45%, rgba(27,43,61,0.88) 100%)" }} />
                       <div style={{ position: "absolute", left: 16, right: 16, bottom: 14, color: "#fff" }}>
                         <div style={{ fontWeight: 800, fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "#FFE500" }}>Ihre Traumküche</div>
@@ -702,8 +702,8 @@ function SwipeBilderNP({ bilder, alt }) {
 function HausGalerieNP() {
   const tiles = [
     { src: "https://res.cloudinary.com/dusdhljtc/image/upload/v1788528177/nl-header-drohne.jpg", t: "Unser Küchenhaus in Velbert", s: "Flandersbacher Weg 2 · direkt an der A44", big: true },
-    { src: "lp/assets/haus/ausstellung-09.jpg", bilder: ["lp/assets/haus/ausstellung-09.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_1000/rv-042-1.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_1000/rv-072-1.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_1000/rv-029-thumb3.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_1000/rv-026-thumb.avif","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_1000/rv-032-thumb3.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_1000/rv-033-thumb3.jpg"], t: "Über 100 Ausstellungsküchen", s: "Live erleben statt im Katalog blättern" },
-    { src: "lp/assets/haus/ausstellung-03.jpg", t: "Fronten & Muster zum Anfassen", s: "Farben, Griffe, Arbeitsplatten" },
+    { src: "lp/assets/haus/ausstellung-09.webp", bilder: ["lp/assets/haus/ausstellung-09.webp","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_1000/rv-042-1.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_1000/rv-072-1.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_1000/rv-029-thumb3.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_1000/rv-026-thumb.avif","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_1000/rv-032-thumb3.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_1000/rv-033-thumb3.jpg"], t: "Über 100 Ausstellungsküchen", s: "Live erleben statt im Katalog blättern" },
+    { src: "lp/assets/haus/ausstellung-03.webp", t: "Fronten & Muster zum Anfassen", s: "Farben, Griffe, Arbeitsplatten" },
     { src: "lp/assets/haus/montage.webp", t: "Eigenes Montageteam", s: "Keine Subunternehmer, alles aus einer Hand" },
   ];
   const cap = (x) => (
@@ -737,7 +737,7 @@ function HausGalerieNP() {
 function HausBannerNP() {
   const L = window.LP;
   return (
-    <div className="np-hausbanner" style={{ position: "relative", minHeight: 420, display: "flex", alignItems: "center", background: "#1B2B3D url(lp/assets/haus/gebaeude.jpg) center/cover no-repeat" }}>
+    <div className="np-hausbanner" style={{ position: "relative", minHeight: 420, display: "flex", alignItems: "center", background: "#1B2B3D url(lp/assets/haus/gebaeude.webp) center/cover no-repeat" }}>
       <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(16,26,38,0.88) 0%, rgba(16,26,38,0.55) 55%, rgba(16,26,38,0.15) 100%)" }} />
       <div style={{ position: "relative", maxWidth: 1180, width: "100%", margin: "0 auto", padding: "64px var(--gutter)", color: "#fff" }}>
         <div style={{ maxWidth: 560 }}>

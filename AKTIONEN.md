@@ -14,22 +14,27 @@ Ordner und ihr eigenes Routing — es braucht kein zweites Repository.
 ├─ favicon*.png, og-image.jpg  → geteilte Basis-Assets
 │
 ├─ aktionen/
-│   └─ alt-gegen-neu-kueche/          → URL: /aktionen/alt-gegen-neu-kueche
+│   ├─ alt-gegen-neu-kueche/          → URL: /aktionen/alt-gegen-neu-kueche
 │       ├─ index.html                 → Einstieg dieser Aktion
 │       └─ lp/                        → Code + Assets NUR dieser Aktion
 │           ├─ config.js              → Texte, Preise, basis, routes
 │           ├─ tracking.js            → First-Party Ad-Tracking
 │           ├─ ui.jsx, sections*.jsx, funnel.jsx, app.jsx
-│           └─ assets/                → Bilder, Videos, Logos dieser Aktion
+│   │       └─ assets/                → Bilder, Videos, Logos dieser Aktion
+│   └─ raeumungsverkauf/              → URL: /aktionen/raeumungsverkauf
+│       ├─ index.html
+│       ├─ app.jsx, config.js
+│       └─ assets/
 │
-└─ raeumungsverkauf/           → eigenständige Seite: /raeumungsverkauf
+
 ```
 
 ## Neue Aktion anlegen (z. B. `alt-gegen-neu-polster`)
 
 1. **Ordner kopieren:** `aktionen/alt-gegen-neu-kueche/` →
    `aktionen/alt-gegen-neu-polster/`
-2. **`lp/config.js` anpassen** — nur diese vier Dinge steuern das Routing:
+2. **`<base href="/aktionen/…/">` in der `index.html` anpassen** (Pflicht!)
+3. **`lp/config.js` anpassen** — nur diese vier Dinge steuern das Routing:
    ```js
    basis: "/aktionen/alt-gegen-neu-polster",
    routes: {
@@ -38,12 +43,12 @@ Ordner und ihr eigenes Routing — es braucht kein zweites Repository.
    },
    ```
    Dazu Texte, Preise, Bilder, Zapier-Webhook und Meta-Pixel-ID der Aktion.
-3. **`vercel.json` ergänzen:**
+4. **`vercel.json` ergänzen:**
    ```json
    { "source": "/aktionen/alt-gegen-neu-polster/:slug*",
      "destination": "/aktionen/alt-gegen-neu-polster/index.html" }
    ```
-4. **Startseite** (`index.html` im Root) um eine Karte für die Aktion erweitern.
+5. **Startseite** (`index.html` im Root) um eine Karte für die Aktion erweitern.
 
 Ergebnis:
 - `kueche-rehmann.de/aktionen/alt-gegen-neu-polster`
@@ -52,6 +57,8 @@ Ergebnis:
 
 ## Wichtig
 
+- **`<base>`-Tag** in jeder Aktions-`index.html` muss auf ihren Ordner zeigen —
+  sonst laden Skripte und Bilder aus dem falschen Pfad (weiße Seite).
 - **`basis` in `config.js`** ist die einzige Stelle, an der der Aktionspfad steht.
   Funnel-URLs, Danke-Seite und CRM-Feld `danke_url` leiten sich davon ab.
 - **Formular & Danke-Seite sind pro Aktion getrennt** — eigene Slugs, eigenes
