@@ -15,9 +15,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>0 % Finanzierung auf 60 Monate: Ihre neue Küche | Interliving Rehmann Küchen</title>
 <meta name="description" content="Exklusiv im November: Ihre neue Küche mit 0 % Finanzierung auf 60 Monate, ohne Anzahlung, ohne Gebühren. Nur 30 Plätze, jetzt Planungstermin sichern.">
-<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png?v=20261102q">
-<link rel="icon" type="image/png" sizes="512x512" href="../../favicon.png?v=20261102q">
-<link rel="apple-touch-icon" href="../../apple-touch-icon.png?v=20261102q">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png?v=20261103a">
+<link rel="icon" type="image/png" sizes="512x512" href="../../favicon.png?v=20261103a">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png?v=20261103a">
 <link rel="canonical" href="https://www.kueche-rehmann.de/aktionen/null-prozent-kueche/">
 <!-- Vimeo schneller verbinden (Hero-Video startet früher) -->
 <link rel="preconnect" href="https://player.vimeo.com" crossorigin>
@@ -31,7 +31,7 @@
 <meta property="og:url" content="https://www.rehmann-kueche.de/">
 <meta property="og:title" content="Traumküche für 0 % Zinsen, 60 Monate, keine Anzahlung">
 <meta property="og:description" content="Nur im November und nur für 30 Kunden: 0 % Finanzierung auf 60 Monate, ohne Anzahlung und ohne Gebühren.">
-<meta property="og:image" content="https://www.rehmann-kueche.de/og-image.jpg?v=20261102q">
+<meta property="og:image" content="https://www.rehmann-kueche.de/og-image.jpg?v=20261103a">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Interliving Rehmann, 0 % Finanzierung Küchenaktion">
@@ -39,12 +39,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Traumküche für 0 % Zinsen, 60 Monate">
 <meta name="twitter:description" content="0 % auf 60 Monate, keine Anzahlung, keine Gebühren. Nur 30 Plätze im November.">
-<meta name="twitter:image" content="https://www.rehmann-kueche.de/og-image.jpg?v=20261102q">
+<meta name="twitter:image" content="https://www.rehmann-kueche.de/og-image.jpg?v=20261103a">
 <meta name="ext-resource-dependency" content="https://consent.cookiebot.com/uc.js">
 <meta name="ext-resource-dependency" content="https://static.elfsight.com/platform/platform.js">
 <meta name="ext-resource-dependency" content="https://connect.facebook.net/en_US/fbevents.js">
 <!-- First-Party Ad-Tracking (hält fbclid/utm dauerhaft fest) — muss FRÜH laden -->
-<script src="lp/tracking.js?v=20261102q"></script>
+<script src="lp/tracking.js?v=20261103a"></script>
 <!-- Cookiebot CMP (auto-blocking) + Elfsight — dynamisch injiziert (Cookiebot zuerst) -->
 <script>
 (function () {
@@ -103,10 +103,9 @@
   }
   /* Tablet & down: stack the two-column rows */
   @media (max-width: 900px) {
-    .np-haus { grid-template-columns: 1fr 1fr !important; grid-template-rows: none !important; grid-auto-rows: 190px; }
-    .np-haus > div:first-child { grid-column: 1 / span 2 !important; grid-row: auto !important; }
-    .np-haus > div:first-child > div { min-height: 260px !important; }
+    .np-haus { grid-template-columns: 1fr 1fr !important; grid-template-rows: none !important; }
     .np-haus > div:last-child { grid-column: 1 / span 2 !important; }
+    .np-haus-big .np-haus-img { flex: none !important; height: 300px !important; min-height: 0 !important; }
     .np-hausbanner { min-height: 0 !important; }
     .np-hausbanner h2 { font-size: 28px !important; }
     .np-h2-wrap { padding-bottom: 32px !important; }
@@ -178,6 +177,7 @@
   }
   /* Phones */
   @media (max-width: 620px) {
+    .np-owner { width: 92px !important; height: 92px !important; }
     .hide-sm { display: none !important; }
     .show-sm { display: inline-flex !important; }
     .hero-seal { top: 12px !important; right: 12px !important; transform: scale(0.46); transform-origin: top right; margin: 0 !important; }
@@ -256,7 +256,8 @@
   @media (max-width: 620px) { .np-kuechen { grid-template-columns: 1fr !important; } }
   .np-team-card img { transition: transform .6s cubic-bezier(.2,.7,.2,1); }
   .np-team-card:hover img { transform: scale(1.04); }
-  @media (max-width: 900px) { .np-team { grid-template-columns: 1fr !important; } .np-team-lead { height: auto !important; min-height: 0 !important; aspect-ratio: 4 / 3.4 !important; } }
+  @media (max-width: 900px) { .np-team { grid-template-columns: 1fr !important; } .np-team-leads { grid-template-rows: none !important; grid-template-columns: 1fr 1fr !important; height: auto !important; } .np-team-lead { height: auto !important; min-height: 0 !important; aspect-ratio: 4 / 5 !important; } }
+  @media (max-width: 620px) { .np-team-leads { gap: 12px !important; } }
   @media (max-width: 620px) { .np-team-grid { grid-template-columns: repeat(2, minmax(0,1fr)) !important; gap: 12px !important; } }
   @media (max-width: 900px) { .np-about-grid { grid-template-columns: 1fr !important; gap: 48px !important; padding: 72px var(--gutter) !important; } .np-about-grid > div:first-child { max-width: 420px; margin: 0 auto; width: 100%; } }
   .np-swipe::-webkit-scrollbar { display: none; }
@@ -276,10 +277,9 @@
     .np-haus-big { grid-column: 1 / -1 !important; }
   }
   @media (max-width: 620px) {
-    .np-haus { grid-template-columns: 1fr !important; grid-auto-rows: auto !important; gap: 12px !important; }
+    .np-haus { grid-template-columns: 1fr !important; gap: 22px !important; }
     .np-haus-tile, .np-haus-big, .np-haus > div:last-child { grid-column: 1 / -1 !important; }
-    .np-haus-tile > div, .np-haus > div:first-child > div { height: auto !important; min-height: 0 !important; aspect-ratio: 4 / 3; }
-    .np-haus-big > div, .np-haus > div:first-child > div { aspect-ratio: 4 / 5; }
+    .np-haus-img { height: auto !important; min-height: 0 !important; flex: none !important; aspect-ratio: 4 / 3; }
     .np-haus-h2 { font-size: 30px !important; line-height: 1.15 !important; }
   }
   @media (max-width: 620px) {
@@ -303,6 +303,31 @@
     .np-h2-ctas { flex-wrap: wrap !important; }
     .np-h2-ctas > * { width: 100%; }
   }
+  .np-k2-card:hover .np-k2-img { transform: scale(1.05); }
+  .np-k2-card:hover .np-k2-more { background: #FFE500 !important; }
+  .np-k2-card:focus-visible { outline: 3px solid #FFE500; outline-offset: 3px; }
+  .np-ov-thumbs::-webkit-scrollbar { display: none; }
+  @media (max-width: 1100px) {
+    .np-kuechen2 { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+    .np-k2 { grid-column: span 1 !important; }
+    .np-k2-s4 { grid-column: 1 / -1 !important; }
+    .np-kuechen2 > :last-child:nth-child(even) { grid-column: 1 / -1 !important; }
+  }
+  @media (max-width: 900px) {
+    .np-ov-wrap { padding: 0 !important; align-items: flex-end !important; }
+    .np-ov { grid-template-columns: 1fr !important; grid-template-rows: auto minmax(0,1fr); height: 94vh !important; max-height: 94vh; border-radius: 22px 22px 0 0 !important; }
+    .np-ov-gal > div:first-child { flex: none !important; height: 40vh; }
+    .np-ov-thumbs { padding: 8px !important; }
+    .np-ov-thumbs button { width: 64px !important; height: 44px !important; }
+    .np-ov-body > div:first-child { padding: 22px 20px 18px !important; }
+    .np-ov-body > div:last-child { padding: 12px 16px calc(14px + env(safe-area-inset-bottom)) !important; }
+  }
+  @media (max-width: 620px) {
+    .np-kuechen2 { grid-template-columns: 1fr !important; gap: 16px !important; }
+    .np-k2, .np-k2-s4 { grid-column: 1 / -1 !important; }
+    .np-k2-card { min-height: 460px !important; }
+    .np-ov-gal > div:first-child { height: 34vh; }
+  }
 </style>
 <link rel="preload" as="image" href="lp/assets/hero-np-0.webp" fetchpriority="high">
 <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
@@ -324,16 +349,16 @@
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-  <script src="../../image-slot.js?v=20261102q"></script>
-  <script src="lp/config-np.js?v=20261102q"></script>
+  <script src="../../image-slot.js?v=20261103a"></script>
+  <script src="lp/config-np.js?v=20261103a"></script>
 
-  <script type="text/babel" src="lp/ui.jsx?v=20261102q"></script>
-  <script type="text/babel" src="lp/sections1.jsx?v=20261102q"></script>
-  <script type="text/babel" src="lp/sections2.jsx?v=20261102q"></script>
-  <script type="text/babel" src="lp/sections3.jsx?v=20261102q"></script>
-  <script type="text/babel" src="lp/funnel.jsx?v=20261102q"></script>
-  <script type="text/babel" src="lp/sections-np.jsx?v=20261102q"></script>
-<script type="text/babel" src="lp/app.jsx?v=20261102q"></script>
+  <script type="text/babel" src="lp/ui.jsx?v=20261103a"></script>
+  <script type="text/babel" src="lp/sections1.jsx?v=20261103a"></script>
+  <script type="text/babel" src="lp/sections2.jsx?v=20261103a"></script>
+  <script type="text/babel" src="lp/sections3.jsx?v=20261103a"></script>
+  <script type="text/babel" src="lp/funnel.jsx?v=20261103a"></script>
+  <script type="text/babel" src="lp/sections-np.jsx?v=20261103a"></script>
+<script type="text/babel" src="lp/app.jsx?v=20261103a"></script>
 
   <script type="text/babel">
     function mount() {

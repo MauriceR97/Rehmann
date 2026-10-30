@@ -194,14 +194,110 @@ window.LP = {
   // Prospekt-Sektion: link = Blätterkatalog-URL, cover = Titelbild
   prospekt: { link: "", cover: "" },
 
+  // Beispielküchen: Karte + Detail-Overlay. Bilder können später durch Cloudinary-URLs ersetzt werden.
+  // eek: { k: Klasse, c: Farbe, ag: true = neue Skala A–G }
   beispielkuechen: [
-    { img: "https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_16:10,w_900/hugelmann/kuechen/interliving/IL23/leitbild", name: "Küche in Olivgrün", tags: ["Holzdekor"], stil: "Matte Fronten in Olivgrün mit Holzdekor, Kochinsel in U-Form · inkl. Lieferung & Montage", preis: 11990, badge: "Beliebt" },
-    { img: "https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_16:10,w_900/hugelmann/kuechen/interliving/IL32/leitbild", name: "Landhausküche in Anthrazit", tags: ["Landhaus"], stil: "Moderne Landhausküche, Holzarbeitsplatte, großzügige Kochinsel · inkl. Lieferung & Montage", preis: 13490 },
-    { img: "https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_16:10,w_900/hugelmann/kuechen/interliving/IL44/leitbild", name: "Küche in Weiß-Hochglanz", tags: ["Hochglanz"], stil: "Helle Hochglanzfronten mit Holzarbeitsplatte und Insel · inkl. Lieferung & Montage", preis: 8990 },
-    { img: "https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_16:10,w_900/hugelmann/kuechen/interliving/IL16/leitbild", name: "Küche Holz & Betonoptik", tags: ["Betonoptik"], stil: "Dunkle Holzfronten, helle Kücheninsel in Betonoptik · inkl. Lieferung & Montage", preis: 12490 },
-    { img: "https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_16:10,w_900/hugelmann/kuechen/interliving/IL45/leitbild", name: "Landhausküche in Weiß", tags: ["Kassettentüren","Vintage-Griffe"], stil: "L-Form mit Kassettentüren, dunkler Arbeitsplatte, Vintage-Griffen · inkl. Lieferung & Montage", preis: 6990 },
-    { img: "https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_16:10,w_900/hugelmann/kuechen/interliving/IL27/leitbild", name: "Küche in sanftem Grün", tags: ["Mit Essbereich","Holzarbeitsplatte"], stil: "Offene Küche mit Insel und integriertem Essbereich · inkl. Lieferung & Montage", preis: 9990 },
-    { img: "https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_16:10,w_900/hugelmann/kuechen/interliving/IL02/leitbild", name: "Küche in Grau-Hochglanz", tags: ["Hochglanz"], stil: "Graue Hochglanzfronten, Holzarbeitsplatte und Kochinsel · inkl. Lieferung & Montage", preis: 15990, badge: "Premium" },
+    {
+      id: "k1", name: "Design-Inselküche Schwarz matt", form: "Inselküche", preis: 8999, badge: "Bestseller",
+      img: "lp/assets/kuechen/k1-1.webp",
+      bilder: ["lp/assets/kuechen/k1-1.webp", "lp/assets/kuechen/k1-2.webp", "lp/assets/kuechen/k1-3.webp", "lp/assets/kuechen/k1-4.webp", "lp/assets/kuechen/k1-5.webp"],
+      kurz: "Grifflose Eleganz mit Bronze-Akzenten und einer Insel als Mittelpunkt.",
+      text: "Matte Lackfronten in Schwarz mit glatter, griffloser Oberfläche, dazu Griffmulden in Bronze. Die extradünne Keramik-Arbeitsplatte ist robust und pflegeleicht. Insel und Hochschrank bieten viel Stauraum, alle Auszüge öffnen per Push-to-open. Der hoch eingebaute Backofen ist bequem auf Augenhöhe.",
+      specs: [["Fronten", "Mattlack Schwarz, grifflos"], ["Griffe", "Griffmulden Bronze metallic"], ["Arbeitsplatte", "XTRA CERAMIC magmagrau, ca. 6 mm"], ["Maße", "ca. 180 × 240 cm"]],
+      geraete: [
+        { name: "Glaskeramik-Kochfeld", modell: "Gorenje ECT 643 BSC" },
+        { name: "Backofen", modell: "Gorenje BOS6737E13BG", eek: { k: "A", c: "#FFE500" } },
+        { name: "Kühlschrank", modell: "Gorenje RFI412EP1", eek: { k: "E", c: "#F5A623", ag: true } },
+        { name: "Einbauspüle", modell: "Hochwertige Einbauspüle" },
+      ],
+    },
+    {
+      id: "k2", name: "L-Küche im Landhausstil Steingrau", form: "L-Küche", preis: 11298,
+      img: "lp/assets/kuechen/k2-1.webp",
+      bilder: ["lp/assets/kuechen/k2-1.webp", "lp/assets/kuechen/k2-2.webp", "lp/assets/kuechen/k2-3.webp", "lp/assets/kuechen/k2-4.webp", "lp/assets/kuechen/k2-5.webp"],
+      kurz: "Landhaus-Charme mit Side-by-Side-Kühlschrank und Vitrinen.",
+      text: "Rahmenfronten in mattem Steingrau, schwarze Metall-Knopfgriffe und eine Arbeitsplatte in Walnussoptik. Verglaste Oberschränke setzen Ihr Lieblingsgeschirr in Szene. Highlight ist der große Side-by-Side-Kühlschrank mit Wasserspender, der Backofen sitzt ergonomisch hoch.",
+      specs: [["Fronten", "Lacklaminat Steingrau matt, Rahmenoptik"], ["Griffe", "Metall-Knopfgriffe Schwarz"], ["Arbeitsplatte", "Walnussoptik"], ["Maße", "ca. 420 × 335 cm"]],
+      geraete: [
+        { name: "Hi-Light-Kochfeld", modell: "Gorenje ECT 643 BSC" },
+        { name: "Backofen", modell: "Gorenje BOS6737E13BG", eek: { k: "A", c: "#FFE500" } },
+        { name: "Side-by-Side Kühl-/Gefrierkombination", modell: "Gorenje NRR9185EABXLWD", eek: { k: "E", c: "#F5A623", ag: true } },
+        { name: "Flachschirmhaube", modell: "elica MISSYBL60D", eek: { k: "D", c: "#E30613" } },
+        { name: "Einbauspüle", modell: "Edelstahl" },
+      ],
+    },
+    {
+      id: "k3", name: "Designküche mit Insel Dunkelgrün & Nussbaum", form: "Inselküche", preis: 11899, badge: "Neu",
+      img: "lp/assets/kuechen/k3-1.webp",
+      bilder: ["lp/assets/kuechen/k3-1.webp", "lp/assets/kuechen/k3-2.webp", "lp/assets/kuechen/k3-3.webp", "lp/assets/kuechen/k3-4.webp", "lp/assets/kuechen/k3-5.webp"],
+      kurz: "Sattes Grün trifft Nussbaum: mit Bartresen und Kochfeldabzug.",
+      text: "Matte Fronten in Schwarzgrün kombiniert mit dunklem Nussbaum. Grifflose Oberschränke mit Push-to-open und gerade Bügelgriffe setzen einen schönen Kontrast. Die Kochinsel ist von allen vier Seiten zugänglich und hat einen integrierten Bartresen. Das Induktionskochfeld saugt den Dampf direkt nach unten ab.",
+      specs: [["Fronten", "Mattlack Schwarzgrün + Nussbaum Kuba"], ["Griffe", "Bügelgriffe Schwarz, teils grifflos"], ["Insel", "mit Bartresen, rundum zugänglich"], ["Maße", "ca. 185 × 360 × 273 cm"]],
+      geraete: [
+        { name: "Induktionskochfeld mit Muldenlüfter", modell: "TermaCook ML80-STYLO-U", eek: { k: "A+", c: "#B5D334" } },
+        { name: "Backofen", modell: "AEG BD31M", eek: { k: "A", c: "#FFE500" } },
+        { name: "Kühlschrank", modell: "AEG NSK5O88ES", eek: { k: "E", c: "#F5A623", ag: true } },
+        { name: "Geschirrspüler", modell: "inklusive" },
+      ],
+    },
+    {
+      id: "k4", name: "Große moderne L-Küche Weiß & Holz", form: "L-Küche", preis: 10799,
+      img: "lp/assets/kuechen/k4-1.webp",
+      bilder: ["lp/assets/kuechen/k4-1.webp", "lp/assets/kuechen/k4-2.webp", "lp/assets/kuechen/k4-3.webp", "lp/assets/kuechen/k4-4.webp", "lp/assets/kuechen/k4-5.webp"],
+      kurz: "Softmattes Weiß trifft gerillte Holzfronten, mit eingebautem Hochschrank.",
+      text: "Klassisch weiße Fronten mit softmatter Oberfläche, kombiniert mit trendigen Fronten in gerillter Holzoptik. Der in die lange Küchenzeile integrierte Hochschrank lockert die L-Form auf und schafft viel Stauraum. Kurze Wege im Arbeitsdreieck und eine große Arbeitsfläche machen den Küchenalltag leicht. Ideal für offene Wohnküchen.",
+      specs: [["Fronten", "Weiß softmatt + Holzoptik Stripe Wood Crema"], ["Griffe", "Metallgriffe Schwarz matt"], ["Besonderheit", "integrierter Hochschrank"], ["Maße", "ca. 248 × 463 cm"]],
+      geraete: [
+        { name: "Glaskeramik-Kochfeld", modell: "Siemens ET645HE17" },
+        { name: "Backofen", modell: "Siemens HB510ABR1", eek: { k: "A", c: "#FFE500" } },
+        { name: "Kühlschrank", modell: "Siemens KI21RNSE0", eek: { k: "E", c: "#F5A623", ag: true } },
+        { name: "Flachschirmhaube", modell: "Siemens LI63LA526", eek: { k: "C", c: "#F07D00" } },
+        { name: "Einbauspüle", modell: "inklusive Armatur" },
+      ],
+    },
+    {
+      id: "k5", name: "Moderne U-Küche in Beige", form: "U-Küche", preis: 6999, badge: "Preistipp",
+      img: "lp/assets/kuechen/k5-1.webp",
+      bilder: ["lp/assets/kuechen/k5-1.webp", "lp/assets/kuechen/k5-2.webp", "lp/assets/kuechen/k5-3.webp", "lp/assets/kuechen/k5-4.webp", "lp/assets/kuechen/k5-5.webp"],
+      kurz: "Beige ist das neue Weiß: warm, ruhig und mit viel Stauraum.",
+      text: "Ultramatte Fronten in Beige, titanfarbene Griffe und eine Arbeitsplatte in schwarzer Granitoptik bilden einen schönen Kontrast. Die Nischenrückwand in gestreifter Holzoptik rundet das Bild ab. Zwei Küchenzeilen plus Hochschrankzeile bieten Platz für alles, inklusive Apothekerschrank und verglaster Oberschränke.",
+      specs: [["Fronten", "Lacklaminat Beige ultramatt"], ["Griffe", "Metallgriffe titanfarben"], ["Arbeitsplatte", "Granitoptik Schwarz geflammt"], ["Maße", "ca. 350 × 340 × 185 cm"]],
+      geraete: [
+        { name: "Glaskeramik-Kochfeld", modell: "beko EB9741XHL" },
+        { name: "Backofen", modell: "beko BBIM173N0BMPE", eek: { k: "A+", c: "#B5D334" } },
+        { name: "Kühl-/Gefrierkombination", modell: "beko BSSA210K4SN", eek: { k: "E", c: "#F5A623", ag: true } },
+        { name: "Insel-Dunsthaube", modell: "Airforce F5360S4BK", eek: { k: "A", c: "#FFE500" } },
+      ],
+    },
+    {
+      id: "k6", name: "L-Küche Grafitschwarz ultramatt", form: "L-Küche", preis: 5898,
+      img: "lp/assets/kuechen/k6-1.webp",
+      bilder: ["lp/assets/kuechen/k6-1.webp", "lp/assets/kuechen/k6-2.webp", "lp/assets/kuechen/k6-3.webp", "lp/assets/kuechen/k6-4.webp"],
+      kurz: "Edles Schwarz mit Anti-Fingerprint und goldenen Griffen.",
+      text: "Fronten in Grafitschwarz ultramatt mit Anti-Fingerprint-Beschichtung: Fingerabdrücke haben keine Chance. Arbeitsplatte und Nischenrückwand im warmen Farbton Metal oxid, dazu goldfarbene Griffe. Eine elegante, kompakte L-Küche mit kompletter Geräteausstattung.",
+      specs: [["Fronten", "Lacklaminat Grafitschwarz ultramatt"], ["Oberfläche", "Anti-Fingerprint-Beschichtung"], ["Arbeitsplatte", "Metal oxid"], ["Maße", "ca. 277 × 217 cm"]],
+      geraete: [
+        { name: "Glaskeramik-Kochfeld", modell: "Privileg PCTACK6042IN" },
+        { name: "Backofen", modell: "Privileg PBWK3NN5FIN", eek: { k: "A", c: "#FFE500" } },
+        { name: "Kühlschrank", modell: "Privileg PRC12GS1", eek: { k: "F", c: "#E8501A", ag: true } },
+        { name: "Dunsthaube", modell: "Privileg DGHVP83LTK/1", eek: { k: "B", c: "#F5B800" } },
+        { name: "Einbauspüle", modell: "inklusive" },
+      ],
+    },
+    {
+      id: "k7", name: "Moderne Küchenzeile Hochglanz Weiß", form: "Küchenzeile", preis: 5898,
+      img: "lp/assets/kuechen/k7-1.webp",
+      bilder: ["lp/assets/kuechen/k7-1.webp", "lp/assets/kuechen/k7-2.webp", "lp/assets/kuechen/k7-3.webp", "lp/assets/kuechen/k7-4.webp"],
+      kurz: "Zeitlos, hell und platzsparend: ideal auch für kleinere Räume.",
+      text: "Strahlend weiße Hochglanzfronten lassen den Raum größer wirken. Arbeitsplatte und Rückwand in rustikaler Wildeiche-Optik bringen Wärme ins Spiel. Die grifflosen Oberschränke öffnen per Push-to-open, der Backofen sitzt ergonomisch hoch. Bei Bedarf ergänzen wir gern einen Geschirrspüler.",
+      specs: [["Fronten", "Hochglanz Arcticweiß"], ["Griffe", "Bügelgriffe Edelstahl, Oberschränke grifflos"], ["Arbeitsplatte", "Wildeiche-Optik rustikal"], ["Maße", "ca. 470 cm"]],
+      geraete: [
+        { name: "Kochfeld", modell: "Constructa CA321255" },
+        { name: "Backofen", modell: "Constructa CF1M00050", eek: { k: "A", c: "#FFE500" } },
+        { name: "Kühlschrank", modell: "Constructa CK131NSE0", eek: { k: "E", c: "#F5A623", ag: true } },
+        { name: "Einbauspüle", modell: "Edelstahl" },
+      ],
+    },
   ],
 
   // Vergleich: alte Küche renovieren vs. neue Küche mit Aktion
@@ -264,6 +360,7 @@ window.LP = {
   // Küchenteam – Küchenleitung, Verkauf & Planung (Coverflow)
   team: [
     { name: "Herr Bayram", rolle: "Küchenleiter", img: "lp/assets/team/bayram.webp" },
+    { name: "Marc Rehmann", rolle: "Inhaber & Geschäftsführer", img: "lp/assets/team/marc-rehmann.webp" },
     { name: "Michael Fromm", rolle: "Küchenplanung", img: "lp/assets/team/fromm.webp" },
     { name: "Roman Ackermann", rolle: "Küchenplanung", img: "lp/assets/team/ackermann.webp" },
     { name: "Florent Krasniqi", rolle: "Küchenplanung", img: "lp/assets/team/krasniqi.webp" },
@@ -272,7 +369,7 @@ window.LP = {
     { name: "Herr Loch", rolle: "Küchenberatung", img: "lp/assets/team/loch.webp" },
   ],
   // Foto Inhaber (für „Seit 1887"-Sektion)
-  inhaberFoto: "lp/assets/team/rehmann.webp",
+  inhaberFoto: "lp/assets/team/marc-rehmann.webp",
 
   // Echte Kundenreferenzen (umgesetzte Küchen). img-URL eintragen, ort optional.
   referenzen: [

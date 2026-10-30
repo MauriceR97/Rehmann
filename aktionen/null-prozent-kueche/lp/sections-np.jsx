@@ -243,7 +243,7 @@ function ProblemNP() {
             </div>
             <div className="np-prob-vs" style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22, color: "var(--reh-red)" }}>→</div>
             <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 800, fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--reh-red)", marginBottom: 4 }}>Bei <img src={window.LP.logos.farbig} alt="Interliving Rehmann" style={{ height: 22, width: "auto", display: "block" }} /></div>
+              <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 19, lineHeight: 1.15, letterSpacing: "0.02em", textTransform: "uppercase", color: "var(--reh-red)", marginBottom: 6 }}>Bei Interliving Rehmann</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
                 <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 64, lineHeight: 0.95, color: "var(--reh-red)" }}>0 €</span>
                 <span style={{ fontWeight: 700, fontSize: 16 }}>Zinsen</span>
@@ -266,7 +266,7 @@ function StatsNP() {
   const tr = L.trust || {};
   const items = [
     { i: "landmark", big: "1887", s: "Familienbetrieb seit" },
-    { i: "chef-hat", big: "100+", s: "Ausstellungsküchen auf 20.000 qm" },
+    { i: "chef-hat", big: "100+", s: "Ausstellungsküchen auf 2.500 qm" },
     { i: "star", big: (tr.googleRating || "4,8"), s: (tr.googleCount || "131") + " Google-Bewertungen", stars: true },
     { i: "calendar-check", big: String(L.aktion.plaetzeGesamt), s: "Plätze im " + L.aktion.monat },
   ];
@@ -464,80 +464,184 @@ function RechnerNP() {
   );
 }
 
+// Energielabel-Pfeil (EU-Optik)
+function EekBadge({ e }) {
+  if (!e) return null;
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", flex: "none" }} title={"Energieeffizienzklasse " + e.k}>
+      {e.ag && <span style={{ display: "inline-flex", flexDirection: "column", justifyContent: "space-between", height: 22, width: 9, marginRight: 2, fontSize: 6.5, fontWeight: 800, lineHeight: 1, color: "#1B2B3D", border: "1px solid #1B2B3D", borderRadius: 2, padding: "1px 0", alignItems: "center" }}><span>A</span><span>G</span></span>}
+      <span style={{ position: "relative", display: "inline-flex", alignItems: "center", height: 22, padding: "0 8px 0 7px", background: e.c, color: e.c === "#FFE500" || e.c === "#B5D334" ? "#1B2B3D" : "#fff", fontWeight: 800, fontSize: 13, borderRadius: "3px 0 0 3px" }}>
+        {e.k}
+        <span style={{ position: "absolute", right: -9, top: 0, width: 0, height: 0, borderTop: "11px solid transparent", borderBottom: "11px solid transparent", borderLeft: "9px solid " + e.c }} />
+      </span>
+    </span>
+  );
+}
+
+// Detail-Overlay einer Küche
+function KuecheOverlay({ k, onClose }) {
+  const L = window.LP;
+  const m = L.aktion.finanzierungMonate;
+  const [idx, setIdx] = React.useState(0);
+  const n = k.bilder.length;
+  const go = (d) => setIdx((i) => (i + d + n) % n);
+  const rate = (k.preis / m).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const sparen = Math.round(npZinsen(k.preis, m, L.aktion.vergleichZins || 7.9)).toLocaleString("de-DE");
+  const touch = React.useRef(null);
+  React.useEffect(() => {
+    const y = window.scrollY, st = document.body.style;
+    const prev = { o: st.overflow, p: st.position, t: st.top, w: st.width };
+    st.overflow = "hidden"; st.position = "fixed"; st.top = -y + "px"; st.width = "100%";
+    const onKey = (e) => { if (e.key === "Escape") onClose(); if (e.key === "ArrowRight") go(1); if (e.key === "ArrowLeft") go(-1); };
+    window.addEventListener("keydown", onKey);
+    return () => { st.overflow = prev.o; st.position = prev.p; st.top = prev.t; st.width = prev.w; window.scrollTo(0, y); window.removeEventListener("keydown", onKey); };
+  }, []);
+  const plan = () => { onClose(); setTimeout(() => window.openFunnel && window.openFunnel(), 60); };
+  const arrow = { position: "absolute", top: "50%", transform: "translateY(-50%)", width: 42, height: 42, borderRadius: 999, border: "none", background: "rgba(255,255,255,0.94)", color: "#1B2B3D", cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 14px rgba(0,0,0,0.18)" };
+  return (
+    <div className="np-ov-wrap" onClick={onClose} style={{ position: "fixed", inset: 0, zIndex: 300, background: "rgba(16,26,38,0.72)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+      <div className="np-ov" role="dialog" aria-modal="true" aria-label={k.name} onClick={(e) => e.stopPropagation()} style={{ position: "relative", background: "#fff", borderRadius: 24, width: "100%", maxWidth: 1180, height: "min(780px, 92vh)", display: "grid", gridTemplateColumns: "minmax(0,1.25fr) minmax(0,1fr)", overflow: "hidden", boxShadow: "0 40px 100px rgba(0,0,0,0.35)" }}>
+        <button onClick={onClose} aria-label="Schließen" style={{ position: "absolute", top: 14, right: 14, zIndex: 5, width: 40, height: 40, borderRadius: 999, border: "none", background: "var(--reh-red)", color: "#fff", cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 14px rgba(0,0,0,0.25)" }}><I name="x" size={20} color="#fff" stroke={2.6} /></button>
+
+        <div className="np-ov-gal" style={{ position: "relative", background: "#0F1822", display: "flex", flexDirection: "column", minHeight: 0 }}>
+          <div style={{ position: "relative", flex: 1, minHeight: 0 }}
+            onTouchStart={(e) => { touch.current = e.touches[0].clientX; }}
+            onTouchEnd={(e) => { if (touch.current == null) return; const dx = e.changedTouches[0].clientX - touch.current; if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1); touch.current = null; }}>
+            {k.bilder.map((b, i) => (
+              <img key={b} src={b} alt={k.name + " – Bild " + (i + 1)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: i === idx ? 1 : 0, transition: "opacity .35s ease" }} />
+            ))}
+            {n > 1 && <button onClick={() => go(-1)} aria-label="Vorheriges Bild" style={{ ...arrow, left: 14 }}><I name="chevron-left" size={22} /></button>}
+            {n > 1 && <button onClick={() => go(1)} aria-label="Nächstes Bild" style={{ ...arrow, right: 14 }}><I name="chevron-right" size={22} /></button>}
+            <span style={{ position: "absolute", left: 16, bottom: 14, background: "rgba(16,26,38,0.72)", color: "#fff", fontSize: 13, fontWeight: 700, padding: "5px 11px", borderRadius: 999 }}>{idx + 1} / {n}</span>
+          </div>
+          <div className="np-ov-thumbs" style={{ display: "flex", gap: 8, padding: 10, background: "#0F1822", overflowX: "auto" }}>
+            {k.bilder.map((b, i) => (
+              <button key={b} onClick={() => setIdx(i)} aria-label={"Bild " + (i + 1)} style={{ flex: "0 0 auto", width: 84, height: 56, padding: 0, border: "2px solid " + (i === idx ? "#FFE500" : "transparent"), borderRadius: 8, overflow: "hidden", cursor: "pointer", background: "none", opacity: i === idx ? 1 : 0.62 }}>
+                <img src={b} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="np-ov-body" style={{ display: "flex", flexDirection: "column", minHeight: 0 }}>
+          <div style={{ flex: 1, overflowY: "auto", overscrollBehavior: "contain", padding: "34px 34px 24px" }}>
+            <div style={{ fontSize: 12.5, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--reh-red)" }}>{k.form} · Ausstellung Velbert</div>
+            <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 30, lineHeight: 1.12, color: "#1B2B3D", margin: "8px 44px 12px 0" }}>{k.name}</h3>
+            <p style={{ fontSize: 16, lineHeight: 1.6, color: "#4A5560", margin: "0 0 22px" }}>{k.text}</p>
+
+            <div style={{ background: "linear-gradient(135deg, #1B2B3D, #2A4361)", color: "#fff", borderRadius: 18, padding: "20px 22px", marginBottom: 24 }}>
+              <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.72)" }}>Ihre Monatsrate</div>
+                  <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 46, lineHeight: 1, color: "#FFE500", marginTop: 4 }}>{rate} €</div>
+                  <div style={{ fontSize: 14, color: "rgba(255,255,255,0.85)", marginTop: 6 }}>{m} Raten · 0 % Zinsen¹ · keine Anzahlung</div>
+                </div>
+                <div style={{ textAlign: "right", fontSize: 14, lineHeight: 1.6, color: "rgba(255,255,255,0.85)" }}>
+                  <div>Kaufpreis <b style={{ color: "#fff" }}>{k.preis.toLocaleString("de-DE")} €</b></div>
+                  <div>Sie sparen ca. <b style={{ color: "#FFE500" }}>{sparen} €</b>*</div>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ fontSize: 12.5, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#1B2B3D", marginBottom: 10 }}>Ausstattung</div>
+            <dl style={{ margin: "0 0 24px", display: "grid", gridTemplateColumns: "auto 1fr", columnGap: 18, rowGap: 9, fontSize: 15 }}>
+              {k.specs.map(([t, v]) => (
+                <React.Fragment key={t}>
+                  <dt style={{ color: "var(--text-muted)" }}>{t}</dt>
+                  <dd style={{ margin: 0, color: "#1B2B3D", fontWeight: 600 }}>{v}</dd>
+                </React.Fragment>
+              ))}
+            </dl>
+
+            <div style={{ fontSize: 12.5, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#1B2B3D", marginBottom: 10 }}>Elektrogeräte inklusive</div>
+            <div style={{ display: "flex", flexDirection: "column", border: "1px solid var(--border-subtle)", borderRadius: 14, overflow: "hidden" }}>
+              {k.geraete.map((g, i) => (
+                <div key={g.name} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, padding: "12px 16px", borderTop: i ? "1px solid var(--border-subtle)" : "none", background: i % 2 ? "#FAFBFC" : "#fff" }}>
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontSize: 15, fontWeight: 700, color: "#1B2B3D" }}>{g.name}</div>
+                    <div style={{ fontSize: 13, color: "var(--text-muted)" }}>{g.modell}</div>
+                  </div>
+                  <span style={{ paddingRight: 9 }}><EekBadge e={g.eek} /></span>
+                </div>
+              ))}
+            </div>
+            <p style={{ fontSize: 12.5, color: "var(--text-muted)", margin: "14px 0 0", lineHeight: 1.5 }}>Ausstellungsbeispiel, inkl. MwSt. Wir planen die Küche passend für Ihren Raum. Maße, Geräte und Preis rechnen wir im Termin individuell durch.</p>
+          </div>
+          <div style={{ padding: "16px 34px 22px", borderTop: "1px solid var(--border-subtle)", background: "#fff" }}>
+            <CTA size="md" block onClick={plan} sub="kostenfrei & unverbindlich in Velbert">Diese Küche mit 0 % planen</CTA>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function KuechenRaten() {
   const L = window.LP;
   const m = L.aktion.finanzierungMonate;
   const fmt = (n) => n.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const kuechen = L.beispielkuechen.slice(0, 8);
-  const SPAN = [2, 1, 1, 1, 1, 2, 3];
+  const kuechen = L.beispielkuechen;
+  const [open, setOpen] = React.useState(null);
+  // 6er-Raster: erste Küche groß, dann im Wechsel halb/drittel
+  const SPAN = [4, 3, 3, 2, 2, 2, 6, 3, 3];
   const card = (k, i) => {
     const [eu, ct] = fmt(k.preis / m).split(",");
-    const span = SPAN[i] || 1;
-    const wide = span > 1;
+    const span = SPAN[i] || 2;
+    const big = span >= 4;
     return (
-      <Reveal key={k.name} delay={(i % 3) * 70} className={"np-k np-k-w" + span} style={{ gridColumn: "span " + span }}>
-        <div className="np-k-inner" style={{ background: "#fff", borderRadius: 22, overflow: "hidden", border: "1px solid var(--border-subtle)", boxShadow: "var(--shadow-sm)", height: "100%", display: "flex", flexDirection: "column" }}>
-          <div className="np-k-img" style={{ position: "relative", background: "var(--neutral-100)", aspectRatio: span === 3 ? "21 / 9" : wide ? "16 / 9" : "4 / 3" }}>
-            <img src={k.img} alt={k.name} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-            {k.badge && <span style={{ position: "absolute", top: 16, left: 16, background: "var(--reh-red)", color: "#fff", fontWeight: 800, fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", padding: "6px 12px", borderRadius: 999 }}>{k.badge}</span>}
-          </div>
-          <div style={{ padding: wide ? "30px 32px" : "22px 24px 24px", display: "flex", flexDirection: "column", flex: 1, minWidth: 0 }}>
-            <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: wide ? 28 : 22, lineHeight: 1.18, color: "var(--text-strong)" }}>{k.name}</div>
-            <div style={{ fontSize: 15, color: "var(--text-muted)", marginTop: 10, lineHeight: 1.5 }}>{k.stil}</div>
-            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 14, flexWrap: "wrap", marginTop: 20, paddingTop: 18, borderTop: "1px solid var(--border-subtle)" }}>
-              <div>
-                <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--text-muted)" }}>Monatlich</div>
-                <div style={{ display: "flex", alignItems: "flex-start", color: "var(--reh-red)", marginTop: 4 }}>
-                  <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: wide ? 58 : 48, lineHeight: 0.92, letterSpacing: "-0.03em" }}>{eu}</span>
-                  <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 21, lineHeight: 1, marginTop: 5, marginLeft: 2 }}>,{ct} €</span>
-                </div>
-              </div>
-              <div style={{ textAlign: "right", fontSize: 14, lineHeight: 1.5, color: "var(--text-muted)" }}>
-                <div>Kaufpreis <b style={{ color: "var(--text-strong)" }}>{k.preis.toLocaleString("de-DE")} €</b></div>
-                <div>{m} Raten · 0 %¹</div>
-              </div>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 12, marginTop: 14, padding: "10px 14px", borderRadius: 12, background: "rgba(227,6,19,0.06)", fontSize: 14, fontWeight: 700, color: "var(--reh-red)" }}>
-              <span>Ihre Zinsersparnis*</span><span>ca. {Math.round(npZinsen(k.preis, m, L.aktion.vergleichZins || 7.9)).toLocaleString("de-DE")} €</span>
-            </div>
-            <div style={{ marginTop: "auto", paddingTop: 18, display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
-              <CTA size="sm">{"Diese Küche planen|mit 0 % Finanzierung · " + m + " Monate"}</CTA>
-            </div>
-          </div>
-        </div>
+      <Reveal key={k.id || k.name} delay={(i % 3) * 70} className={"np-k2 np-k2-s" + span} style={{ gridColumn: "span " + span }}>
+        <button type="button" className="np-k2-card" onClick={() => setOpen(k)} aria-label={k.name + " – Details ansehen"}
+          style={{ position: "relative", display: "block", width: "100%", height: "100%", minHeight: big ? 520 : 440, padding: 0, border: "none", borderRadius: 24, overflow: "hidden", cursor: "pointer", textAlign: "left", background: "#1B2B3D", color: "#fff", boxShadow: "0 18px 44px rgba(27,43,61,0.16)" }}>
+          <img className="np-k2-img" src={k.bilder ? k.bilder[0] : k.img} alt={k.name} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", transition: "transform .6s cubic-bezier(.2,.7,.2,1)" }} />
+          <span style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(16,26,38,0) 38%, rgba(16,26,38,0.55) 66%, rgba(16,26,38,0.92) 100%)" }} />
+          {k.badge && <span style={{ position: "absolute", top: 18, left: 18, background: "#FFE500", color: "#1B2B3D", fontWeight: 800, fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", padding: "7px 13px", borderRadius: 999 }}>{k.badge}</span>}
+          <span style={{ position: "absolute", top: 18, right: 18, display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.92)", color: "#1B2B3D", fontWeight: 700, fontSize: 12.5, padding: "6px 11px", borderRadius: 999 }}><I name="images" size={14} /> {(k.bilder || []).length} Fotos</span>
+          <span style={{ position: "absolute", left: 0, right: 0, bottom: 0, padding: big ? "30px 32px" : "24px 24px", display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+            <span style={{ minWidth: 0, flex: "1 1 220px" }}>
+              <span style={{ display: "block", fontSize: 12, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(255,255,255,0.75)" }}>{k.form}</span>
+              <span style={{ display: "block", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: big ? 30 : 23, lineHeight: 1.15, margin: "6px 0 12px", textWrap: "balance" }}>{k.name}</span>
+              <span style={{ display: "flex", alignItems: "flex-end", gap: 10, flexWrap: "wrap" }}>
+                <span style={{ display: "inline-flex", alignItems: "flex-start", color: "#FFE500" }}>
+                  <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: big ? 60 : 48, lineHeight: 0.9, letterSpacing: "-0.03em" }}>{eu}</span>
+                  <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: big ? 22 : 19, lineHeight: 1, marginTop: 4, marginLeft: 2 }}>,{ct} €</span>
+                </span>
+                <span style={{ fontSize: 14, lineHeight: 1.35, color: "rgba(255,255,255,0.86)", paddingBottom: 3 }}>im Monat<br />{m} × 0 %¹ · Kaufpreis {k.preis.toLocaleString("de-DE")} €</span>
+              </span>
+            </span>
+            <span className="np-k2-more" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", color: "#1B2B3D", fontWeight: 800, fontSize: 14, padding: "11px 16px", borderRadius: 999, flex: "none", transition: "background .2s, color .2s" }}>Mehr dazu <I name="arrow-right" size={16} stroke={2.4} /></span>
+          </span>
+        </button>
       </Reveal>
     );
   };
   const plakat = (
-    <Reveal key="plakat" delay={0}>
-      <div style={{ position: "relative", height: "100%", minHeight: 480, borderRadius: 20, overflow: "hidden", color: "#fff", display: "flex", flexDirection: "column", background: "linear-gradient(165deg, #2A4361 0%, #1B2B3D 55%, #14212F 100%)" }}>
-        <div style={{ position: "relative", flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "40px 28px 20px" }}>
-          <div style={{ fontWeight: 800, fontSize: 13, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.78)" }}>Über</div>
-          <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 120, lineHeight: 0.88, letterSpacing: "-0.04em", margin: "8px 0 6px", color: "#FFE500" }}>100</div>
+    <Reveal key="plakat" delay={0} className="np-k2 np-k2-s2" style={{ gridColumn: "span 2" }}>
+      <div style={{ position: "relative", height: "100%", minHeight: 520, borderRadius: 24, overflow: "hidden", color: "#fff", display: "flex", flexDirection: "column", background: "linear-gradient(165deg, #2A4361 0%, #1B2B3D 55%, #14212F 100%)" }}>
+        <div style={{ position: "relative", flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "40px 28px" }}>
+          <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 112, lineHeight: 0.88, letterSpacing: "-0.04em", margin: "0 0 6px", color: "#FFE500" }}>100</div>
           <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 24 }}>Ausstellungsküchen</div>
           <div style={{ width: 44, height: 3, background: "#fff", opacity: 0.5, borderRadius: 2, margin: "22px auto 20px" }} />
           <div style={{ fontWeight: 800, fontSize: 13, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.78)" }}>Auf über</div>
-          <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 52, lineHeight: 1, letterSpacing: "-0.03em", margin: "6px 0 16px", whiteSpace: "nowrap" }}>20.000 qm</div>
+          <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 48, lineHeight: 1, letterSpacing: "-0.03em", margin: "6px 0 16px", whiteSpace: "nowrap" }}>2.500 qm</div>
           <p style={{ fontSize: 15.5, lineHeight: 1.6, color: "rgba(255,255,255,0.85)", margin: 0, maxWidth: 260 }}>Alle Fronten, Arbeitsplatten und Geräte zum Anfassen, in Ruhe und mit persönlicher Beratung.</p>
         </div>
-        <div style={{ position: "relative", padding: "0 26px 26px" }}><CTA size="md" block variant="white">{window.npCta(true)}</CTA></div>
       </div>
     </Reveal>
   );
   const cells = [];
-  kuechen.forEach((k, i) => { if (i === 3) cells.push(plakat); cells.push(card(k, i)); });
-  if (kuechen.length <= 3) cells.push(plakat);
+  kuechen.forEach((k, i) => { cells.push(card(k, i)); if (i === 0) cells.push(plakat); });
   return (
     <Section bg="var(--surface-page)" id="kuechen">
       <Reveal style={{ textAlign: "center", marginBottom: 48 }}>
         <Eyebrow>Beispiele aus unserer Ausstellung in Velbert</Eyebrow>
         <h2 style={{ fontSize: 46, margin: "12px 0 14px" }}>So viel kostet Ihre Küche <span style={{ color: "var(--reh-red)" }}>im Monat</span></h2>
-        <p style={{ fontSize: 19, color: "var(--text-muted)", maxWidth: 680, margin: "0 auto" }}>{kuechen.length} von über 100 Ausstellungsküchen, ehrlich durchgerechnet bei 0 % auf {m} Monate, ohne Anzahlung und ohne Gebühren.</p>
+        <p style={{ fontSize: 19, color: "var(--text-muted)", maxWidth: 680, margin: "0 auto" }}>Echte Küchen aus unserer Ausstellung, ehrlich durchgerechnet bei 0 % auf {m} Monate. Tippen Sie auf eine Küche für alle Details.</p>
       </Reveal>
-      <div className="np-kuechen" style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 26, maxWidth: 1240, margin: "0 auto" }}>
+      <div className="np-kuechen2" style={{ display: "grid", gridTemplateColumns: "repeat(6, minmax(0, 1fr))", gap: 22, maxWidth: 1280, margin: "0 auto" }}>
         {cells}
       </div>
-      <p style={{ fontSize: 13.5, color: "var(--text-muted)", textAlign: "center", maxWidth: 760, margin: "30px auto 0" }}>Unverbindliche Beispiele, Preise inkl. MwSt. Raten bei 0 % effektivem Jahreszins über {m} Monate.¹ Ihre Küche rechnen wir im Planungstermin genauso offen durch.</p>
+      <p style={{ fontSize: 13.5, color: "var(--text-muted)", textAlign: "center", maxWidth: 760, margin: "30px auto 0" }}>Unverbindliche Ausstellungsbeispiele, Preise inkl. MwSt. Raten bei 0 % effektivem Jahreszins über {m} Monate.¹ Ihre Küche rechnen wir im Planungstermin genauso offen durch.</p>
+      {open && <KuecheOverlay k={open} onClose={() => setOpen(null)} />}
     </Section>
   );
 }
@@ -707,9 +811,9 @@ function HausGalerieNP() {
     { src: "lp/assets/haus/montage.webp", t: "Eigenes Montageteam", s: "Keine Subunternehmer, alles aus einer Hand" },
   ];
   const cap = (x) => (
-    <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, padding: x.big ? "60px 30px 28px" : "50px 22px 20px", background: "linear-gradient(transparent, rgba(16,26,38,0.86))", color: "#fff" }}>
-      <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: x.big ? 30 : 20, lineHeight: 1.12 }}>{x.t}</div>
-      <div style={{ fontSize: x.big ? 16 : 14.5, opacity: 0.88, marginTop: 4 }}>{x.s}</div>
+    <div style={{ padding: x.big ? "16px 4px 2px" : "12px 4px 2px" }}>
+      <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: x.big ? 21 : 17, lineHeight: 1.2, color: "var(--text-strong)" }}>{x.t}</div>
+      <div style={{ fontSize: 14.5, color: "var(--text-muted)", marginTop: 3, lineHeight: 1.4 }}>{x.s}</div>
     </div>
   );
   return (
@@ -719,13 +823,13 @@ function HausGalerieNP() {
         <h2 className="np-haus-h2" style={{ fontSize: 42, margin: "12px 0 10px", textWrap: "balance" }}>Ihre Küche entsteht bei uns, nicht im Internet</h2>
         <p style={{ fontSize: 18, color: "var(--text-muted)", maxWidth: 640, margin: "0 auto" }}>Kommen Sie vorbei, setzen Sie sich an unsere Kochinseln und lassen Sie sich von über 100 Ausstellungsküchen inspirieren.</p>
       </Reveal>
-      <div className="np-haus" style={{ display: "grid", gridTemplateColumns: "1.35fr 1fr 1fr", gridTemplateRows: "260px 260px", gap: 14 }}>
+      <div className="np-haus" style={{ display: "grid", gridTemplateColumns: "1.35fr 1fr 1fr", gridTemplateRows: "auto auto", gap: "22px 16px" }}>
         {tiles.map((x, i) => (
-          <Reveal key={x.src} delay={i * 60} className={"np-haus-tile" + (x.big ? " np-haus-big" : "")} style={{ gridColumn: x.big ? "1" : undefined, gridRow: x.big ? "1 / span 2" : undefined, ...(i === 3 ? { gridColumn: "2 / span 2" } : {}) }}>
-            <div style={{ position: "relative", height: "100%", minHeight: 220, borderRadius: 20, overflow: "hidden", background: "#E7E2DA" }}>
+          <Reveal key={x.src} delay={i * 60} className={"np-haus-tile" + (x.big ? " np-haus-big" : "")} style={{ display: "flex", flexDirection: "column", gridColumn: x.big ? "1" : undefined, gridRow: x.big ? "1 / span 2" : undefined, ...(i === 3 ? { gridColumn: "2 / span 2" } : {}) }}>
+            <div className="np-haus-img" style={{ position: "relative", flex: x.big ? "1 1 auto" : "none", height: x.big ? "auto" : 210, minHeight: x.big ? 340 : 0, borderRadius: 18, overflow: "hidden", background: "#E7E2DA" }}>
               {x.bilder ? <SwipeBilderNP bilder={x.bilder} alt={x.t} /> : <img src={x.src} alt={x.t} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }} />}
-              {cap(x)}
             </div>
+            {cap(x)}
           </Reveal>
         ))}
       </div>
@@ -847,9 +951,10 @@ function TeamNP() {
   const L = window.LP;
   const team = L.team || [];
   const lead = team.find((m) => /leiter/i.test(m.rolle)) || team[0];
-  const rest = team.filter((m) => m !== lead);
+  const owner = team.find((m) => /Rehmann/.test(m.name || ""));
+  const rest = team.filter((m) => m !== lead && m !== owner);
   const foto = (m, big) => (
-    <div className={"np-team-card" + (big ? " np-team-lead" : "")} style={Object.assign({ position: "relative", width: "100%", borderRadius: 20, overflow: "hidden", background: "#E7E2DA" }, big ? { height: "100%", minHeight: 360 } : { height: "auto", aspectRatio: "4 / 5" })}>
+    <div className={"np-team-card" + (big ? " np-team-lead" : "")} style={Object.assign({ position: "relative", width: "100%", borderRadius: 20, overflow: "hidden", background: "#E7E2DA" }, big ? { height: "100%", minHeight: 0 } : { height: "auto", aspectRatio: "4 / 5" })}>
       <img src={m.img} alt={m.name} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 22%", display: "block" }} />
       <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(16,26,38,0) 52%, rgba(16,26,38,0.85) 100%)" }} />
       <div style={{ position: "absolute", left: big ? 28 : 16, right: big ? 28 : 16, bottom: big ? 26 : 14, color: "#fff" }}>
@@ -867,7 +972,10 @@ function TeamNP() {
         <p style={{ fontSize: 18, lineHeight: 1.6, color: "var(--text-muted)", margin: 0 }}>Echte Küchenexperten aus Velbert, persönlich, ehrlich und mit viel Erfahrung. Von der ersten Idee bis zur fertigen Montage.</p>
       </Reveal>
       <div className="np-team" style={{ display: "grid", gridTemplateColumns: "minmax(0, 1.15fr) minmax(0, 1.85fr)", gap: 18, alignItems: "stretch" }}>
-        {lead && <Reveal style={{ height: "100%" }}>{foto(lead, true)}</Reveal>}
+        <div className="np-team-leads" style={{ display: "grid", gridTemplateRows: owner ? "minmax(0,1fr) minmax(0,1fr)" : "minmax(0,1fr)", gap: 18, height: "100%", minHeight: 0 }}>
+          {lead && <Reveal style={{ height: "100%" }}>{foto(lead, true)}</Reveal>}
+          {owner && <Reveal delay={80} style={{ height: "100%" }}>{foto(owner, true)}</Reveal>}
+        </div>
         <div className="np-team-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 18 }}>
           {rest.map((m, i) => <Reveal key={m.name} delay={(i % 3) * 60}>{foto(m, false)}</Reveal>)}
         </div>
@@ -907,9 +1015,9 @@ function AboutNP() {
           <Eyebrow color="#FFE500">Ihr Möbelhaus in Velbert</Eyebrow>
           <h2 style={{ color: "#fff", fontSize: "clamp(34px, 3.8vw, 48px)", lineHeight: 1.08, margin: "14px 0 22px" }}>Seit {L.trust.gegruendet} ein Versprechen: <span style={{ color: "#FFE500" }}>ehrliche Beratung</span></h2>
           <p style={{ fontSize: 18.5, lineHeight: 1.65, color: "rgba(255,255,255,0.86)", margin: "0 0 16px" }}>Als inhabergeführter Familienbetrieb stehen wir seit über {L.trust.jahre} Jahren mit unserem Namen für Qualität. Bei uns sind Sie keine Nummer, wir nehmen uns Zeit, hören zu und planen Ihre Küche so, wie sie zu Ihrem Leben passt.</p>
-          <p style={{ fontSize: 18.5, lineHeight: 1.65, color: "rgba(255,255,255,0.86)", margin: "0 0 30px" }}>Über {L.trust.musterkuechen} Ausstellungsküchen auf über 20.000 qm zum Anfassen, eigene Monteure und ein Service, der auch nach dem Kauf für Sie da ist.</p>
+          <p style={{ fontSize: 18.5, lineHeight: 1.65, color: "rgba(255,255,255,0.86)", margin: "0 0 30px" }}>Über {L.trust.musterkuechen} Ausstellungsküchen auf über 2.500 qm zum Anfassen, eigene Monteure und ein Service, der auch nach dem Kauf für Sie da ist.</p>
           <div style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap", paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.18)" }}>
-            <img src={L.inhaberFoto} alt="Marc Rehmann" loading="lazy" style={{ width: 68, height: 68, borderRadius: 999, objectFit: "cover", flex: "none", border: "2px solid rgba(255,255,255,0.4)" }} />
+            <img src={L.inhaberFoto} alt="Marc Rehmann" loading="lazy" className="np-owner" style={{ width: 116, height: 116, borderRadius: 999, objectFit: "cover", objectPosition: "center 22%", flex: "none", border: "3px solid #fff", boxShadow: "0 8px 22px rgba(0,0,0,0.3)" }} />
             <div>
               <div style={{ fontFamily: "'Brush Script MT', cursive", fontSize: 30, color: "#fff", fontStyle: "italic", lineHeight: 1 }}>Marc Rehmann</div>
               <div style={{ fontSize: 14.5, color: "rgba(255,255,255,0.7)", marginTop: 4 }}>Inhaber & Geschäftsführer</div>
