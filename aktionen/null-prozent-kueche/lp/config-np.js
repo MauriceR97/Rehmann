@@ -196,11 +196,18 @@ window.LP = {
 
   // Beispielküchen: Karte + Detail-Overlay. Bilder können später durch Cloudinary-URLs ersetzt werden.
   // eek: { k: Klasse, c: Farbe, ag: true = neue Skala A–G }
+  // Hersteller-Logos für die Küchen-Karten
+  kuechenMarken: {
+    culineo: { name: "Culineo", logo: "https://onecdn.io/media/4ff1aafe-33ff-4d51-87af-7a9962f26588/full" },
+    interliving: { name: "Interliving", logo: "lp/assets/marken-np/interliving.png" },
+    nobilia: { name: "nobilia", logo: "lp/assets/marken-np/nobilia.png" },
+    nolte: { name: "Nolte Küchen", logo: "lp/assets/marken-np/nolte.png" },
+  },
   beispielkuechen: [
     {
-      id: "k1", name: "Design-Inselküche Schwarz matt", form: "Inselküche", preis: 8999, badge: "Bestseller",
-      img: "lp/assets/kuechen/k1-1.webp",
-      bilder: ["lp/assets/kuechen/k1-1.webp", "lp/assets/kuechen/k1-2.webp", "lp/assets/kuechen/k1-3.webp", "lp/assets/kuechen/k1-4.webp", "lp/assets/kuechen/k1-5.webp"],
+      id: "k1", marke: "culineo", name: "Design-Inselküche Schwarz matt", form: "Inselküche", preis: 8999, badge: "Bestseller",
+      img: "https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_900/Culineo_Design_Inselkuche_Schwarz_1920x1920.jpg",
+      bilder: ["https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Culineo_Design_Inselkuche_Schwarz_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Culineo_Design_Inselkuche_Schwarz_matt_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Culineo_Design_Inselkuche_Schwarz_matt_grifflos_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Culineo_Design_Inselkuche_Schwarz_Xtra_Ceramic_Arbeitsplatte_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Culineo_Design_Inselkuche_Schwarz_matt_Einbaubackofen_1920x1920.jpg"],
       kurz: "Grifflose Eleganz mit Bronze-Akzenten und einer Insel als Mittelpunkt.",
       text: "Matte Lackfronten in Schwarz mit glatter, griffloser Oberfläche, dazu Griffmulden in Bronze. Die extradünne Keramik-Arbeitsplatte ist robust und pflegeleicht. Insel und Hochschrank bieten viel Stauraum, alle Auszüge öffnen per Push-to-open. Der hoch eingebaute Backofen ist bequem auf Augenhöhe.",
       specs: [["Fronten", "Mattlack Schwarz, grifflos"], ["Griffe", "Griffmulden Bronze metallic"], ["Arbeitsplatte", "XTRA CERAMIC magmagrau, ca. 6 mm"], ["Maße", "ca. 180 × 240 cm"]],
@@ -212,9 +219,9 @@ window.LP = {
       ],
     },
     {
-      id: "k2", name: "L-Küche im Landhausstil Steingrau", form: "L-Küche", preis: 11298,
-      img: "lp/assets/kuechen/k2-1.webp",
-      bilder: ["lp/assets/kuechen/k2-1.webp", "lp/assets/kuechen/k2-2.webp", "lp/assets/kuechen/k2-3.webp", "lp/assets/kuechen/k2-4.webp", "lp/assets/kuechen/k2-5.webp"],
+      id: "k2", marke: "culineo", name: "L-Küche im Landhausstil Steingrau", form: "L-Küche", preis: 11298,
+      img: "https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_900/Culineo_L-Kueche_im_Landhausstil_Steingrau_1920x1920.jpg",
+      bilder: ["https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Culineo_L-Kueche_im_Landhausstil_Steingrau_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Culineo_L-Kueche_im_Landhausstil_Steingrau_matt_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Culineo_L-Kueche_im_Landhausstil_Steingrau_mit_Holzarbeitsplatte_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Culineo_L-Kueche_im_Landhausstil_Steingrau_mit_Knopfgriffen_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Culineo_L-Kueche_im_Landhausstil_Steingrau_mit_Vitrinenoberschraenken_1920x1920.jpg"],
       kurz: "Landhaus-Charme mit Side-by-Side-Kühlschrank und Vitrinen.",
       text: "Rahmenfronten in mattem Steingrau, schwarze Metall-Knopfgriffe und eine Arbeitsplatte in Walnussoptik. Verglaste Oberschränke setzen Ihr Lieblingsgeschirr in Szene. Highlight ist der große Side-by-Side-Kühlschrank mit Wasserspender, der Backofen sitzt ergonomisch hoch.",
       specs: [["Fronten", "Lacklaminat Steingrau matt, Rahmenoptik"], ["Griffe", "Metall-Knopfgriffe Schwarz"], ["Arbeitsplatte", "Walnussoptik"], ["Maße", "ca. 420 × 335 cm"]],
@@ -227,9 +234,9 @@ window.LP = {
       ],
     },
     {
-      id: "k3", name: "Designküche mit Insel Dunkelgrün & Nussbaum", form: "Inselküche", preis: 11899, badge: "Neu",
-      img: "lp/assets/kuechen/k3-1.webp",
-      bilder: ["lp/assets/kuechen/k3-1.webp", "lp/assets/kuechen/k3-2.webp", "lp/assets/kuechen/k3-3.webp", "lp/assets/kuechen/k3-4.webp", "lp/assets/kuechen/k3-5.webp"],
+      id: "k3", marke: "interliving", name: "Designküche mit Insel Dunkelgrün & Nussbaum", form: "Inselküche", preis: 11899, badge: "Neu",
+      img: "https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_900/Interliving_Designkuche_mit_Insel_dunkelgrun_Nussbaum_1920x1920.jpg",
+      bilder: ["https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Interliving_Designkuche_mit_Insel_dunkelgrun_Nussbaum_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Interliving_Designkuche_Nussbaum_dunkelgrun_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Interliving_Designkuche_mit_Kucheninsel_matt_grun_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Interliving_Designkuche_mit_Induktionskochfeld_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Auszuge_Schubladen_grun_matt_1920x1920.jpg"],
       kurz: "Sattes Grün trifft Nussbaum: mit Bartresen und Kochfeldabzug.",
       text: "Matte Fronten in Schwarzgrün kombiniert mit dunklem Nussbaum. Grifflose Oberschränke mit Push-to-open und gerade Bügelgriffe setzen einen schönen Kontrast. Die Kochinsel ist von allen vier Seiten zugänglich und hat einen integrierten Bartresen. Das Induktionskochfeld saugt den Dampf direkt nach unten ab.",
       specs: [["Fronten", "Mattlack Schwarzgrün + Nussbaum Kuba"], ["Griffe", "Bügelgriffe Schwarz, teils grifflos"], ["Insel", "mit Bartresen, rundum zugänglich"], ["Maße", "ca. 185 × 360 × 273 cm"]],
@@ -241,9 +248,9 @@ window.LP = {
       ],
     },
     {
-      id: "k4", name: "Große moderne L-Küche Weiß & Holz", form: "L-Küche", preis: 10799,
-      img: "lp/assets/kuechen/k4-1.webp",
-      bilder: ["lp/assets/kuechen/k4-1.webp", "lp/assets/kuechen/k4-2.webp", "lp/assets/kuechen/k4-3.webp", "lp/assets/kuechen/k4-4.webp", "lp/assets/kuechen/k4-5.webp"],
+      id: "k4", marke: "interliving", name: "Große moderne L-Küche Weiß & Holz", form: "L-Küche", preis: 10799,
+      img: "https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_900/Interliving_moderne_L-Kuche_wei_Holz_1920x1920.jpg",
+      bilder: ["https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Interliving_moderne_L-Kuche_wei_Holz_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Interliving_groe_moderne_L-Kuche_wei_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Interliving_L_Form_Kuche_modern_wei_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Interliving_moderne_L-Kuche_wei_mit_geriffelten_Holzfronten_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Interliving_moderne_Kuche_mit_geriffelten_Holzfronten_1920x1920.jpg"],
       kurz: "Softmattes Weiß trifft gerillte Holzfronten, mit eingebautem Hochschrank.",
       text: "Klassisch weiße Fronten mit softmatter Oberfläche, kombiniert mit trendigen Fronten in gerillter Holzoptik. Der in die lange Küchenzeile integrierte Hochschrank lockert die L-Form auf und schafft viel Stauraum. Kurze Wege im Arbeitsdreieck und eine große Arbeitsfläche machen den Küchenalltag leicht. Ideal für offene Wohnküchen.",
       specs: [["Fronten", "Weiß softmatt + Holzoptik Stripe Wood Crema"], ["Griffe", "Metallgriffe Schwarz matt"], ["Besonderheit", "integrierter Hochschrank"], ["Maße", "ca. 248 × 463 cm"]],
@@ -256,9 +263,9 @@ window.LP = {
       ],
     },
     {
-      id: "k5", name: "Moderne U-Küche in Beige", form: "U-Küche", preis: 6999, badge: "Preistipp",
-      img: "lp/assets/kuechen/k5-1.webp",
-      bilder: ["lp/assets/kuechen/k5-1.webp", "lp/assets/kuechen/k5-2.webp", "lp/assets/kuechen/k5-3.webp", "lp/assets/kuechen/k5-4.webp", "lp/assets/kuechen/k5-5.webp"],
+      id: "k5", marke: "nobilia", name: "Moderne U-Küche in Beige", form: "U-Küche", preis: 6999, badge: "Preistipp",
+      img: "https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_900/Nobilia_moderne_U-Kuche_beige_1920x1920.jpg",
+      bilder: ["https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Nobilia_moderne_U-Kuche_beige_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Nobilia_U-Kuche_beige_mit_schwarzer_Arbeitsplatte_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Kochfeld_und_Auszuge_Nobilia_U-Kuche_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Oberschrank_beige_mit_geriffelter_Holz_Ruckwand_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Schrank_Stauraum_Nobilia_U-Kuche_1920x1920.jpg"],
       kurz: "Beige ist das neue Weiß: warm, ruhig und mit viel Stauraum.",
       text: "Ultramatte Fronten in Beige, titanfarbene Griffe und eine Arbeitsplatte in schwarzer Granitoptik bilden einen schönen Kontrast. Die Nischenrückwand in gestreifter Holzoptik rundet das Bild ab. Zwei Küchenzeilen plus Hochschrankzeile bieten Platz für alles, inklusive Apothekerschrank und verglaster Oberschränke.",
       specs: [["Fronten", "Lacklaminat Beige ultramatt"], ["Griffe", "Metallgriffe titanfarben"], ["Arbeitsplatte", "Granitoptik Schwarz geflammt"], ["Maße", "ca. 350 × 340 × 185 cm"]],
@@ -270,9 +277,9 @@ window.LP = {
       ],
     },
     {
-      id: "k6", name: "L-Küche Grafitschwarz ultramatt", form: "L-Küche", preis: 5898,
-      img: "lp/assets/kuechen/k6-1.webp",
-      bilder: ["lp/assets/kuechen/k6-1.webp", "lp/assets/kuechen/k6-2.webp", "lp/assets/kuechen/k6-3.webp", "lp/assets/kuechen/k6-4.webp"],
+      id: "k6", marke: "nobilia", name: "L-Küche Grafitschwarz ultramatt", form: "L-Küche", preis: 5898,
+      img: "https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_900/M4830322083545067_001_1920x1920.jpg",
+      bilder: ["https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/M4830322083545067_001_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/M4830322083545067_002_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/M4830322083545067_003_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/M4830322083545067_004_1920x1920.jpg"],
       kurz: "Edles Schwarz mit Anti-Fingerprint und goldenen Griffen.",
       text: "Fronten in Grafitschwarz ultramatt mit Anti-Fingerprint-Beschichtung: Fingerabdrücke haben keine Chance. Arbeitsplatte und Nischenrückwand im warmen Farbton Metal oxid, dazu goldfarbene Griffe. Eine elegante, kompakte L-Küche mit kompletter Geräteausstattung.",
       specs: [["Fronten", "Lacklaminat Grafitschwarz ultramatt"], ["Oberfläche", "Anti-Fingerprint-Beschichtung"], ["Arbeitsplatte", "Metal oxid"], ["Maße", "ca. 277 × 217 cm"]],
@@ -285,9 +292,9 @@ window.LP = {
       ],
     },
     {
-      id: "k7", name: "Moderne Küchenzeile Hochglanz Weiß", form: "Küchenzeile", preis: 5898,
-      img: "lp/assets/kuechen/k7-1.webp",
-      bilder: ["lp/assets/kuechen/k7-1.webp", "lp/assets/kuechen/k7-2.webp", "lp/assets/kuechen/k7-3.webp", "lp/assets/kuechen/k7-4.webp"],
+      id: "k7", marke: "nolte", name: "Moderne Küchenzeile Hochglanz Weiß", form: "Küchenzeile", preis: 5898,
+      img: "https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_900/Nolte_Lux_moderne_Kuchenzeile_wei_1920x1920.jpg",
+      bilder: ["https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Nolte_Lux_moderne_Kuchenzeile_wei_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Nolte_Lux_moderne_Kuchenzeile_mit_Backofen_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Kuchenfronten_hochglanz_wei_mit_Holz_Ruckwand_1920x1920.jpg","https://res.cloudinary.com/dusdhljtc/image/upload/f_auto,q_auto,w_1400/Oberschrank_Design_grifflos_mit_Holz_Ruckwand_1920x1920.jpg"],
       kurz: "Zeitlos, hell und platzsparend: ideal auch für kleinere Räume.",
       text: "Strahlend weiße Hochglanzfronten lassen den Raum größer wirken. Arbeitsplatte und Rückwand in rustikaler Wildeiche-Optik bringen Wärme ins Spiel. Die grifflosen Oberschränke öffnen per Push-to-open, der Backofen sitzt ergonomisch hoch. Bei Bedarf ergänzen wir gern einen Geschirrspüler.",
       specs: [["Fronten", "Hochglanz Arcticweiß"], ["Griffe", "Bügelgriffe Edelstahl, Oberschränke grifflos"], ["Arbeitsplatte", "Wildeiche-Optik rustikal"], ["Maße", "ca. 470 cm"]],

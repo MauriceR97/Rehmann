@@ -24,11 +24,11 @@ function App() {
       <HeroNP />
       <ProblemNP />
       <Angebot />
-      <HausGalerieNP />
       <MarkenNP />
-      <KuechenweltNP />
-      <VergleichNP />
       <KuechenRaten />
+      <VergleichNP />
+      <HausGalerieNP />
+      <KuechenweltNP />
       <Kontingent />
       <WegZumTermin />
       <Referenzen />
@@ -37,8 +37,6 @@ function App() {
       <AboutNP />
       <TeamNP />
       <FAQ />
-      <FinalCTANP />
-      <Kleingedrucktes />
       <Footer />
       <StickyNP onOpen={open} />
       <Funnel open={funnelOpen} startView={startView} onClose={() => setFunnelOpen(false)} />

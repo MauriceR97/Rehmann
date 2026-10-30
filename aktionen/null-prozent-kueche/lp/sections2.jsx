@@ -151,6 +151,19 @@ function Footer() {
           </div>
         </div>
       </div>
+      {(L.kleingedrucktes || []).length > 0 && (
+        <div id="hinweise" style={{ maxWidth: 1140, margin: "40px auto 0", paddingTop: 28, borderTop: "1px solid rgba(255,255,255,0.12)" }}>
+          <h6 style={{ color: "#fff", fontSize: 15, textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 18px" }}>Rechtliche Hinweise & Teilnahmebedingungen</h6>
+          <div className="footer-legal" style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "18px 40px" }}>
+            {L.kleingedrucktes.map((k) => (
+              <div key={k.titel}>
+                <div style={{ fontWeight: 700, fontSize: 13.5, color: "#fff", marginBottom: 5 }}>{k.titel}</div>
+                <p style={{ fontSize: 13, lineHeight: 1.6, color: "var(--neutral-400)", margin: 0 }}>{k.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       <div style={{ maxWidth: 1140, margin: "36px auto 0", paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.12)", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, fontSize: 14, color: "var(--neutral-400)" }}>
         <span>© {new Date().getFullYear()} Rehmann &amp; Söhne GmbH · Velbert</span>
         <span style={{ display: "flex", gap: 18 }}>
